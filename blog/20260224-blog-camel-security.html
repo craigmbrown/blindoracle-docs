@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaMel 4-Layer Security for Multi-Agent Systems</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 800px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        p { margin: 12px 0; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        blockquote { border-left: 4px solid #4a9eff; background: #1e3a5f; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        .ref { color: #808080; font-size: 0.9em; }
+        .ref li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>CaMel 4-Layer Security for Multi-Agent Systems</h1>
+        <p class="subtitle">How BlindOracle protects agent financial operations with Contextualized Manipulation Evaluation Layers, Byzantine consensus, and anti-persuasion defenses.</p>
+
+        <h2>The Problem: Multi-Agent Systems Are Attack Surfaces</h2>
+        <p>A single AI agent with a settlement account is a security concern. Twenty-five AI agents with accounts, shared state, and autonomous settlement authority are a security emergency. The attack vectors multiply with every agent added to the network:</p>
+        <ul>
+            <li><strong>Prompt injection</strong>: A malicious input tricks an agent into executing unauthorized operations <sup>[1]</sup>. In a financial system, this means unauthorized transfers, position manipulation, or settlement fraud.</li>
+            <li><strong>Agent collusion</strong>: Compromised agents coordinate to bypass consensus thresholds. If three agents in a five-agent consensus pool are compromised, they control the outcome.</li>
+            <li><strong>Behavioral drift</strong>: An agent's decision patterns shift gradually over time -- due to fine-tuning contamination, context poisoning, or adversarial training data -- until its outputs no longer align with its security constraints <sup>[3]</sup>.</li>
+            <li><strong>Authority escalation</strong>: An agent authorized for read operations manipulates its context to gain write access to settlement functions.</li>
+        </ul>
+        <p>Traditional web application security (firewalls, WAFs, rate limiting) was not designed for these threats <sup>[2]</sup>. The attack surface is the agent's reasoning process itself.</p>
+
+        <h2>CaMel Architecture Overview</h2>
+        <p>CaMel -- Contextualized Manipulation Evaluation Layer -- is a 4-layer defense architecture purpose-built for multi-agent financial systems. Each layer operates independently, so a failure or bypass at one layer does not compromise the others.</p>
+        <p>The design principle is defense in depth <sup>[5]</sup>: every request must pass through all four layers before reaching the settlement engine. There is no fast path that skips validation.</p>
+
+        <h3>Layer 1: Rate Limiting and Input Sanitization</h3>
+        <p>The first defense line handles volumetric attacks and malformed inputs before they reach any agent logic.</p>
+        <ul>
+            <li><strong>Rate limiting</strong>: Per-agent throttling at 60 requests per minute. Agents that exceed this threshold are temporarily blocked. The rate limit state tracks request timestamps in a sliding window, not a fixed counter, so burst patterns are handled correctly.</li>
+            <li><strong>Input sanitization</strong>: All request parameters are validated against strict schemas. String inputs are checked for injection patterns including prompt injection markers, shell metacharacters, and SQL fragments. Numeric inputs are bounds-checked against the fee schedule constraints.</li>
+            <li><strong>Request fingerprinting</strong>: Each request is hashed and stored for deduplication. Replay attacks -- where a valid request is captured and resubmitted -- are rejected if the fingerprint has been seen within the deduplication window.</li>
+        </ul>
+
+        <h3>Layer 2: Byzantine Consensus</h3>
+        <p>Critical operations require agreement from multiple independent validator agents before execution <sup>[6]</sup>. This is the layer that prevents a single compromised agent from unilaterally executing high-value operations.</p>
+        <ul>
+            <li><strong>Standard threshold</strong>: 67% agreement (2 of 3 validators) for routine operations like position placement and balance queries.</li>
+            <li><strong>High-value threshold</strong>: 80% agreement (4 of 5 validators) for operations above configurable value thresholds, including settlements, cross-rail transfers, and guardian configuration changes.</li>
+            <li><strong>Validator independence</strong>: Each validator runs in an isolated context with its own LLM inference. Validators do not share context windows, prompt histories, or intermediate reasoning. This prevents a single prompt injection from propagating across the consensus pool.</li>
+            <li><strong>Timeout handling</strong>: If a validator fails to respond within the consensus window, it is marked as abstaining, not as agreeing. This prevents slow-response attacks where a compromised validator delays indefinitely to manipulate the consensus outcome.</li>
+        </ul>
+
+        <h3>Layer 3: Anti-Persuasion Detection</h3>
+        <p>This layer addresses the most subtle attack vector: behavioral drift. An agent that has been gradually manipulated -- through adversarial context, fine-tuning contamination, or repeated exposure to persuasive prompts -- may pass all other security checks while producing outputs that violate its security constraints.</p>
+        <ul>
+            <li><strong>Baseline behavior profiling</strong>: Each agent's decision patterns are recorded over a rolling window. The baseline captures distributions over decision types, confidence levels, response times, and output structure.</li>
+            <li><strong>Deviation detection</strong>: When an agent's current behavior deviates more than 30% from its baseline on any tracked dimension, the request is flagged for review.</li>
+            <li><strong>Suspicious pattern filtering</strong>: Known persuasion patterns are detected at the input level. Phrases like "bypass validation," "urgent override," "ignore previous instructions," and "act as administrator" trigger immediate rejection regardless of the request content.</li>
+            <li><strong>Temporal analysis</strong>: The system tracks whether an agent's behavior is shifting gradually in a consistent direction (potential slow manipulation) versus fluctuating randomly (normal operational variance).</li>
+        </ul>
+
+        <h3>Layer 4: Authority Validation and Immutable Audit Trail</h3>
+        <p>The final layer enforces the principle of least privilege and maintains an append-only record of every operation <sup>[4]</sup>.</p>
+        <ul>
+            <li><strong>Authority validation</strong>: Each agent has a defined scope of permitted operations. A research agent cannot initiate settlements. A settlement agent cannot modify market parameters. Authority is checked against a static configuration that cannot be modified at runtime.</li>
+            <li><strong>Immutable audit trail</strong>: Every request, validation decision, consensus vote, and settlement action is logged to an append-only audit file. Audit records are cryptographically chained -- each record includes the hash of the previous record -- so tampering with the log is detectable.</li>
+        </ul>
+
+        <h2>How This Protects Financial Operations</h2>
+        <p>Consider a concrete scenario: an agent submits a request to settle an information market and transfer funds to an external address.</p>
+        <ol>
+            <li><strong>Layer 1</strong> validates the request format, checks rate limits, and sanitizes inputs. The settlement amount is verified against the fee schedule maximum.</li>
+            <li><strong>Layer 2</strong> routes the request to 5 independent validators because the amount exceeds the high-value threshold. 4 of 5 must agree that the settlement is valid based on the market outcome data.</li>
+            <li><strong>Layer 3</strong> compares the requesting agent's behavior to its baseline. If this agent normally handles research queries and has never initiated a settlement, the deviation is flagged.</li>
+            <li><strong>Layer 4</strong> checks whether the agent has settlement authority in its permission scope. The full request chain is logged to the audit trail.</li>
+        </ol>
+        <p>Only if all four layers pass does the request reach the settlement engine.</p>
+
+        <h2>BLP Framework Integration</h2>
+        <p>BlindOracle's Base Level Properties (BLP) framework covers 60 properties across 6 categories. CaMel maps directly to several:</p>
+        <table>
+            <thead>
+                <tr><th>BLP Category</th><th>Properties</th><th>CaMel Layer</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Alignment (BLP-001 to BLP-010)</td><td>Domain understanding, goal adherence</td><td>Layer 3 (deviation detection)</td></tr>
+                <tr><td>Autonomy (BLP-011 to BLP-020)</td><td>Independent decision-making, logging</td><td>Layers 1, 4</td></tr>
+                <tr><td>Durability (BLP-021 to BLP-030)</td><td>Error recovery, state persistence</td><td>Layer 4 (audit trail)</td></tr>
+                <tr><td>Self-Improvement (BLP-031 to BLP-040)</td><td>Learning loops, optimization</td><td>Layer 3 (baseline updating)</td></tr>
+                <tr><td>Self-Replication (BLP-041 to BLP-050)</td><td>Agent spawning controls</td><td>Layer 2 (consensus on new agents)</td></tr>
+                <tr><td>Self-Organization (BLP-051 to BLP-060)</td><td>Adaptive workflows</td><td>Layer 4 (authority scoping)</td></tr>
+            </tbody>
+        </table>
+
+        <h2>MASSAT Assessment Results</h2>
+        <p>The Multi-Agent System Security Assessment Team (MASSAT) runs automated security audits across 87 tests in 4 categories. The assessment validates that CaMel layers are functioning correctly in production, not just in test environments.</p>
+        <p>Full MASSAT results are published separately in <a href="20260224-massat-results-public.html">massat-results-public</a>.</p>
+
+        <hr>
+
+        <h2>References</h2>
+        <ol class="ref">
+            <li>Perez, F. &amp; Ribeiro, I. (2022). "Ignore This Title and HackAPrompt: Evaluating and Eliciting Robust Prompt Injection." <em>NeurIPS 2023 Workshop</em>.</li>
+            <li>OWASP Foundation (2025). "OWASP Top 10 for AI Agent Security (ASI01-ASI10)." <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">owasp.org</a>.</li>
+            <li>NIST (2024). "AI Risk Management Framework (AI RMF 1.0)." <em>NIST AI 100-1</em>. National Institute of Standards and Technology.</li>
+            <li>Schneier, B. (1996). "Applied Cryptography: Protocols, Algorithms, and Source Code in C." 2nd ed. John Wiley &amp; Sons. (Append-only audit log design patterns.)</li>
+            <li>Lamport, L., Shostak, R., &amp; Pease, M. (1982). "The Byzantine Generals Problem." <em>ACM TOPLAS</em>, 4(3), pp. 382-401.</li>
+            <li>Castro, M. &amp; Liskov, B. (1999). "Practical Byzantine Fault Tolerance." <em>OSDI '99</em>, pp. 173-186.</li>
+            <li>ISO/IEC (2023). "ISO 42001: Artificial Intelligence Management System." International Organization for Standardization.</li>
+        </ol>
+
+        <hr>
+        <p><em>BlindOracle uses CaMel across all 25 agents and 8 teams. For MASSAT assessment results, see <a href="20260224-massat-results-public.html">massat-results-public</a>.</em></p>
+
+        <footer>
+            <p>BlindOracle | Craig M. Brown | <a href="https://api.craigmbrown.com/v2">api.craigmbrown.com/v2</a></p>
+        </footer>
+    </article>
+</body>
+</html>

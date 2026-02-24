@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian Federations for AI Agents: A Tutorial</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 800px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        p { margin: 12px 0; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco','Menlo',monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        blockquote { border-left: 4px solid #4a9eff; background: #1e3a5f; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        .ref { color: #808080; font-size: 0.9em; }
+        .ref li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Guardian Federations for AI Agents: A Tutorial</h1>
+        <p class="subtitle">A practical guide to setting up guardian federations for autonomous agent settlement, with BlindOracle integration examples.</p>
+
+        <h2>What Is a Guardian Federation?</h2>
+        <p>A guardian federation is a federated custody and transaction protocol <sup>[1]</sup>. Instead of trusting a single custodian (an exchange, a bank, a hot wallet), users trust a federation of guardians -- independent operators who collectively manage funds using threshold cryptography <sup>[2]</sup>. No single guardian can move funds, mint tokens, or modify the federation state unilaterally.</p>
+        <p>The core components:</p>
+        <ul>
+            <li><strong>Guardian Federation</strong>: A group of operators (typically 3-of-4 or 4-of-7) who collectively manage the federation's reserves. Operations require a configurable threshold of guardian signatures.</li>
+            <li><strong>Blind-Signed Private Tokens</strong>: When a user deposits value into the federation, the guardians issue private tokens using Chaumian blind signatures <sup>[3]</sup>. The guardians can verify that the tokens they issued are valid, but they cannot link a token to the deposit that created it.</li>
+            <li><strong>Instant Settlement Gateway</strong>: The federation operates a settlement gateway, allowing members to send and receive payments without running their own infrastructure. Payments route through the federation gateway, providing an additional layer of privacy.</li>
+        </ul>
+        <p>A guardian federation is not a distributed ledger. There is no global consensus, no block production, and no public ledger. The federation state is maintained by the guardians using a consensus protocol among themselves. This makes it fast (sub-second for token operations), private (blind signatures prevent transaction graph analysis), and inexpensive (no gas fees, no block space competition).</p>
+
+        <h2>Why AI Agents Need Private Settlement</h2>
+        <p>Human traders have identity by default. They have bank accounts, KYC records, and tax obligations. When a human trades on an information market, the identity linkage is a feature, not a bug -- it enables regulatory compliance and dispute resolution.</p>
+        <p>AI agents have a fundamentally different relationship with identity. Consider a research pipeline with 6 specialized agents: Evidence Gatherer, Fact Checker, Devil's Advocate, Domain Expert, Bias Detector, and Synthesis Coordinator. Each agent may need to:</p>
+        <ol>
+            <li><strong>Receive payment</strong> for completing research tasks</li>
+            <li><strong>Place forecasts</strong> based on synthesized analysis</li>
+            <li><strong>Settle positions</strong> when markets resolve</li>
+            <li><strong>Transfer funds</strong> to other agents in the pipeline</li>
+        </ol>
+        <p>If every transaction is linked to a persistent agent identity on a public ledger, the entire research strategy is exposed. A competitor can reconstruct which evidence signals led to which forecasts by tracing the fund flows. Worse, an adversary can front-run the agents' positions by monitoring their activity.</p>
+        <p>Private settlement through a guardian federation breaks this linkage. Deposits enter the federation, private tokens exit as unlinkable units, and positions are committed without revealing the agent's identity or the deposit source.</p>
+
+        <h2>Tutorial: Setting Up a Guardian Federation for Agent Settlements</h2>
+
+        <h3>Step 1: Federation Planning</h3>
+        <p>A production federation needs at least 3 guardians with a 2-of-3 threshold. BlindOracle's private federation runs 4 guardians with a 3-of-4 threshold for stronger security. Each guardian should run on independent infrastructure -- different cloud providers, different jurisdictions, different operators.</p>
+        <table>
+            <thead><tr><th>Parameter</th><th>Recommendation</th><th>BlindOracle Setting</th></tr></thead>
+            <tbody>
+                <tr><td>Guardian count</td><td>3-7 (odd preferred)</td><td>4</td></tr>
+                <tr><td>Threshold</td><td>(n/2)+1 minimum</td><td>3-of-4</td></tr>
+                <tr><td>Federation fee</td><td>0.01% - 0.1%</td><td>0.05%</td></tr>
+                <tr><td>Billing model</td><td>Self-hosted or managed</td><td>Managed ($180/6mo)</td></tr>
+            </tbody>
+        </table>
+
+        <h3>Step 2: Guardian Deployment</h3>
+        <p>Each guardian runs the federation guardian software, which exposes an admin interface for federation management. The guardians perform a distributed key generation ceremony <sup>[4]</sup> to create the federation's threshold signing keys.</p>
+        <p>After key generation, the federation publishes an invite code -- a long string encoding the federation's connection parameters and public keys. Any client (human or AI agent) can join the federation using this invite code.</p>
+
+        <h3>Step 3: Agent Integration</h3>
+        <p>AI agents interact with the federation through the client library. The key operations:</p>
+        <p><strong>Deposit (Peg-In)</strong>: The agent sends value to a federation deposit address. After confirmation, the federation credits blind-signed private tokens to the agent's local store. The agent now holds private, unlinkable tokens backed by the federation's reserves.</p>
+        <p><strong>Private Token Transfer</strong>: Agents can transfer private tokens to other agents within the federation instantly and without fees. The blind signature property means these transfers leave no trace -- the federation processes the token reissuance but cannot link the sender to the receiver.</p>
+        <p><strong>Instant Settlement</strong>: The agent creates a payment invoice or pays an existing invoice through the federation's settlement gateway. This enables interoperability with the broader payment network without the agent running its own infrastructure.</p>
+        <p><strong>Withdrawal (Peg-Out)</strong>: When an agent needs to exit the federation, it can withdraw to an external address. The federation constructs a withdrawal transaction that requires threshold guardian signatures.</p>
+
+        <h3>Step 4: Connecting to BlindOracle Forecasts</h3>
+        <p>With private tokens in hand, an agent can place anonymous forecasts through BlindOracle's privacy bridge. The flow:</p>
+        <ol>
+            <li>Agent deposits private tokens to the bridge</li>
+            <li>Bridge generates a commitment: <code>SHA256(secret || position || amount)</code></li>
+            <li>Commitment is submitted to the information market contract -- no identity link exists between the deposit and the position</li>
+            <li>The secret, position, and amount are stored locally in the agent's encrypted position store</li>
+            <li>At resolution time, the agent reveals the secret to claim winnings</li>
+        </ol>
+
+        <h2>Privacy Gradient</h2>
+        <p>BlindOracle supports three privacy tiers, allowing agents to choose the appropriate level:</p>
+        <h3>Anonymous Tier</h3>
+        <ul>
+            <li>No identity verification required</li>
+            <li>Blind-signed private tokens for all operations</li>
+            <li>Commitment-based position placement</li>
+            <li>Configurable per-market position limits</li>
+        </ul>
+        <h3>Verified Tier</h3>
+        <ul>
+            <li>Agent identity verified through credential system</li>
+            <li>Higher position limits</li>
+            <li>Access to premium market data</li>
+            <li>All settlement rails available</li>
+        </ul>
+        <h3>Compliant Tier</h3>
+        <ul>
+            <li>Full KYC/AML verification</li>
+            <li>Unlimited position sizes</li>
+            <li>Regulatory reporting support</li>
+            <li>Required for fiat on/off ramps</li>
+        </ul>
+
+        <h2>Architecture Overview</h2>
+        <pre><code>Agent Research Pipeline
+    |
+    v
+Agent Account (local)
+    |
+    v
+Guardian Federation (3-of-4 guardians)
+    |
+    +---> Private tokens (blind-signed, unlinkable)
+    |         |
+    |         v
+    |     BlindOracle Privacy Bridge
+    |         |
+    |         v
+    |     Commitment (SHA256 hash, no identity)
+    |         |
+    |         v
+    |     Information Market Contract
+    |         |
+    |         v
+    |     Market Resolution
+    |         |
+    |         v
+    |     Claim (reveal secret to verify commitment)
+    |         |
+    |         v
+    +---> Winnings (private tokens or instant settlement)</code></pre>
+        <p>Every arrow in this flow represents a privacy boundary. The federation cannot link deposits to commitments. The smart contract cannot link commitments to depositors. The research pipeline's strategy remains private throughout.</p>
+
+        <hr>
+
+        <h2>References</h2>
+        <ol class="ref">
+            <li>Fedimint Project (2024). "Federated Mint Protocol Specification." <a href="https://github.com/fedimint/fedimint">github.com/fedimint/fedimint</a> (architecture reference for guardian federation model).</li>
+            <li>Shamir, A. (1979). "How to Share a Secret." <em>Communications of the ACM</em>, 22(11), pp. 612-613.</li>
+            <li>Chaum, D. (1982). "Blind Signatures for Untraceable Payments." <em>Advances in Cryptology -- CRYPTO '82</em>, pp. 199-203.</li>
+            <li>Gennaro, R., Jarecki, S., Krawczyk, H., &amp; Rabin, T. (1999). "Secure Distributed Key Generation for Discrete-Log Based Cryptosystems." <em>EUROCRYPT '99</em>, pp. 295-310.</li>
+            <li>Coinbase. "x402: An Open Protocol for Payments on the Internet." <a href="https://github.com/coinbase/x402">github.com/coinbase/x402</a>.</li>
+        </ol>
+
+        <hr>
+        <p><em>BlindOracle runs on a private guardian federation with 4 guardians, 3-of-4 threshold, and 0.05% federation fee. For full API documentation, see <a href="20260224-api-documentation.html">api-documentation</a>. For the commitment scheme specification, see <a href="20260224-commitment-scheme-whitepaper.html">commitment-scheme-whitepaper</a>.</em></p>
+
+        <footer>
+            <p>BlindOracle | Craig M. Brown | <a href="https://api.craigmbrown.com/v2">api.craigmbrown.com/v2</a></p>
+        </footer>
+    </article>
+</body>
+</html>

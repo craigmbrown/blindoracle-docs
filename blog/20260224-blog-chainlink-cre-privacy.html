@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy-Preserving Settlement with Chainlink CRE: How BlindOracle Connects the Pieces</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 800px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        p { margin: 12px 0; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco','Menlo',monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        blockquote { border-left: 4px solid #4a9eff; background: #1e3a5f; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        .info-section { background: #1e3a5f; border-left: 4px solid #4a9eff; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        .ref { color: #808080; font-size: 0.9em; }
+        .ref li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Privacy-Preserving Settlement with Chainlink CRE</h1>
+        <p class="subtitle">How BlindOracle combines Chainlink's Runtime Environment, cross-chain interoperability, and confidential compute with Chaumian blind signatures to build the first privacy-preserving agent settlement layer.</p>
+
+        <h2>The Gap Nobody Is Filling</h2>
+        <p>Chainlink has built the most comprehensive oracle and cross-chain infrastructure in the industry. CRE orchestrates workflows with decentralized consensus <sup>[1]</sup>. CCIP moves tokens and messages across 80+ chains <sup>[2]</sup>. Data Streams deliver sub-second pricing <sup>[3]</sup>. Confidential Compute keeps data private even from node operators <sup>[4]</sup>. These are extraordinary capabilities.</p>
+        <p>But none of them solve a specific problem: <strong>how does an autonomous AI agent settle a financial position without revealing its strategy?</strong></p>
+        <p>Consider a research pipeline with six specialized agents analyzing a market question. The pipeline reaches a consensus forecast. Now it needs to place a position, fund it, and eventually settle it. On any transparent ledger, that fund flow is visible. A competitor monitoring the pipeline's deposit address can front-run its positions. Over time, the pipeline's strategy is fully reconstructed from on-chain activity.</p>
+        <p>Chainlink provides the verification infrastructure. What was missing was the privacy layer between the agent's decision and the on-chain settlement. That is what BlindOracle builds.</p>
+
+        <h2>What We Build On (Not What We Replicate)</h2>
+        <p>BlindOracle does not compete with Chainlink. We are a consumer of Chainlink's infrastructure, combining multiple products into an application layer that Chainlink does not provide on its own. Here is what we use and why:</p>
+
+        <table>
+            <thead><tr><th>Chainlink Product</th><th>What It Does (See Official Docs)</th><th>What BlindOracle Adds On Top</th></tr></thead>
+            <tbody>
+                <tr><td><strong>CRE</strong> <sup>[1]</sup></td><td>Workflow orchestration with decentralized consensus</td><td>10 agent-native workflows: market resolution, compliance screening, treasury rebalancing, DCA, arbitrage detection, health monitoring</td></tr>
+                <tr><td><strong>CCIP</strong> <sup>[2]</sup></td><td>Cross-chain token + message transfer</td><td>Cross-rail payment routing between chains + privacy layer via blind-signed tokens before the cross-chain hop</td></tr>
+                <tr><td><strong>Data Streams</strong> <sup>[3]</sup></td><td>Sub-second price feeds</td><td>Oracle data for information market resolution -- the "truth" that settles positions</td></tr>
+                <tr><td><strong>Confidential Compute</strong> <sup>[4]</sup></td><td>Private execution in TEEs</td><td>Alignment with our blind signature privacy model -- Confidential Compute for the oracle query, blind signatures for the settlement</td></tr>
+                <tr><td><strong>Functions</strong> <sup>[5]</sup></td><td>Serverless compute for smart contracts</td><td>Multi-AI model queries for market outcome verification (Gemini, GPT-4, Claude) with consensus aggregation</td></tr>
+            </tbody>
+        </table>
+
+        <p>The key insight: each Chainlink product solves one piece. No single product solves the full lifecycle of "private agent deposits value, takes a position, market resolves via oracle, agent settles privately." BlindOracle is the application that wires these pieces together with a privacy layer between each step.</p>
+
+        <h2>The Architecture: How the Pieces Connect</h2>
+        <pre><code>Agent Research Pipeline (6 agents, private consensus)
+    |
+    v
+Blind-Signed Token Deposit (Chaumian blind signatures, guardian federation)
+    |
+    v
+Commitment: SHA256(secret || position || amount) -- no identity attached
+    |
+    v
+CRE Workflow: Market Resolution
+    |-- Log Trigger: SettlementRequested event on-chain
+    |-- CRE reads market data (EVM Read)
+    |-- CRE queries AI providers via Functions (HTTP)
+    |-- Multi-AI consensus: 3 independent models verify outcome
+    |-- CRE returns result via IReceiver.onReport()
+    |
+    v
+24-Hour Dispute Window (on-chain, transparent)
+    |-- If disputed: CRE re-verification triggered
+    |-- If no dispute: Market finalized
+    |
+    v
+Settlement: Agent reveals (secret, position, amount)
+    |-- SHA256 verified on-chain
+    |-- Payout via blind-signed tokens (privacy preserved)
+    |-- OR instant settlement via payment channel
+    |-- OR CCIP cross-chain transfer to destination chain</code></pre>
+
+        <p>Every arrow between "Agent" and "On-Chain" passes through a privacy boundary. The guardian federation issues blind-signed tokens that are unlinkable to the deposit. The commitment scheme hides the position until reveal. CRE provides the verification. The combination is what makes it work.</p>
+
+        <h2>Why This Is Novel</h2>
+        <p>Three things are being combined here that have not been combined before:</p>
+        <ol>
+            <li><strong>Chaumian blind signatures (1982) applied to agent settlement.</strong> Blind signatures have been used for digital cash since Chaum's original paper <sup>[6]</sup>. Guardian federations have implemented them for human users. Nobody has applied them to autonomous AI agent settlement in prediction/information markets. The agent's deposit is unlinkable to its market position -- information-theoretically, not just computationally.</li>
+            <li><strong>CRE as the neutral verifier in a privacy-preserving market.</strong> CRE's decentralized consensus means no single entity controls market resolution. But our positions are committed via SHA256 hashes, so CRE resolves the market without knowing who holds which position. The oracle is honest; the participants are private. This separation does not exist in any other prediction market implementation.</li>
+            <li><strong>Multi-AI consensus for outcome verification.</strong> Our CRE workflows query 3+ independent AI models (via Chainlink Functions) and require consensus before accepting a market outcome. This is not just "ask GPT-4" -- it is Byzantine fault-tolerant AI verification. If one model is compromised or hallucinating, the consensus mechanism catches it <sup>[7]</sup>.</li>
+        </ol>
+
+        <h2>Why This Is Timely</h2>
+        <p>Four things converged in the last 6 months that make this buildable now:</p>
+        <ul>
+            <li><strong>CRE went live on mainnet</strong> (SmartCon 2025, November 4) <sup>[8]</sup>. Before CRE, orchestrating multi-step workflows with decentralized consensus required custom infrastructure. Now it is a platform capability.</li>
+            <li><strong>Confidential Compute entered early access</strong> (early 2026) <sup>[4]</sup>. This aligns with our privacy model -- the oracle query itself can now be private, complementing the blind signature privacy on the settlement side.</li>
+            <li><strong>CCIP expanded to 80+ chains</strong> <sup>[2]</sup>. Cross-chain settlement is no longer theoretical. An agent on Base can settle a position funded from Arbitrum without a centralized bridge.</li>
+            <li><strong>x402 protocol standardization</strong> (Coinbase, 2025) <sup>[9]</sup>. HTTP 402 Payment Required finally has a machine-to-machine standard. Agents can pay for CRE-verified API calls without API keys or registration.</li>
+        </ul>
+        <p>Six months ago, building this would have required custom oracle infrastructure, a private bridge, and a bespoke cross-chain protocol. Today, Chainlink provides the verification and cross-chain layer. We provide the privacy layer and the agent application logic.</p>
+
+        <h2>Why This Is Solid</h2>
+        <p>The security model does not depend on novel cryptography. Every component uses proven primitives:</p>
+        <table>
+            <thead><tr><th>Component</th><th>Primitive</th><th>Age / Strength</th></tr></thead>
+            <tbody>
+                <tr><td>Position hiding</td><td>SHA256 commitment scheme</td><td>NIST standard since 2002 <sup>[10]</sup>, 2<sup>128</sup> collision resistance</td></tr>
+                <tr><td>Deposit unlinkability</td><td>Chaumian blind signatures</td><td>Published 1982 <sup>[6]</sup>, information-theoretic privacy</td></tr>
+                <tr><td>Market resolution</td><td>CRE decentralized consensus</td><td>Multi-node verification, production since Nov 2025</td></tr>
+                <tr><td>Cross-chain settlement</td><td>CCIP with Risk Management Network</td><td>Independent validation layer, 80+ chains</td></tr>
+                <tr><td>Agent security</td><td>CaMel 4-layer architecture</td><td>Byzantine consensus (67/80% threshold) <sup>[7]</sup>, rate limiting, anti-persuasion, audit trail</td></tr>
+            </tbody>
+        </table>
+        <p>We are not asking anyone to trust a new cryptographic assumption. We are assembling proven components in a new configuration. The novelty is in the integration, not the primitives.</p>
+
+        <h2>What We Have Built</h2>
+        <p>This is not a whitepaper. The implementation exists:</p>
+        <ul>
+            <li><strong>10 CRE workflows</strong> in production YAML (market resolution, compliance screening, DCA, arbitrage, treasury, health monitoring, proof of reserve, credit bureau, outage prediction, customer success)</li>
+            <li><strong>4 smart contracts</strong> on Base: IReceiver (CRE callback), OracleSubscription (tiered access), UnifiedPredictionSubscription (market + settlement), PrivateClaimVerifier (privacy verification)</li>
+            <li><strong>x402 API gateway</strong> running on port 8402 with payment-gated access to all services</li>
+            <li><strong>25 autonomous agents</strong> across 8 teams, with CaMel 4-layer security on every operation</li>
+            <li><strong>CCIP integration</strong> for cross-chain token transfers (ETH, USDC, LINK across Ethereum, Arbitrum, Base, Polygon, Avalanche)</li>
+            <li><strong>87-test security assessment</strong> (MASSAT) with on-chain proof NFT verification</li>
+        </ul>
+        <p>Source code and workflow definitions are available in the <a href="https://github.com/craigmbrown/ETAC-System">ETAC-System repository</a>. The CRE integration guide, smart contract interfaces, and workflow YAML files are in the <code>chainlink-prediction-markets-mcp-enhanced/</code> directory.</p>
+
+        <div class="info-section">
+            <h3 style="color: #4a9eff;">Convergence Hackathon Alignment</h3>
+            <p>The <a href="https://chain.link/hackathon">Chainlink Convergence hackathon</a> (Feb 6 - Mar 8, 2026) has explicit tracks for "AI Agents" and "Privacy & Compliance" -- both of which BlindOracle directly addresses. The hackathon requires all projects to incorporate a CRE workflow. BlindOracle has 10.</p>
+        </div>
+
+        <h2>What Comes Next</h2>
+        <p>Chainlink Confidential Compute is in early access. When it reaches general availability, it enables a capability we are already architecturally prepared for: the oracle query itself -- "did event X occur?" -- can be executed in a TEE where neither the node operators nor the querying agent's identity is revealed. Combined with our blind signature settlement layer, this creates end-to-end privacy from market question to payout. The oracle is honest, the computation is verifiable, and the participants are private at every step.</p>
+        <p>We are applying to the <a href="https://chain.link/build-program">Chainlink BUILD program</a> under the Privacy & Confidentiality category. The thesis: the first production privacy-preserving agent settlement layer, built entirely on Chainlink infrastructure.</p>
+
+        <hr>
+
+        <h2>References</h2>
+        <ol class="ref">
+            <li>Chainlink. "Chainlink Runtime Environment (CRE)." <a href="https://docs.chain.link/cre">docs.chain.link/cre</a>. See also: <a href="https://blog.chain.link/chainlink-runtime-environment-now-live/">"CRE Now Live"</a> (Nov 2025).</li>
+            <li>Chainlink. "Cross-Chain Interoperability Protocol (CCIP)." <a href="https://docs.chain.link/ccip">docs.chain.link/ccip</a>. Architecture: <a href="https://docs.chain.link/ccip/concepts/architecture">docs.chain.link/ccip/concepts/architecture</a>.</li>
+            <li>Chainlink. "Data Streams." <a href="https://docs.chain.link/data-streams">docs.chain.link/data-streams</a>.</li>
+            <li>Chainlink. "Confidential Compute." <a href="https://blog.chain.link/chainlink-confidential-compute/">blog.chain.link/chainlink-confidential-compute</a> (announced SmartCon 2025, early access 2026).</li>
+            <li>Chainlink. "Chainlink Functions." <a href="https://docs.chain.link/chainlink-functions">docs.chain.link/chainlink-functions</a>.</li>
+            <li>Chaum, D. (1982). "Blind Signatures for Untraceable Payments." <em>Advances in Cryptology -- CRYPTO '82</em>, pp. 199-203.</li>
+            <li>Lamport, L., Shostak, R., &amp; Pease, M. (1982). "The Byzantine Generals Problem." <em>ACM TOPLAS</em>, 4(3), pp. 382-401.</li>
+            <li>Chainlink. "SmartCon 2025 Recap." <a href="https://blog.chain.link/smartcon-2025-recap/">blog.chain.link/smartcon-2025-recap</a>.</li>
+            <li>Coinbase. "x402: An Open Protocol for Payments on the Internet." <a href="https://github.com/coinbase/x402">github.com/coinbase/x402</a>.</li>
+            <li>NIST (2015). "Secure Hash Standard (SHS)." <em>FIPS PUB 180-4</em>. National Institute of Standards and Technology.</li>
+            <li>BlindOracle agent swarm and CRE integration. <a href="https://github.com/craigmbrown/ETAC-System">github.com/craigmbrown/ETAC-System</a>. See <code>chainlink-prediction-markets-mcp-enhanced/</code>.</li>
+        </ol>
+
+        <hr>
+        <p><em>BlindOracle is built on Chainlink CRE, CCIP, Data Streams, Functions, and is architecturally prepared for Confidential Compute. For the technical integration specification, see <a href="20260224-chainlink-integration-spec.html">chainlink-integration-spec</a>. For the commitment scheme, see <a href="20260224-commitment-scheme-whitepaper.html">commitment-scheme-whitepaper</a>. For MASSAT security assessment, see <a href="20260224-massat-results-public.html">massat-results-public</a>.</em></p>
+
+        <footer>
+            <p>BlindOracle | Craig M. Brown | Built on Chainlink CRE + CCIP + Confidential Compute</p>
+        </footer>
+    </article>
+</body>
+</html>

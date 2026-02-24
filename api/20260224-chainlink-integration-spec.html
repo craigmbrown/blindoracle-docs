@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlindOracle Chainlink Integration Specification: Architecture Rationale and Novelty Justification</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 900px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.7em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        p { margin: 12px 0; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco','Menlo',monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; vertical-align: top; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        .info-section { background: #1e3a5f; border-left: 4px solid #4a9eff; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .warning-section { background: #332200; border-left: 4px solid #ff9800; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .success-section { background: #1b5e20; border-left: 4px solid #4caf50; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        .ref { color: #808080; font-size: 0.9em; }
+        .ref li { margin: 5px 0; }
+        .doc-link { background: #0d1117; border: 1px solid #404040; padding: 8px 12px; border-radius: 4px; display: inline-block; margin: 3px 0; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>BlindOracle Chainlink Integration Specification</h1>
+        <p class="subtitle">Architecture rationale and novelty justification for Chainlink BUILD program application. This document explains how and why the pieces fit together -- for what each Chainlink product does, see the official documentation linked throughout.</p>
+
+        <div class="info-section">
+            <h3 style="color: #4a9eff; margin-top: 0;">Reading Guide</h3>
+            <p>This paper does not describe Chainlink's products -- their official documentation does that better than we can. Instead, it describes <strong>the integration architecture</strong>: which products we use, why we chose them, how they connect to each other and to our privacy layer, and why the resulting system is novel, timely, and sound. All Chainlink documentation links are current as of February 2026.</p>
+            <p><strong>Source code:</strong> <a href="https://github.com/craigmbrown/ETAC-System">github.com/craigmbrown/ETAC-System</a> -- see <code>chainlink-prediction-markets-mcp-enhanced/</code> for all files referenced below.</p>
+        </div>
+
+        <h2>1. Integration Map</h2>
+        <p>BlindOracle uses five Chainlink products. Each serves a distinct role in the settlement lifecycle.</p>
+
+        <table>
+            <thead><tr><th>Chainlink Product</th><th>Official Docs</th><th>Our Integration Point</th><th>Repo Path</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><strong>CRE</strong></td>
+                    <td><a href="https://docs.chain.link/cre" class="doc-link">docs.chain.link/cre</a></td>
+                    <td>Workflow orchestration for market resolution, compliance, treasury</td>
+                    <td><code>cre-workflows/marketplace/*.yaml</code><br><code>cre-workflows/marketplace/handlers/*.py</code></td>
+                </tr>
+                <tr>
+                    <td><strong>CCIP</strong></td>
+                    <td><a href="https://docs.chain.link/ccip" class="doc-link">docs.chain.link/ccip</a></td>
+                    <td>Cross-chain token transfers for multi-chain settlement</td>
+                    <td><code>src/btc_integration/ccip_btc.py</code><br><code>core/chainlink_integration.py</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Data Streams</strong></td>
+                    <td><a href="https://docs.chain.link/data-streams" class="doc-link">docs.chain.link/data-streams</a></td>
+                    <td>Oracle price data for market outcome resolution</td>
+                    <td><code>core/chainlink_integration.py</code><br><code>fedimint_node_ops/chainlink_integration.py</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Functions</strong></td>
+                    <td><a href="https://docs.chain.link/chainlink-functions" class="doc-link">docs.chain.link/chainlink-functions</a></td>
+                    <td>Multi-AI model queries for outcome verification</td>
+                    <td><code>cre-workflows/marketplace/handlers/*.py</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Confidential Compute</strong></td>
+                    <td><a href="https://blog.chain.link/chainlink-confidential-compute/" class="doc-link">blog (early access)</a></td>
+                    <td>Future: private oracle queries aligned with our blind signature privacy</td>
+                    <td><code>contracts/PrivateClaimVerifier.sol</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>2. Why These Products, In This Configuration</h2>
+
+        <h3>2.1 CRE as the Settlement Orchestrator</h3>
+        <p><strong>The problem:</strong> An information market must resolve -- someone or something must determine whether "event X occurred by date Y" is true or false. This resolution must be verifiable by all participants and resistant to manipulation by any single party.</p>
+        <p><strong>Why CRE (not a custom oracle):</strong> CRE provides decentralized consensus on workflow execution. When our market resolution workflow runs, it executes across multiple independent Chainlink nodes. The result is not "BlindOracle says YES" -- it is "the Chainlink node network reached consensus that the answer is YES." This is a fundamentally different trust model than a self-hosted oracle.</p>
+        <p><strong>How we use it:</strong> Our <code>UnifiedPredictionSubscription.sol</code> contract implements the <code>IReceiver</code> interface <sup>[1]</sup>. When a market creator calls <code>requestSettlement()</code>, the contract emits a <code>SettlementRequested</code> event. A CRE Log Trigger workflow detects this event, reads the market data via EVM Read, queries AI providers via HTTP (Chainlink Functions), and calls <code>onReport()</code> with the verified outcome. The contract then enters a 24-hour dispute window before finalization.</p>
+        <p><strong>What we add that CRE does not provide:</strong> The privacy layer. CRE resolves what happened. It does not know who bet on what. Positions are committed as SHA256 hashes -- <code>SHA256(secret || position || amount)</code> -- before market resolution. CRE verifies the outcome; the commitment scheme hides the participants.</p>
+
+        <div class="info-section">
+            <h3 style="color: #4a9eff; margin-top: 0;">CRE Documentation References</h3>
+            <p>For CRE workflow authoring: <a href="https://docs.chain.link/cre/getting-started/overview">Getting Started</a> |
+            <a href="https://docs.chain.link/cre-templates">Templates Hub</a> |
+            <a href="https://docs.chain.link/cre/guides/operations/deploying-workflows">Deploying Workflows</a> |
+            <a href="https://chain.link/bootcamps/intro-to-chainlink-runtime-environment">CRE Bootcamp</a></p>
+        </div>
+
+        <h3>2.2 CCIP as the Cross-Chain Settlement Rail</h3>
+        <p><strong>The problem:</strong> An agent on Base wants to settle a position funded from Arbitrum. Without a cross-chain protocol, this requires a centralized bridge -- a single point of failure and a trust assumption.</p>
+        <p><strong>Why CCIP (not a third-party bridge):</strong> CCIP has an independent Risk Management Network that monitors cross-chain transactions <sup>[2]</sup>. This is an additional validation layer beyond the CCIP nodes themselves. For a financial settlement system handling agent funds, the extra validation layer justifies the choice over cheaper but less-validated alternatives.</p>
+        <p><strong>How we use it:</strong> Our <code>ccip_btc.py</code> module and <code>chainlink_integration.py</code> configure CCIP routers for Ethereum, Arbitrum, Base, Polygon, Optimism, and Avalanche. When an agent requests a cross-rail transfer (via the <code>/v2/transfer/cross-rail</code> API endpoint), the settlement engine routes through CCIP for any chain-to-chain movement.</p>
+        <p><strong>What we add:</strong> A privacy hop before the cross-chain transfer. Funds enter a guardian federation and emerge as blind-signed tokens. Only then does the cross-chain transfer happen. CCIP sees a transfer from a federation address, not from an identified agent. The privacy layer wraps the interoperability layer.</p>
+
+        <h3>2.3 Data Streams + Functions for Multi-AI Market Resolution</h3>
+        <p><strong>The problem:</strong> Information markets ask questions like "Will event X occur by date Y?" Resolving these requires: (a) objective data (price feeds, event data) and (b) subjective interpretation (did the event meet the resolution criteria?).</p>
+        <p><strong>Why both Data Streams and Functions:</strong> Data Streams handle (a) -- objective, quantitative data delivered at sub-second latency <sup>[3]</sup>. Functions handle (b) -- we send JavaScript source code to the DON that queries multiple AI providers (Gemini, GPT-4, Claude) to interpret whether the resolution criteria are met <sup>[4]</sup>. The AI models analyze the question, the evidence, and the criteria independently. Our CRE workflow aggregates their responses and requires consensus (2-of-3 minimum) before accepting an outcome.</p>
+        <p><strong>What we add:</strong> The multi-AI consensus layer. Chainlink Functions executes the code; we designed the consensus protocol that requires independent agreement across AI providers. This is Byzantine fault-tolerant AI verification -- a single hallucinating or compromised model cannot determine a market outcome.</p>
+
+        <h3>2.4 Confidential Compute Alignment (Future)</h3>
+        <p><strong>The opportunity:</strong> Chainlink Confidential Compute, announced at SmartCon 2025 and currently in early access <sup>[5]</sup>, enables private computation in TEEs where data is hidden from node operators. This directly complements our blind signature privacy model.</p>
+        <p><strong>Current state:</strong> Our <code>PrivateClaimVerifier.sol</code> contract is designed to receive privacy-preserving claim verifications. Today, it works with our application-layer blind signatures. When Confidential Compute reaches GA, the oracle query itself can be private -- the question "did event X occur?" can be answered without any node seeing the query content. This creates end-to-end privacy: private query (Confidential Compute) + private position (blind signatures) + private settlement (guardian federation).</p>
+        <p><strong>Alignment with DECO:</strong> Chainlink's DECO protocol <sup>[6]</sup> enables proving statements about TLS data in zero-knowledge. For markets that resolve based on web-sourced data (news events, API responses), DECO can prove the data came from a specific source without revealing what the data says to the oracle nodes. This is a natural extension of our privacy architecture.</p>
+
+        <div class="info-section">
+            <h3 style="color: #4a9eff; margin-top: 0;">Confidential Compute & DECO References</h3>
+            <p>Confidential Compute: <a href="https://blog.chain.link/chainlink-confidential-compute/">Announcement Blog</a> |
+            <a href="https://chain.link/privacy">Privacy Standard</a> |
+            <a href="https://chain.link/article/confidential-computing-blockchain">Article</a></p>
+            <p>DECO: <a href="https://blog.chain.link/deco-introduction/">Introduction</a> |
+            <a href="https://blog.chain.link/deco-sandbox/">Sandbox</a> |
+            <a href="https://arxiv.org/pdf/1909.00938">Academic Paper (ACM CCS 2020)</a></p>
+        </div>
+
+        <h2>3. The 10 CRE Workflows</h2>
+        <p>Each workflow is defined in YAML with a corresponding Python handler. All workflow definitions and handlers are in <code>cre-workflows/marketplace/</code> in the <a href="https://github.com/craigmbrown/ETAC-System">ETAC-System repository</a>.</p>
+
+        <table>
+            <thead><tr><th>Workflow</th><th>Trigger</th><th>Chainlink Products Used</th><th>Revenue Model</th></tr></thead>
+            <tbody>
+                <tr><td><strong>AI Consensus Market Resolver</strong></td><td>Log Trigger (SettlementRequested event)</td><td>CRE + Functions + Data Streams</td><td>Per-market fee</td></tr>
+                <tr><td><strong>Compliance Screening</strong></td><td>Event-driven (new agent registration)</td><td>CRE + Functions</td><td>Per-transaction</td></tr>
+                <tr><td><strong>Autonomous Treasury</strong></td><td>CRON (4h) OR health &lt; 0.85</td><td>CRE + CCIP + Data Streams</td><td>% of AUM</td></tr>
+                <tr><td><strong>AI DCA Agent</strong></td><td>CRON (daily, noon UTC)</td><td>CRE + Data Streams</td><td>$29-99/mo subscription</td></tr>
+                <tr><td><strong>Cross-Chain Arbitrage</strong></td><td>CRON (4h)</td><td>CRE + CCIP + Data Streams</td><td>% of profit</td></tr>
+                <tr><td><strong>Proof of Reserve Audit</strong></td><td>CRON / event-driven</td><td>CRE + Functions</td><td>Per-audit fee</td></tr>
+                <tr><td><strong>Credit Bureau Agent</strong></td><td>On-demand</td><td>CRE + Functions</td><td>Per-evaluation</td></tr>
+                <tr><td><strong>Outage Prediction Market</strong></td><td>CRON (daily)</td><td>CRE + Data Streams + Functions</td><td>Subscription</td></tr>
+                <tr><td><strong>System Health Monitor</strong></td><td>CRON (hourly)</td><td>CRE</td><td>Fixed tier</td></tr>
+                <tr><td><strong>Customer Success Agent</strong></td><td>Event-driven</td><td>CRE + Functions</td><td>Included in tier</td></tr>
+            </tbody>
+        </table>
+
+        <h2>4. Smart Contract Architecture</h2>
+        <p>Four contracts deployed to Base L2 (Chain ID: 8453). Solidity ^0.8.20, OpenZeppelin v5. All source is in <code>contracts/</code> in the <a href="https://github.com/craigmbrown/ETAC-System">repository</a>.</p>
+
+        <table>
+            <thead><tr><th>Contract</th><th>Inherits</th><th>CRE Integration</th><th>Key Feature</th></tr></thead>
+            <tbody>
+                <tr><td><strong>IReceiver.sol</strong></td><td>Interface</td><td><code>onReport(bytes metadata, bytes report)</code></td><td>Standard CRE callback; metadata encodes workflow owner (20 bytes) + workflow name (10 bytes)</td></tr>
+                <tr><td><strong>OracleSubscription.sol</strong></td><td>ReentrancyGuard, Pausable</td><td>Auto-renewal via CRE CRON</td><td>4-tier subscription (FREE/BASIC/PRO/ENTERPRISE), multi-token (USDC/USDT/DAI/LINK), on-chain API key validation</td></tr>
+                <tr><td><strong>UnifiedPredictionSubscription.sol</strong></td><td>OracleSubscription + IReceiver</td><td>Log Trigger + onReport callback</td><td>Binary markets with multi-AI verification, 24h dispute window (10% stake required), multi-stage lifecycle</td></tr>
+                <tr><td><strong>PrivateClaimVerifier.sol</strong></td><td>Custom</td><td>Confidential Compute (future)</td><td>Privacy-preserving claim verification, blind signature alignment</td></tr>
+            </tbody>
+        </table>
+
+        <h3>4.1 Settlement Lifecycle (On-Chain)</h3>
+        <pre><code>OPEN
+  --> Creator calls requestSettlement()
+  --> SettlementRequested event emitted
+
+SETTLEMENT_REQUESTED
+  --> CRE Log Trigger activates
+  --> Workflow: EVM Read (market data) + HTTP (AI queries) + Consensus
+  --> onReport() called with verified outcome
+
+PENDING_FINALIZATION
+  --> 24-hour dispute window begins
+  --> Dispute requires 10% pool stake + evidence
+  --> If disputed: CRE re-verification triggered
+  --> If no dispute after 24h: auto-finalize
+
+SETTLED
+  --> Winners claim proportional ETH from pool
+  --> Privacy layer: claims use blind-signed tokens (unlinkable to position)
+  --> Cross-chain payouts via CCIP if needed</code></pre>
+
+        <h2>5. Novelty Justification</h2>
+
+        <div class="success-section">
+            <h3 style="color: #4caf50; margin-top: 0;">Thesis: First Privacy-Preserving Agent Settlement Layer Built on Chainlink</h3>
+            <p>No existing system combines decentralized oracle consensus (CRE) with information-theoretic privacy (Chaumian blind signatures) for autonomous AI agent settlement. Each component exists; the integration is novel.</p>
+        </div>
+
+        <h3>5.1 What Exists Today (And What Does Not)</h3>
+        <table>
+            <thead><tr><th>System</th><th>Oracle Verification</th><th>Settlement Privacy</th><th>Agent-Native</th><th>Cross-Chain</th></tr></thead>
+            <tbody>
+                <tr><td>Polymarket</td><td>UMA optimistic oracle</td><td>None (transparent)</td><td>No (human UX)</td><td>No (Polygon only)</td></tr>
+                <tr><td>Kalshi</td><td>Centralized (CFTC-regulated)</td><td>Centralized (custodial)</td><td>Limited API</td><td>No (USD only)</td></tr>
+                <tr><td>Olas/Mech</td><td>Agent-defined</td><td>None (on-chain)</td><td>Yes</td><td>Limited</td></tr>
+                <tr><td>Chainlink CRE (standalone)</td><td>Decentralized consensus</td><td>Confidential Compute (future)</td><td>Workflow-based</td><td>Yes (CCIP)</td></tr>
+                <tr><td><strong>BlindOracle</strong></td><td><strong>CRE decentralized consensus</strong></td><td><strong>Blind signatures (information-theoretic)</strong></td><td><strong>25-agent swarm, x402 native</strong></td><td><strong>CCIP (6 chains)</strong></td></tr>
+            </tbody>
+        </table>
+        <p>The gap: Chainlink provides the verification and cross-chain layer but not the application-layer privacy. Prediction market platforms provide the market mechanics but not the agent-native settlement or cross-chain capability. BlindOracle is the integration layer that connects both.</p>
+
+        <h3>5.2 Why Now (Timeliness)</h3>
+        <table>
+            <thead><tr><th>Event</th><th>Date</th><th>Impact on BlindOracle</th></tr></thead>
+            <tbody>
+                <tr><td>CRE mainnet launch</td><td>Nov 4, 2025 <sup>[7]</sup></td><td>Enables decentralized workflow orchestration without custom infra</td></tr>
+                <tr><td>Confidential Compute early access</td><td>Early 2026 <sup>[5]</sup></td><td>Enables private oracle queries, completing end-to-end privacy</td></tr>
+                <tr><td>CCIP 80+ chains</td><td>2025-2026 <sup>[2]</sup></td><td>Cross-chain settlement is production-ready, not theoretical</td></tr>
+                <tr><td>x402 protocol (Coinbase)</td><td>2025 <sup>[8]</sup></td><td>Machine-to-machine payments standardized via HTTP 402</td></tr>
+                <tr><td>GENIUS Act / CLARITY Act</td><td>2025 <sup>[9]</sup></td><td>US regulatory clarity for digital assets enables compliance-tier operations</td></tr>
+                <tr><td>Convergence Hackathon</td><td>Feb 6 - Mar 8, 2026 <sup>[10]</sup></td><td>AI Agents + Privacy tracks directly aligned with BlindOracle</td></tr>
+            </tbody>
+        </table>
+
+        <h3>5.3 Why Solid (Security Model)</h3>
+        <p>Every component in the stack uses a proven primitive with known security properties:</p>
+        <ul>
+            <li><strong>SHA256 commitment scheme</strong>: NIST FIPS 180-4 <sup>[11]</sup>. Computational hiding (preimage resistance ~2<sup>256</sup>), computational binding (collision resistance ~2<sup>128</sup>). Standard assumption, no novel cryptography.</li>
+            <li><strong>Chaumian blind signatures</strong>: Chaum 1982 <sup>[12]</sup>. Information-theoretic unlinkability between deposit and token. 44 years of peer review.</li>
+            <li><strong>CRE decentralized consensus</strong>: Multi-node execution with OCR aggregation. Production since November 2025 with institutional deployments (UBS, Swift, Mastercard) <sup>[7]</sup>.</li>
+            <li><strong>CCIP Risk Management Network</strong>: Independent validation layer monitoring cross-chain transactions <sup>[2]</sup>. Defense-in-depth for the bridge.</li>
+            <li><strong>Byzantine consensus (CaMel Layer 2)</strong>: 67% threshold for standard operations, 80% for high-value. Based on Lamport, Shostak, and Pease (1982) <sup>[13]</sup> and Castro and Liskov's pBFT (1999) <sup>[14]</sup>.</li>
+            <li><strong>MASSAT 87-test security assessment</strong>: Automated, scheduled, with on-chain proof NFT. Results independently verifiable. See <a href="20260224-massat-results-public.html">MASSAT results</a>.</li>
+        </ul>
+
+        <h2>6. Payment Architecture: x402 + CRE Subscriptions</h2>
+        <p>BlindOracle uses two payment models simultaneously:</p>
+        <h3>6.1 x402 Micropayments (API Access)</h3>
+        <p>Every API call is gated by HTTP 402 <sup>[8]</sup>. No API keys, no registration for anonymous-tier access. The agent pays per request via the <code>X-402-Payment</code> header. This is implemented in <code>distribution/x402_api_gateway.py</code>.</p>
+
+        <h3>6.2 On-Chain Subscriptions (CRE Workflow Access)</h3>
+        <p>Higher-tier access (premium data, higher position limits, enterprise features) uses <code>OracleSubscription.sol</code> with ERC20 payments (USDC, USDT, DAI, LINK). Subscriptions auto-renew via CRE CRON workflows. This is implemented in <code>services/cre/cre_subscription_client.py</code>.</p>
+
+        <h3>6.3 Privacy-First Default</h3>
+        <p>The default payment rail is blind-signed tokens via the guardian federation. The <code>X-Payment-Rail</code> header defaults to <code>private</code>. Transparent rails (stablecoin, fiat) are opt-in. See <code>distribution/x402_api_gateway.py</code>.</p>
+
+        <h2>7. Repository Structure</h2>
+        <p>All integration code is in <a href="https://github.com/craigmbrown/ETAC-System">github.com/craigmbrown/ETAC-System</a> under <code>chainlink-prediction-markets-mcp-enhanced/</code>:</p>
+        <pre><code>chainlink-prediction-markets-mcp-enhanced/
+├── contracts/                          # Solidity (IReceiver, OracleSubscription,
+│                                       #   UnifiedPredictionSubscription, PrivateClaimVerifier)
+├── cre-workflows/marketplace/          # 10 CRE workflow YAMLs + Python handlers
+├── core/
+│   ├── cre_smart_contracts.py          # Escrow, x402 requests, CRE triggers
+│   └── chainlink_integration.py        # Price feeds, VRF, CCIP structures
+├── services/
+│   ├── cre/                            # Subscription client + unified payment flow
+│   ├── payments/                       # x402 bridge, settlement engine, fee router
+│   └── verification/                   # NIP-58 badges, SRVL proofs, credentials
+├── distribution/
+│   └── x402_api_gateway.py             # HTTP 402 API server (port 8402)
+├── src/btc_integration/
+│   └── ccip_btc.py                     # CCIP cross-chain module
+├── security/
+│   └── blindoracle_security_gateway.py # CaMel 4-layer security
+├── CRE_INTEGRATION_COMPLETE_GUIDE.md   # Full technical reference
+├── BLINDORACLE.md                      # Platform overview
+└── PRODUCTION_PLAN.md                  # 10 production use cases</code></pre>
+
+        <h2>8. BUILD Program Fit: Privacy & Confidentiality</h2>
+        <p>The <a href="https://chain.link/build-program">Chainlink BUILD program</a> includes a <strong>Privacy & Confidentiality</strong> category for "privacy-preserving protocols and applications, enhanced data protection." BlindOracle's fit:</p>
+        <table>
+            <thead><tr><th>BUILD Criterion</th><th>BlindOracle Evidence</th></tr></thead>
+            <tbody>
+                <tr><td>Uses Chainlink products</td><td>CRE (10 workflows), CCIP (6 chains), Data Streams, Functions, Confidential Compute (prepared)</td></tr>
+                <tr><td>Privacy-preserving</td><td>Chaumian blind signatures, SHA256 commitment scheme, guardian federation, CaMel 4-layer security</td></tr>
+                <tr><td>Production-ready</td><td>25 agents, x402 API live, 87-test MASSAT assessment passing, on-chain proof NFTs</td></tr>
+                <tr><td>Novel integration</td><td>First system combining CRE consensus with blind signature privacy for agent settlement</td></tr>
+                <tr><td>Revenue model</td><td>x402 micropayments + on-chain subscriptions; 80-99% gross margins verified</td></tr>
+            </tbody>
+        </table>
+
+        <div class="info-section">
+            <h3 style="color: #4a9eff; margin-top: 0;">Convergence Hackathon Alignment</h3>
+            <p>The <a href="https://chain.link/hackathon">Convergence hackathon</a> (Feb 6 - Mar 8, 2026, $120K+ prizes) requires CRE workflow integration and has explicit AI Agents and Privacy & Compliance tracks. BlindOracle has 10 CRE workflows and addresses both tracks. Submission eligibility is immediate.</p>
+        </div>
+
+        <hr>
+
+        <h2>References</h2>
+        <ol class="ref">
+            <li>Chainlink. "CRE: IReceiver Interface." <a href="https://docs.chain.link/cre">docs.chain.link/cre</a>. See also: <a href="https://docs.chain.link/cre/getting-started/overview">Getting Started</a>, <a href="https://docs.chain.link/cre-templates">Templates Hub</a>.</li>
+            <li>Chainlink. "CCIP Architecture." <a href="https://docs.chain.link/ccip/concepts/architecture">docs.chain.link/ccip/concepts/architecture</a>. Chain directory: <a href="https://docs.chain.link/ccip/directory/mainnet">docs.chain.link/ccip/directory/mainnet</a>.</li>
+            <li>Chainlink. "Data Streams." <a href="https://docs.chain.link/data-streams">docs.chain.link/data-streams</a>. Architecture: <a href="https://docs.chain.link/data-streams/architecture">docs.chain.link/data-streams/architecture</a>.</li>
+            <li>Chainlink. "Functions." <a href="https://docs.chain.link/chainlink-functions">docs.chain.link/chainlink-functions</a>. Architecture: <a href="https://docs.chain.link/chainlink-functions/resources/architecture">docs.chain.link/chainlink-functions/resources/architecture</a>.</li>
+            <li>Chainlink. "Confidential Compute." <a href="https://blog.chain.link/chainlink-confidential-compute/">blog.chain.link/chainlink-confidential-compute</a>. Announced SmartCon 2025; early access 2026.</li>
+            <li>Zhang, F. et al. (2020). "DECO: Liberating Web Data Using Decentralized Oracles." <em>ACM CCS 2020</em>. <a href="https://arxiv.org/pdf/1909.00938">arXiv:1909.00938</a>. Also: <a href="https://blog.chain.link/deco-introduction/">Chainlink DECO Introduction</a>.</li>
+            <li>Chainlink. "SmartCon 2025 Recap." <a href="https://blog.chain.link/smartcon-2025-recap/">blog.chain.link/smartcon-2025-recap</a>. Also: <a href="https://blog.chain.link/chainlink-runtime-environment-now-live/">"CRE Now Live"</a>.</li>
+            <li>Coinbase. "x402: An Open Protocol for Payments on the Internet." <a href="https://github.com/coinbase/x402">github.com/coinbase/x402</a>.</li>
+            <li>U.S. Congress (2025). GENIUS Act (stablecoin framework) and CLARITY Act (digital commodity intermediary classification).</li>
+            <li>Chainlink. "Convergence: A Chainlink Hackathon." <a href="https://chain.link/hackathon">chain.link/hackathon</a>. Prizes: <a href="https://chain.link/hackathon/prizes">chain.link/hackathon/prizes</a>. Feb 6 - Mar 8, 2026.</li>
+            <li>NIST (2015). "Secure Hash Standard (SHS)." <em>FIPS PUB 180-4</em>. National Institute of Standards and Technology.</li>
+            <li>Chaum, D. (1982). "Blind Signatures for Untraceable Payments." <em>Advances in Cryptology -- CRYPTO '82</em>, pp. 199-203.</li>
+            <li>Lamport, L., Shostak, R., &amp; Pease, M. (1982). "The Byzantine Generals Problem." <em>ACM TOPLAS</em>, 4(3), pp. 382-401.</li>
+            <li>Castro, M. &amp; Liskov, B. (1999). "Practical Byzantine Fault Tolerance." <em>OSDI '99</em>, pp. 173-186.</li>
+            <li>Chainlink. "BUILD Program." <a href="https://chain.link/build-program">chain.link/build-program</a>. Application: <a href="https://chainlinkcommunity.typeform.com/BUILD">typeform</a>.</li>
+            <li>Chainlink. "Chainlink in 2025." <a href="https://blog.chain.link/chainlink-in-2025/">blog.chain.link/chainlink-in-2025</a>.</li>
+            <li>BlindOracle source code. <a href="https://github.com/craigmbrown/ETAC-System">github.com/craigmbrown/ETAC-System</a>. See <code>chainlink-prediction-markets-mcp-enhanced/</code>.</li>
+        </ol>
+
+        <hr>
+        <p><em>This specification supports BlindOracle's Chainlink BUILD program application (Privacy & Confidentiality category). For the blog version, see <a href="20260224-blog-chainlink-cre-privacy.html">blog-chainlink-cre-privacy</a>. For the commitment scheme math, see <a href="20260224-commitment-scheme-whitepaper.html">commitment-scheme-whitepaper</a>. For MASSAT security results, see <a href="20260224-massat-results-public.html">massat-results-public</a>. For the SRVL proof architecture, see <a href="20260224-srvl-whitepaper.html">srvl-whitepaper</a>.</em></p>
+
+        <footer>
+            <p>BlindOracle | Craig M. Brown | Chainlink CRE + CCIP + Functions + Data Streams + Confidential Compute</p>
+        </footer>
+    </article>
+</body>
+</html>

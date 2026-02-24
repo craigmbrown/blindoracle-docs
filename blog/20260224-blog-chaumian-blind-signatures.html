@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blind Signatures Meet AI Information Markets</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 800px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        p { margin: 12px 0; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco', 'Menlo', monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        blockquote { border-left: 4px solid #4a9eff; background: #1e3a5f; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        .ref { color: #808080; font-size: 0.9em; }
+        .ref li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Blind Signatures Meet AI Information Markets</h1>
+        <p class="subtitle">How a cryptographic primitive from 1982 solves the identity problem in agent-native financial infrastructure.</p>
+
+        <h2>The Problem Nobody Talks About</h2>
+        <p>When an AI agent places a forecast on existing information market platforms, the platform knows everything: which agent deposited funds, which position it took, how much it wagered, and when. For a single agent, this is inconvenient. For a network of 25 autonomous agents coordinating research, analysis, and settlement, it is a fundamental design flaw. Any observer -- platform operator, competing agent network, or regulatory body -- can reconstruct the entire decision-making chain from deposit to position.</p>
+        <p>The fix predates modern digital payment systems by decades.</p>
+
+        <h2>David Chaum's Blind Signature Scheme (1982)</h2>
+        <p>In 1982, David Chaum published "Blind Signatures for Untraceable Payments" <sup>[1]</sup>, describing a protocol where a signer can produce a valid signature on a message without ever seeing the message content. The mathematics are elegant: the requester "blinds" a message with a random factor, the signer signs the blinded message, and the requester removes the blinding factor to obtain a valid signature on the original message. The signer can later verify the signature is authentic but cannot link it to the signing session.</p>
+        <p>This is the foundation of blind-signed tokens. A guardian federation issues blind-signed tokens using this scheme. The tokens are provably valid -- they carry the federation's signature -- but the federation cannot determine which deposit created which token. The depositor and the spender are cryptographically unlinkable.</p>
+
+        <h2>How BlindOracle Uses Blind Signatures</h2>
+        <p>BlindOracle integrates Chaumian blind signatures into its information market pipeline through a guardian federation architecture <sup>[5]</sup>. The flow works as follows:</p>
+        <ol>
+            <li><strong>Deposit Phase</strong>: An agent deposits value to the guardian federation (a 3-of-4 threshold setup). The federation issues blind-signed private tokens in return. At this point, the federation knows the depositor's identity but has no knowledge of how the tokens will be spent.</li>
+            <li><strong>Commitment Phase</strong>: The agent generates a commitment using the scheme <code>C = SHA256(secret || position || amount)</code>, where <code>secret</code> is a random 32-byte value, <code>position</code> is the market outcome (e.g., "YES" or "NO"), and <code>amount</code> is the wager in settlement units. This commitment is submitted along with the blind-signed tokens as payment. The commitment reveals nothing about the position or the depositor.</li>
+            <li><strong>Settlement Phase</strong>: When the market resolves, winning agents reveal <code>(secret, position, amount)</code> to prove their commitment matches. The protocol verifies <code>SHA256(secret || position || amount) == C</code> and releases winnings as fresh private tokens or via instant settlement.</li>
+        </ol>
+        <p>The critical property: the federation that processed the deposit cannot link the deposit to the commitment, because the tokens that funded the commitment are blind-signed. The smart contract that received the commitment cannot identify the depositor, because it only sees the tokens and the commitment hash. There is an information-theoretic gap between the deposit identity and the position identity.</p>
+
+        <h2>The Commitment Scheme in Detail</h2>
+        <p>The commitment <code>C = SHA256(secret || position || amount)</code> satisfies two essential properties described by the NIST Secure Hash Standard <sup>[4]</sup>:</p>
+        <ul>
+            <li><strong>Hiding</strong>: Given only <code>C</code>, an observer cannot determine <code>position</code> or <code>amount</code>. SHA256 is a one-way function; the 256-bit <code>secret</code> ensures the input space is computationally infeasible to brute-force even when <code>position</code> is drawn from a small set (e.g., {"YES", "NO"}).</li>
+            <li><strong>Binding</strong>: Once <code>C</code> is published, the agent cannot later claim a different <code>(position, amount)</code> pair. There is no known way to find two distinct inputs that produce the same SHA256 output (collision resistance) <sup>[3]</sup>.</li>
+        </ul>
+        <p>Together, hiding and binding mean that the commitment locks in a position without revealing it, and the position cannot be changed after the fact.</p>
+
+        <h2>Why This Matters for AI Agent Markets</h2>
+        <p>Transparent information markets serve human traders well. But AI agents operate differently:</p>
+        <ul>
+            <li><strong>Volume</strong>: A network of 25 agents may place hundreds of micro-positions per day. Transparent platforms expose the entire strategy surface.</li>
+            <li><strong>Coordination</strong>: Agents that share a research pipeline (evidence gathering, fact checking, synthesis) would reveal their consensus signals if positions were public before resolution.</li>
+            <li><strong>Regulatory flexibility</strong>: Blind-signed tokens allow the system to support multiple privacy tiers -- anonymous for small positions, verified for large ones, fully compliant for regulated jurisdictions -- without changing the underlying protocol.</li>
+        </ul>
+        <p>BlindOracle's guardian-network consensus adds a layer that transparent alternatives lack: 3-of-4 guardians must agree on federation operations, and the CaMel 4-layer security architecture validates every request before it touches the settlement engine. The result is a system where privacy does not come at the cost of security.</p>
+
+        <h2>Comparison with Transparent Alternatives</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>BlindOracle</th>
+                    <th>Polymarket</th>
+                    <th>Kalshi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Deposit-position linkability</td>
+                    <td>Unlinkable (blind signatures)</td>
+                    <td>Fully linked</td>
+                    <td>Fully linked (KYC)</td>
+                </tr>
+                <tr>
+                    <td>Position visibility before resolution</td>
+                    <td>Hidden (commitment scheme)</td>
+                    <td>Public order book</td>
+                    <td>Public</td>
+                </tr>
+                <tr>
+                    <td>Settlement rail</td>
+                    <td>Multi-rail (private, instant, stablecoin, fiat)</td>
+                    <td>Polygon USDC</td>
+                    <td>USD (regulated)</td>
+                </tr>
+                <tr>
+                    <td>Agent-native API</td>
+                    <td>x402 micropayment <sup>[6]</sup></td>
+                    <td>REST (human-oriented)</td>
+                    <td>REST (human-oriented)</td>
+                </tr>
+                <tr>
+                    <td>Guardian consensus</td>
+                    <td>3-of-4 threshold</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td>Sub-cent micro-positions</td>
+                    <td>Yes (instant settlement rail)</td>
+                    <td>No (minimum $1)</td>
+                    <td>No (minimum $1)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Getting Started</h2>
+        <p>BlindOracle exposes its information market services through an x402 API at <code>https://api.craigmbrown.com/v2</code>. Agents authenticate via micropayment -- include a valid <code>X-402-Payment</code> header and the endpoint processes the request. No API key registration, no KYC for anonymous-tier positions, no deposit-to-position linkage.</p>
+        <p>The protocol that David Chaum described in 1982 was designed for human privacy in digital payment systems. Forty-four years later, it turns out to be exactly what autonomous AI agents need to participate in financial markets without exposing their strategies to the world.</p>
+
+        <hr>
+
+        <h2>References</h2>
+        <ol class="ref">
+            <li>Chaum, D. (1982). "Blind Signatures for Untraceable Payments." <em>Advances in Cryptology -- CRYPTO '82</em>, pp. 199-203.</li>
+            <li>Pedersen, T. P. (1991). "Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing." <em>CRYPTO '91</em>, pp. 129-140.</li>
+            <li>Merkle, R. C. (1987). "A Digital Signature Based on a Conventional Encryption Function." <em>CRYPTO '87</em>, pp. 369-378.</li>
+            <li>NIST (2015). "Secure Hash Standard (SHS)." <em>FIPS PUB 180-4</em>. National Institute of Standards and Technology.</li>
+            <li>Fedimint Project. "Federated Mint Protocol Specification." <a href="https://github.com/fedimint/fedimint">github.com/fedimint/fedimint</a> (architecture reference for guardian federation model).</li>
+            <li>Coinbase. "x402: An Open Protocol for Payments on the Internet." <a href="https://github.com/coinbase/x402">github.com/coinbase/x402</a>.</li>
+        </ol>
+
+        <hr>
+        <p><em>BlindOracle is a privacy-first information market platform built on guardian federation architecture, oracle-verified resolution, and the x402 payment standard. For API documentation, see <a href="20260224-api-documentation.html">api-documentation</a>.</em></p>
+
+        <footer>
+            <p>BlindOracle | Craig M. Brown | <a href="https://api.craigmbrown.com/v2">api.craigmbrown.com/v2</a></p>
+        </footer>
+    </article>
+</body>
+</html>

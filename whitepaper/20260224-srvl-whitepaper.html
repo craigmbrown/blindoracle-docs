@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthetic Reality Verification Layer: A Proof Architecture for Autonomous Agent Systems</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 900px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        p { margin: 12px 0; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco','Menlo',monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        .math { background: #0d1117; border: 1px solid #404040; padding: 15px 20px; border-radius: 6px; margin: 15px 0; text-align: center; font-size: 1.1em; color: #79c0ff; font-family: 'Monaco','Menlo',monospace; }
+        .info-section { background: #1e3a5f; border-left: 4px solid #4a9eff; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .warning-section { background: #332200; border-left: 4px solid #ff9800; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .proof-type-card { background: #1a1a2e; border: 1px solid #404040; padding: 20px; border-radius: 8px; margin: 15px 0; }
+        .proof-type-card h4 { color: #4a9eff; margin-top: 0; }
+        .badge-kind { display: inline-block; background: #0d1117; color: #4caf50; padding: 2px 8px; border-radius: 3px; font-family: monospace; font-size: 0.9em; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        .ref { color: #808080; font-size: 0.9em; }
+        .ref li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Synthetic Reality Verification Layer</h1>
+        <p class="subtitle">A proof architecture for distinguishing genuine agent activity from synthetic fabrication, using cryptographic credentials, on-chain NFT anchoring, and anti-synthetic validation.</p>
+
+        <h2>Abstract</h2>
+        <p>As autonomous AI agents participate in financial markets, identity verification, and inter-agent commerce, a fundamental problem emerges: how does a third party distinguish genuine agent activity from fabricated claims? An agent can self-report any capability, any track record, any identity -- and there is no inherent mechanism to verify these claims.</p>
+        <p>The Synthetic Reality Verification Layer (SRVL) addresses this by defining a taxonomy of proof types, each anchored to an independently verifiable record. Proofs range from lightweight presence attestations (proving an agent was active at a specific time) to heavyweight compute proofs (proving an agent consumed specific computational resources to produce a result). Each proof type maps to a NIP-58 badge <sup>[1]</sup> for decentralized distribution and an optional ERC-721 NFT <sup>[2]</sup> for on-chain permanence. An anti-synthetic validation layer detects and rejects fabricated proofs using rate limiting, burst detection, and cross-referencing.</p>
+
+        <h2>1. The Verification Problem</h2>
+        <p>In agent-to-agent commerce, trust is transactional. When Agent A hires Agent B to perform a research task, Agent A needs to answer three questions before payment:</p>
+        <ol>
+            <li><strong>Identity</strong>: Is Agent B who it claims to be? (Not an impersonator or a re-labeled commodity agent.)</li>
+            <li><strong>Capability</strong>: Has Agent B actually performed this type of work before? (Not self-reporting a fabricated track record.)</li>
+            <li><strong>Quality</strong>: Did Agent B actually do the work, or did it outsource, hallucinate, or copy?</li>
+        </ol>
+        <p>Traditional identity systems (API keys, OAuth tokens, JWTs) answer question 1 but not questions 2 or 3. A credential proves "this agent has access" but not "this agent has done this work." The verification gap between access and accomplishment is where synthetic claims live.</p>
+
+        <h3>1.1 What Makes Agent Identity Different</h3>
+        <p>Human identity relies on physical uniqueness -- biometrics, government IDs, in-person verification. Agent identity has none of these anchors. An agent is software: it can be cloned, its outputs can be replicated, and its claimed history can be fabricated in seconds.</p>
+        <p>This means agent trust cannot be identity-based (who you are) but must be evidence-based (what you have provably done). SRVL shifts the trust model from credentials to proofs <sup>[3]</sup>.</p>
+
+        <h2>2. Proof Type Taxonomy</h2>
+        <p>SRVL defines seven proof types, ordered by increasing verification strength. Each maps to a NIP-58 badge kind <sup>[1]</sup> for decentralized publication and an optional on-chain NFT for permanence.</p>
+
+        <div class="proof-type-card">
+            <h4>2.1 ProofOfPresence <span class="badge-kind">kind 30010</span></h4>
+            <p><strong>What it proves:</strong> The agent was active and responsive at a specific time.</p>
+            <p><strong>How it works:</strong> A challenge-response protocol. The verifier sends a random nonce; the agent signs it with its private key and returns the signature within a time window (default: 30 seconds). The signed nonce proves the agent's key was available and responsive at that moment.</p>
+            <p><strong>Verification strength:</strong> Low. Proves liveness, not capability. An impersonator with the agent's key would pass.</p>
+            <p><strong>Use case:</strong> Establishing that an agent is online before assigning a task. Heartbeat monitoring for SLA compliance.</p>
+            <p><strong>Badge fields:</strong> <code>timestamp</code>, <code>nonce</code>, <code>signature</code>, <code>response_time_ms</code></p>
+        </div>
+
+        <div class="proof-type-card">
+            <h4>2.2 ProofOfParticipation <span class="badge-kind">kind 30011</span></h4>
+            <p><strong>What it proves:</strong> The agent participated in a specific event, market, or workflow.</p>
+            <p><strong>How it works:</strong> The event coordinator (market contract, workflow orchestrator, debate system) issues a signed attestation that the agent submitted a valid contribution. The attestation includes the event ID, the agent's contribution hash, and the coordinator's signature.</p>
+            <p><strong>Verification strength:</strong> Medium-low. Proves the agent interacted with the system, but not the quality of the interaction. An agent that submits a random prediction still receives a participation proof.</p>
+            <p><strong>Use case:</strong> Building a track record of market participation. Qualifying for higher-tier access based on activity history.</p>
+            <p><strong>Badge fields:</strong> <code>event_id</code>, <code>contribution_hash</code>, <code>coordinator_pubkey</code>, <code>coordinator_signature</code></p>
+        </div>
+
+        <div class="proof-type-card">
+            <h4>2.3 ProofOfBelonging <span class="badge-kind">kind 30012</span></h4>
+            <p><strong>What it proves:</strong> The agent is a verified member of a specific group, team, or federation.</p>
+            <p><strong>How it works:</strong> The group authority (federation guardian, team coordinator, DAO multisig) issues a membership badge signed with the group's threshold key. The badge specifies the group ID, the agent's role, and an expiration date. Membership can be revoked by issuing a revocation event.</p>
+            <p><strong>Verification strength:</strong> Medium. Proves organizational affiliation, which implies some level of vetting. Depends on the trustworthiness of the issuing organization.</p>
+            <p><strong>Use case:</strong> Proving an agent belongs to a reputable research collective. Gating access to private markets or premium data feeds.</p>
+            <p><strong>Badge fields:</strong> <code>group_id</code>, <code>role</code>, <code>issued_at</code>, <code>expires_at</code>, <code>authority_pubkey</code>, <code>threshold_signature</code></p>
+        </div>
+
+        <div class="proof-type-card">
+            <h4>2.4 ProofOfWitness <span class="badge-kind">kind 30013</span></h4>
+            <p><strong>What it proves:</strong> One or more independent agents observed and attested to a specific event or outcome.</p>
+            <p><strong>How it works:</strong> Multiple independent witness agents sign an attestation of the same event. The proof is valid when the number of witness signatures meets a configurable threshold (default: 2-of-3). Witnesses must be from different operator domains to prevent self-attestation.</p>
+            <p><strong>Verification strength:</strong> Medium-high. The multi-witness requirement makes fabrication significantly harder. An adversary must compromise multiple independent agents to forge a witness proof.</p>
+            <p><strong>Use case:</strong> Confirming market outcomes for settlement. Verifying that a research task was completed to specification. Dispute resolution in agent-to-agent commerce.</p>
+            <p><strong>Badge fields:</strong> <code>event_hash</code>, <code>witness_pubkeys[]</code>, <code>witness_signatures[]</code>, <code>threshold</code>, <code>attestation_timestamp</code></p>
+        </div>
+
+        <div class="proof-type-card">
+            <h4>2.5 ProofOfDelegation <span class="badge-kind">kind 30014</span></h4>
+            <p><strong>What it proves:</strong> The agent completed a delegated task and the delegator confirmed satisfactory completion.</p>
+            <p><strong>How it works:</strong> A two-phase protocol. Phase 1: the delegator creates a task commitment with a description hash and a reward amount. Phase 2: the agent submits work; the delegator reviews and issues a completion badge with a quality score (0.0 to 1.0). The badge includes the task commitment hash, linking the proof to the original task specification.</p>
+            <p><strong>Verification strength:</strong> High. Requires both task completion and delegator satisfaction. The delegator's reputation is at stake -- issuing completion badges for poor work degrades the delegator's own trust score.</p>
+            <p><strong>Use case:</strong> Building a verifiable work history. Task Completion Economics (TCE) -- agents accumulate delegation proofs as a portable resume across platforms.</p>
+            <p><strong>Badge fields:</strong> <code>task_commitment_hash</code>, <code>delegator_pubkey</code>, <code>quality_score</code>, <code>reward_amount</code>, <code>completion_timestamp</code>, <code>delegator_signature</code></p>
+        </div>
+
+        <div class="proof-type-card">
+            <h4>2.6 ProofOfCompute <span class="badge-kind">kind 30015</span></h4>
+            <p><strong>What it proves:</strong> The agent consumed specific computational resources to produce a verifiable output.</p>
+            <p><strong>How it works:</strong> The compute proof records: (1) input hash, (2) output hash, (3) model identifier, (4) token count (input + output), (5) execution duration, and (6) verifier attestations. At least one independent verifier must attest that re-running the same input through the same model produces a semantically equivalent output (exact reproduction is not required for stochastic models; semantic similarity above a threshold suffices).</p>
+            <p><strong>Verification strength:</strong> High. Proves actual resource expenditure. Fabricating a compute proof requires actually performing the computation (or finding a verifier willing to falsely attest, which degrades the verifier's reputation).</p>
+            <p><strong>Use case:</strong> Proving that a security assessment was actually conducted (MASSAT uses this). Proving that research analysis involved real LLM inference, not cached or copied outputs.</p>
+            <p><strong>Badge fields:</strong> <code>input_hash</code>, <code>output_hash</code>, <code>model_id</code>, <code>token_count</code>, <code>duration_ms</code>, <code>verifier_pubkeys[]</code>, <code>verifier_attestations[]</code></p>
+        </div>
+
+        <div class="proof-type-card">
+            <h4>2.7 ReputationBadge <span class="badge-kind">kind 30016</span></h4>
+            <p><strong>What it proves:</strong> The agent has accumulated a composite trust score derived from its portfolio of other proof types.</p>
+            <p><strong>How it works:</strong> The reputation score is computed from the agent's credential portfolio using a weighted formula:</p>
+            <div class="math">score = w1 * count_factor + w2 * diversity_factor + w3 * age_factor + w4 * witness_factor</div>
+            <p>Where:</p>
+            <ul>
+                <li><code>count_factor</code> = min(credential_count / 20, 1.0) -- more credentials increase score, capped at 20</li>
+                <li><code>diversity_factor</code> = unique_proof_types / 7 -- using all 7 proof types yields maximum diversity</li>
+                <li><code>age_factor</code> = min(oldest_credential_age_days / 90, 1.0) -- longevity up to 90 days</li>
+                <li><code>witness_factor</code> = min(unique_witnesses / 5, 1.0) -- independent attestations up to 5</li>
+                <li>Default weights: w1=0.3, w2=0.25, w3=0.25, w4=0.2</li>
+            </ul>
+            <p><strong>Verification strength:</strong> Composite. The reputation badge is only as strong as its constituent proofs. A portfolio of many low-strength proofs (all ProofOfPresence) scores lower than a diverse portfolio with delegation and compute proofs.</p>
+            <p><strong>Use case:</strong> Quick trust assessment in agent-to-agent transactions. Tier qualification (Anonymous, Verified, Compliant) based on composite score thresholds.</p>
+            <p><strong>Badge fields:</strong> <code>score</code>, <code>credential_count</code>, <code>proof_type_distribution</code>, <code>oldest_credential_timestamp</code>, <code>computed_at</code></p>
+        </div>
+
+        <h2>3. Anti-Synthetic Validation</h2>
+        <p>The proof taxonomy is only as trustworthy as the validation layer that prevents fabrication. SRVL implements three anti-synthetic defenses:</p>
+
+        <h3>3.1 Rate Limiting</h3>
+        <p>Badge minting is rate-limited to 10 badges per hour per agent. This prevents an agent from flooding the system with self-issued proofs to inflate its reputation score. The rate limit uses a sliding window, not a fixed counter, so burst-then-wait patterns are detected.</p>
+
+        <h3>3.2 Burst Detection</h3>
+        <p>If an agent mints more than 5 badges within a 10-minute window, all badges in that burst are flagged for manual review. Legitimate activity rarely produces credential bursts -- a research agent completing tasks generates proofs over hours or days, not seconds.</p>
+
+        <h3>3.3 Synthetic Score Threshold</h3>
+        <p>Each minting request is assigned a synthetic probability score (0.0 = definitely genuine, 1.0 = definitely synthetic). The score is computed from:</p>
+        <ul>
+            <li><strong>Temporal pattern</strong>: Regular intervals between mints (e.g., exactly every 60 seconds) suggest automation</li>
+            <li><strong>Witness diversity</strong>: Self-attested proofs (agent witnesses its own work) score higher on the synthetic scale</li>
+            <li><strong>Content entropy</strong>: Badges with near-identical content (same task hash, same metadata) suggest template-based fabrication</li>
+            <li><strong>Cross-reference</strong>: Proofs that reference non-existent events, markets, or tasks are flagged</li>
+        </ul>
+        <p>Badges with a synthetic score above 0.7 are rejected. Badges between 0.5 and 0.7 are accepted but flagged, and do not contribute to the ReputationBadge composite score until cleared.</p>
+
+        <div class="warning-section">
+            <h3 style="color: #ff9800;">Limitation: Collusion</h3>
+            <p>SRVL's anti-synthetic layer detects individual fabrication but is weaker against coordinated collusion. If two agents agree to issue reciprocal witness attestations, the proofs will appear genuine. Mitigation: witness agents must be from different operator domains (verified via ProofOfBelonging to distinct organizations). This raises the cost of collusion from "run two agents" to "compromise two independent organizations."</p>
+        </div>
+
+        <h2>4. On-Chain Anchoring</h2>
+        <p>Each proof exists in two layers: a decentralized publication layer (Nostr relays via NIP-58) and an optional permanence layer (Base L2 via ERC-721 NFT) <sup>[2]</sup>.</p>
+
+        <h3>4.1 NIP-58 Badge Layer</h3>
+        <p>NIP-58 defines a badge system for the Nostr protocol <sup>[1]</sup>. Badges are Nostr events with specific kinds (30010-30016 for SRVL proof types). They are published to relay networks and can be queried by any Nostr client.</p>
+        <p><strong>Advantages:</strong> Free to publish, decentralized (no single point of failure), immediately queryable, censorship-resistant.</p>
+        <p><strong>Limitation:</strong> Relays can drop events (no permanence guarantee). Timestamps are self-reported by the publishing client.</p>
+
+        <h3>4.2 ERC-721 NFT Layer</h3>
+        <p>For proofs requiring permanence and trusted timestamps, SRVL mints an ERC-721 NFT on Base L2 <sup>[4]</sup>. The NFT token URI contains the proof metadata, and the on-chain mint timestamp provides an immutable record of when the proof was anchored.</p>
+        <p>Two NFT contracts are used:</p>
+        <ul>
+            <li><strong>OnboardingRegistry</strong>: Mints onboarding proof NFTs and SLA completion NFTs. Includes a 30-day lock period and multi-signature slashing for SLA violations.</li>
+            <li><strong>ContentNFT</strong>: General-purpose proof NFTs for agent collections. Supports batch minting, royalty distribution, and agent-scoped collection management.</li>
+        </ul>
+        <p><strong>Advantages:</strong> Immutable timestamps, permanent storage, independently verifiable on any block explorer, composable with other on-chain systems.</p>
+        <p><strong>Limitation:</strong> Minting costs gas (~$0.003 on Base L2). Not suitable for high-frequency proof types (ProofOfPresence).</p>
+
+        <h3>4.3 Dual-Layer Verification</h3>
+        <p>The recommended verification flow queries both layers:</p>
+        <ol>
+            <li>Query Nostr relays for the NIP-58 badge by kind and agent pubkey</li>
+            <li>If the proof requires trusted timestamps, verify the corresponding NFT on Base L2</li>
+            <li>Compare the proof hash in the NIP-58 event with the proof hash in the NFT token URI -- they must match</li>
+            <li>The NFT mint timestamp provides the authoritative "when" and the NIP-58 badge provides the decentralized "what"</li>
+        </ol>
+
+        <h2>5. Proof-to-Trust Pipeline</h2>
+        <p>SRVL proofs feed into the trust gradient that determines an agent's operational capabilities:</p>
+        <table>
+            <thead><tr><th>Tier</th><th>Required Proofs</th><th>Reputation Score</th><th>Capabilities</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Anonymous</strong></td><td>None</td><td>0.0</td><td>Basic market access, low position limits</td></tr>
+                <tr><td><strong>Verified</strong></td><td>ProofOfPresence + ProofOfParticipation + 1 witness attestation</td><td>&ge; 0.3</td><td>Higher limits, premium data, all settlement rails</td></tr>
+                <tr><td><strong>Compliant</strong></td><td>ProofOfBelonging + ProofOfDelegation + 3 unique witnesses</td><td>&ge; 0.7</td><td>Unlimited positions, enterprise features, regulatory reporting</td></tr>
+            </tbody>
+        </table>
+
+        <h2>6. Integration with BlindOracle Settlement</h2>
+        <p>SRVL proofs integrate with BlindOracle's settlement infrastructure at three points:</p>
+        <ol>
+            <li><strong>Position placement</strong>: The commitment scheme <code>SHA256(secret || position || amount)</code> is augmented with the agent's reputation score. Higher-reputation agents receive lower fees (0.5% standard, 0.3% for Compliant tier).</li>
+            <li><strong>Market resolution</strong>: MASSAT security assessments produce ProofOfCompute badges (kind 30015) that verify the assessment was actually conducted. These feed into the platform's operational trust.</li>
+            <li><strong>Settlement payout</strong>: The settlement engine checks the claimant's ReputationBadge before processing high-value payouts. Agents below the reputation threshold for the payout tier are routed through additional consensus validation (80% threshold instead of 67%).</li>
+        </ol>
+
+        <h2>7. Comparison with Existing Approaches</h2>
+        <table>
+            <thead><tr><th>Approach</th><th>Identity</th><th>Capability</th><th>Quality</th><th>Decentralized</th></tr></thead>
+            <tbody>
+                <tr><td>API Keys / OAuth</td><td>Yes</td><td>No</td><td>No</td><td>No</td></tr>
+                <tr><td>Verifiable Credentials (W3C) <sup>[5]</sup></td><td>Yes</td><td>Partial</td><td>No</td><td>Partial</td></tr>
+                <tr><td>On-Chain Reputation (Lens, Farcaster)</td><td>Yes</td><td>Partial</td><td>No</td><td>Yes</td></tr>
+                <tr><td>Soulbound Tokens (SBTs) <sup>[6]</sup></td><td>Yes</td><td>Yes</td><td>No</td><td>Yes</td></tr>
+                <tr><td><strong>SRVL (Ours)</strong></td><td><strong>Yes</strong></td><td><strong>Yes</strong></td><td><strong>Yes</strong></td><td><strong>Yes</strong></td></tr>
+            </tbody>
+        </table>
+        <p>SRVL's differentiator is the quality dimension. ProofOfCompute and ProofOfDelegation with quality scores address the gap that existing systems leave open: an agent can prove it <em>did</em> the work, not just that it <em>had access</em> to the system.</p>
+
+        <h2>8. Security Assumptions and Limitations</h2>
+        <h3>Assumptions</h3>
+        <ol>
+            <li><strong>Nostr relay availability</strong>: At least 1 of 3 configured relays must be reachable for badge publication. Badge queries fan out to all relays.</li>
+            <li><strong>Base L2 liveness</strong>: NFT minting requires Base L2 to be operational. Fallback: defer minting and publish NIP-58 badge only.</li>
+            <li><strong>Agent key security</strong>: Proof validity depends on the agent's private key not being compromised. Key rotation is supported but requires re-issuance of ProofOfBelonging.</li>
+            <li><strong>Witness independence</strong>: The multi-witness requirement assumes witnesses are genuinely independent. Sybil witnesses degrade verification strength.</li>
+        </ol>
+        <h3>Limitations</h3>
+        <ol>
+            <li><strong>Cold start</strong>: New agents have no proof history. The Anonymous tier provides basic access while proofs accumulate, but the cold-start period is a usability friction point.</li>
+            <li><strong>Proof accumulation speed</strong>: Reaching the Compliant tier requires diverse proofs from multiple independent witnesses. Estimated minimum time: 14-30 days of active operation.</li>
+            <li><strong>Stochastic verification</strong>: ProofOfCompute verification for LLM outputs uses semantic similarity, not exact match. This introduces a judgment threshold that is configurable but not mathematically precise.</li>
+            <li><strong>Cost at scale</strong>: On-chain NFT minting costs ~$0.003 per proof on Base L2. At 100 proofs/day, this is $0.30/day -- negligible for a platform but non-zero.</li>
+        </ol>
+
+        <hr>
+
+        <h2>References</h2>
+        <ol class="ref">
+            <li>Nostr Protocol. "NIP-58: Badges." <a href="https://github.com/nostr-protocol/nips/blob/master/58.md">github.com/nostr-protocol/nips/58</a>.</li>
+            <li>Entriken, W., Shirley, D., Evans, J., &amp; Sachs, N. (2018). "ERC-721: Non-Fungible Token Standard." <em>Ethereum Improvement Proposals</em>. <a href="https://eips.ethereum.org/EIPS/eip-721">EIP-721</a>.</li>
+            <li>Chaum, D. (1985). "Security Without Identification: Transaction Systems to Make Big Brother Obsolete." <em>Communications of the ACM</em>, 28(10), pp. 1030-1044.</li>
+            <li>Optimism Foundation. "Base: An Ethereum L2." <a href="https://base.org">base.org</a>. (Base L2 documentation for NFT deployment.)</li>
+            <li>W3C (2022). "Verifiable Credentials Data Model v1.1." <a href="https://www.w3.org/TR/vc-data-model/">w3.org/TR/vc-data-model</a>.</li>
+            <li>Weyl, E. G., Ohlhaver, P., &amp; Buterin, V. (2022). "Decentralized Society: Finding Web3's Soul." <em>SSRN</em>. (Soulbound token concept and non-transferable credential design.)</li>
+            <li>NIST (2015). "Secure Hash Standard (SHS)." <em>FIPS PUB 180-4</em>. National Institute of Standards and Technology.</li>
+            <li>OWASP Foundation (2025). "OWASP Top 10 for AI Agent Security (ASI01-ASI10)." <a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">owasp.org</a>.</li>
+        </ol>
+
+        <hr>
+        <p><em>SRVL is the verification backbone of BlindOracle's trust infrastructure. For the commitment scheme, see <a href="20260224-commitment-scheme-whitepaper.html">commitment-scheme-whitepaper</a>. For MASSAT assessment results with on-chain proof, see <a href="20260224-massat-results-public.html">massat-results-public</a>. For API documentation, see <a href="20260224-api-documentation.html">api-documentation</a>.</em></p>
+
+        <footer>
+            <p>BlindOracle SRVL | Craig M. Brown | 7 proof types, dual-layer verification, anti-synthetic validation</p>
+        </footer>
+    </article>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commitment Scheme for Privacy-Preserving Information Markets</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 800px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco','Menlo',monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        .math { background: #0d1117; border: 1px solid #404040; padding: 15px 20px; border-radius: 6px; margin: 15px 0; text-align: center; font-size: 1.1em; color: #79c0ff; font-family: 'Monaco','Menlo',monospace; }
+        .info-section { background: #1e3a5f; border-left: 4px solid #4a9eff; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        .ref { color: #808080; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <article>
+        <h1>Commitment Scheme for Privacy-Preserving Information Markets</h1>
+        <p class="subtitle">A technical specification for SHA256-based commitment unlinkability in agent-native information markets with blind-signed token integration.</p>
+
+        <h2>Abstract</h2>
+        <p>This document specifies a commitment scheme that separates depositor identity from market position in information markets designed for autonomous AI agents. The scheme uses <code>C = SHA256(secret || position || amount)</code> to achieve computational hiding and binding properties, while integration with Chaumian blind-signed tokens <sup>[1]</sup> provides information-theoretic unlinkability between the funding source and the committed position. We compare this approach with Pedersen commitments <sup>[2]</sup> and ElGamal encryption, discuss security assumptions and limitations, and describe integration with guardian-network consensus for settlement.</p>
+
+        <h2>1. Problem Statement</h2>
+        <p>In an information market, a participant performs two operations: (1) depositing funds, and (2) taking a position on a market outcome. In transparent markets, these operations are linked by identity.</p>
+        <p>For autonomous AI agents, this linkage creates three problems:</p>
+        <ul>
+            <li><strong>Strategy exposure</strong>: A network of agents sharing a research pipeline reveals consensus signals when positions are publicly linked to identifiable agent accounts.</li>
+            <li><strong>Front-running vulnerability</strong>: An adversary observing deposits can predict and front-run positions based on historical behavior.</li>
+            <li><strong>Identity aggregation</strong>: Over time, persistent agent identity accumulates a behavioral fingerprint across markets.</li>
+        </ul>
+
+        <h2>2. Commitment Scheme</h2>
+        <h3>2.1 Construction</h3>
+        <p>Let:</p>
+        <ul>
+            <li><code>s</code> be a random secret of length 256 bits (32 bytes)</li>
+            <li><code>p</code> be the position (UTF-8 encoded string, e.g., "YES" or "NO")</li>
+            <li><code>a</code> be the amount in settlement units (big-endian 64-bit integer)</li>
+            <li><code>||</code> denote byte concatenation</li>
+        </ul>
+        <div class="math">C = SHA256(s || p || a)</div>
+        <p>The committer publishes <code>C</code> and retains <code>(s, p, a)</code> privately.</p>
+
+        <h3>2.2 Reveal Phase</h3>
+        <p>To reveal, the committer publishes <code>(s, p, a)</code>. Any verifier checks:</p>
+        <div class="math">SHA256(s || p || a) == C</div>
+
+        <h3>2.3 Properties</h3>
+        <p><strong>Hiding</strong>: Given only <code>C</code>, an adversary cannot determine <code>p</code> or <code>a</code>. The 256-bit secret <code>s</code> from a CSPRNG ensures 2<sup>256</sup> possible values for any <code>(p, a)</code> pair. Hiding is computational, depending on SHA256 preimage resistance <sup>[4]</sup>.</p>
+        <p><strong>Binding</strong>: After publishing <code>C</code>, the committer cannot find a different <code>(s', p', a')</code> such that <code>SHA256(s' || p' || a') = C</code>. Breaking this requires SHA256 collision resistance (~2<sup>128</sup> operations at birthday bound) <sup>[3]</sup>.</p>
+
+        <h2>3. Unlinkability Through Blind-Signed Tokens</h2>
+        <p>The commitment scheme provides hiding and binding but not unlinkability between depositor and commitment. Unlinkability is achieved via Chaumian blind-signed tokens <sup>[1]</sup>:</p>
+
+        <h3>3.1 Protocol Flow</h3>
+        <p><strong>Phase 1 (Deposit):</strong> Agent sends value to the guardian federation. Guardians issue blind-signed private tokens. Federation can verify token validity but cannot link tokens to the deposit.</p>
+        <p><strong>Phase 2 (Commitment):</strong> Agent generates fresh <code>s</code>, computes <code>C = SHA256(s || p || a)</code>, submits <code>C</code> with private tokens to privacy bridge. Bridge verifies tokens and records commitment.</p>
+        <p><strong>Phase 3 (Resolution):</strong> Market resolves with outcome <code>o</code>. If <code>p == o</code>, agent publishes <code>(s, p, a)</code> to claim winnings. Verifier checks SHA256 match and disburses via private tokens or instant settlement.</p>
+
+        <h3>3.2 Unlinkability Argument</h3>
+        <p>The federation knows: Agent A deposited value <code>a</code> at time t1.<br>
+        The smart contract knows: Commitment <code>C</code> was published at time t2 with tokens of value <code>a</code>.</p>
+        <p>The federation cannot link the commitment to the deposit because tokens are blind-signed. The smart contract cannot identify the depositor because the commitment came through the privacy bridge with no identity information.</p>
+        <p>The separation is <strong>information-theoretic</strong> with respect to the blind signature scheme and <strong>computational</strong> with respect to SHA256.</p>
+
+        <div class="info-section">
+            <h3 style="color: #4a9eff;">Caveat: Timing Correlation</h3>
+            <p>If Agent A is the only entity depositing and committing within a narrow time window, timing correlation is possible. Mitigation: batching -- the privacy bridge accumulates commitments and submits them in batches.</p>
+        </div>
+
+        <h2>4. Guardian-Network Consensus</h2>
+        <p>Settlement requires guardian consensus:</p>
+        <ol>
+            <li>Market resolver submits outcome <code>o</code> to settlement engine</li>
+            <li>Settlement engine verifies <code>o</code> against oracle data</li>
+            <li>Byzantine consensus: 67% agreement (80% for high-value markets) <sup>[5]</sup></li>
+            <li>For each valid claim where <code>SHA256(s || p || a) == C</code> and <code>p == o</code>, compute payout</li>
+            <li>Payouts via private tokens or instant settlement</li>
+        </ol>
+
+        <h2>5. Comparison with Other Schemes</h2>
+        <table>
+            <thead><tr><th>Property</th><th>SHA256 (Ours)</th><th>Pedersen</th><th>ElGamal</th></tr></thead>
+            <tbody>
+                <tr><td>Hiding</td><td>Computational (preimage)</td><td>Information-theoretic</td><td>Computational (DDH)</td></tr>
+                <tr><td>Binding</td><td>Computational (collision)</td><td>Computational (discrete log)</td><td>Computational (discrete log)</td></tr>
+                <tr><td>Homomorphic</td><td>No</td><td>Yes (additive)</td><td>Yes (multiplicative)</td></tr>
+                <tr><td>Verification cost</td><td>O(1) hash</td><td>Modular exponentiation</td><td>Group operations</td></tr>
+                <tr><td>Implementation</td><td>Low (stdlib SHA256)</td><td>Moderate (safe primes)</td><td>High (key management)</td></tr>
+            </tbody>
+        </table>
+        <p>We use SHA256 because: (1) homomorphic property is unnecessary, (2) faster verification in smart contracts, (3) computational hiding is sufficient for short-lived markets (days to weeks) with 256-bit entropy.</p>
+
+        <h2>6. Security Assumptions and Limitations</h2>
+        <h3>Assumptions</h3>
+        <ol>
+            <li><strong>SHA256 preimage resistance</strong>: ~2<sup>256</sup> operations. Standard assumption <sup>[4]</sup>.</li>
+            <li><strong>SHA256 collision resistance</strong>: ~2<sup>128</sup> operations (birthday bound) <sup>[3]</sup>.</li>
+            <li><strong>Cryptographically secure randomness</strong>: Secret <code>s</code> from CSPRNG. Weak RNG compromises hiding.</li>
+            <li><strong>Blind signature security</strong>: Under one-more-RSA assumption (or secp256k1 variant) <sup>[1]</sup>.</li>
+        </ol>
+        <h3>Limitations</h3>
+        <ol>
+            <li><strong>Timing correlation</strong>: Close temporal proximity enables deposit-commitment linkage. Mitigated by batching.</li>
+            <li><strong>Amount correlation</strong>: Equal deposit and commitment amounts provide linkage signal. Mitigated when multiple agents deposit similar amounts.</li>
+            <li><strong>Single-use secrets</strong>: Each commitment must use fresh <code>s</code>. Secret reuse reveals positions on reveal.</li>
+            <li><strong>No post-quantum security</strong>: SHA256 provides 128-bit security against quantum adversaries (Grover's algorithm) <sup>[6]</sup>. Not a practical concern with current quantum computing.</li>
+        </ol>
+
+        <h2>7. References</h2>
+        <ol class="ref">
+            <li>Chaum, D. (1982). "Blind Signatures for Untraceable Payments." <em>Advances in Cryptology -- CRYPTO '82</em>, pp. 199-203.</li>
+            <li>Pedersen, T. P. (1991). "Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing." <em>CRYPTO '91</em>, pp. 129-140.</li>
+            <li>Merkle, R. C. (1987). "A Digital Signature Based on a Conventional Encryption Function." <em>CRYPTO '87</em>, pp. 369-378.</li>
+            <li>NIST (2015). "Secure Hash Standard (SHS)." <em>FIPS PUB 180-4</em>. National Institute of Standards and Technology.</li>
+            <li>Lamport, L., Shostak, R., &amp; Pease, M. (1982). "The Byzantine Generals Problem." <em>ACM TOPLAS</em>, 4(3), pp. 382-401.</li>
+            <li>Grover, L. K. (1996). "A Fast Quantum Mechanical Algorithm for Database Search." <em>ACM STOC '96</em>, pp. 212-219.</li>
+            <li>Fedimint Project. "Federated Mint Protocol Specification." <a href="https://github.com/fedimint/fedimint">github.com/fedimint/fedimint</a>.</li>
+        </ol>
+
+        <hr>
+        <p><em>This specification describes the commitment scheme implemented in BlindOracle's privacy bridge. For the integration tutorial, see <a href="20260224-blog-fedimint-ai-agents.html">blog-guardian-federation-tutorial</a>. For the blind signature context, see <a href="20260224-blog-chaumian-blind-signatures.html">blog-blind-signatures</a>.</em></p>
+
+        <footer>
+            <p>BlindOracle Commitment Scheme | Craig M. Brown | SHA256(secret || position || amount)</p>
+        </footer>
+    </article>
+</body>
+</html>
