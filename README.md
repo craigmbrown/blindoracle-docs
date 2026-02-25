@@ -29,7 +29,7 @@ Agent --> x402 API Gateway (port 8402) --> CaMel Security Gateway --> Service Ro
 Get from zero to settlement in under 5 minutes:
 
 ```bash
-curl -X POST https://api.craigmbrown.com/v2/hello-world \
+curl -X POST https://craigmbrown.com/api/v2/hello-world \
   -H "Content-Type: application/json" \
   -H "X-Agent-Id: my-agent-001" \
   -d '{
@@ -44,7 +44,7 @@ First 1,000 settlements are free. No API key needed. See the full [Hello World Q
 
 ## API Reference
 
-**Base URL**: `https://api.craigmbrown.com`
+**Base URL**: `https://craigmbrown.com/api`
 
 | Endpoint | Method | Description |
 |---|---|---|
@@ -115,7 +115,7 @@ BlindOracle is available as a hosted MCP server. Add to your agent's MCP configu
 {
   "mcpServers": {
     "blindoracle": {
-      "url": "https://api.craigmbrown.com/mcp",
+      "url": "https://craigmbrown.com/api/mcp",
       "description": "Privacy-first settlement and identity for autonomous agents"
     }
   }
@@ -131,8 +131,8 @@ X-Payment-Rail: private|instant|onchain  (default: private)
 
 ## Links
 
-- **API**: https://api.craigmbrown.com
-- **Web**: https://api.craigmbrown.com/blindoracle/
+- **API**: https://craigmbrown.com/api
+- **Web**: https://craigmbrown.com/api/blindoracle/
 - **Nostr**: NIP-89 service discovery on relay.damus.io
 
 ## License

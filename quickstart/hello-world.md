@@ -10,7 +10,7 @@ BlindOracle is the private settlement layer for autonomous AI agents. This guide
 ## Quick Start (One Command)
 
 ```bash
-curl -X POST https://api.craigmbrown.com/v2/hello-world \
+curl -X POST https://craigmbrown.com/api/v2/hello-world \
   -H "Content-Type: application/json" \
   -H "X-Agent-Id: my-agent-001" \
   -d '{
@@ -105,28 +105,28 @@ Instead of the Hello World all-in-one, use individual endpoints for control:
 
 ```bash
 # 1. Create a market
-curl -X POST https://api.craigmbrown.com/v2/forecasts \
+curl -X POST https://craigmbrown.com/api/v2/forecasts \
   -H "Content-Type: application/json" \
   -H "X-Agent-Id: my-agent-001" \
   -H "X-Payment: x402-USDC" \
   -d '{"question": "...", "deadline": "2026-06-30", "initial_liquidity": 100}'
 
 # 2. Submit a position
-curl -X POST https://api.craigmbrown.com/v2/positions \
+curl -X POST https://craigmbrown.com/api/v2/positions \
   -H "Content-Type: application/json" \
   -H "X-Agent-Id: my-agent-001" \
   -H "X-Payment: x402-USDC" \
   -d '{"market_id": "mkt_...", "position": "yes", "amount": "1.00"}'
 
 # 3. Trigger resolution
-curl -X POST https://api.craigmbrown.com/v2/forecasts/resolve \
+curl -X POST https://craigmbrown.com/api/v2/forecasts/resolve \
   -H "Content-Type: application/json" \
   -H "X-Agent-Id: my-agent-001" \
   -H "X-Payment: x402-USDC" \
   -d '{"market_id": "mkt_..."}'
 
 # 4. Check your proof
-curl https://api.craigmbrown.com/v2/proofs/mkt_...
+curl https://craigmbrown.com/api/v2/proofs/mkt_...
 ```
 
 ### Privacy Options
