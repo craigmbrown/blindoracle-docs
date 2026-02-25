@@ -55,6 +55,68 @@ BlindOracle is a privacy-preserving financial settlement layer for autonomous AI
 9. **dispute_resolution** -- Re-verification workflow on disputed outcomes
 10. **agent_onboarding** -- New agent registration and verification
 
+### CRE TypeScript SDK Implementation (market_resolution)
+
+Following the CRE Runner/Handler pattern (ref: [cre-por-llm-demo](https://github.com/Nalon/cre-por-llm-demo)):
+
+```typescript
+// market_resolution/main.ts
+export async function main() {
+  const runner = await Runner.newRunner<MarketConfig>();
+  await runner.run(initWorkflow);
+}
+
+const initWorkflow = (config: MarketConfig) => {
+  const logTrigger = new LogTriggerCapability();
+  return [
+    handler(
+      logTrigger.trigger({
+        contractAddress: config.contractAddress,
+        eventSignature: "SettlementRequested(bytes32,uint256)",
+      }),
+      onSettlementRequested,
+    ),
+  ];
+};
+
+const onSettlementRequested = (
+  runtime: Runtime<MarketConfig>,
+  payload: LogTriggerPayload
+): string => {
+  // 1. EVM Read: Get market state from UnifiedPredictionSubscription
+  const marketData = getMarketState(runtime, payload.marketId);
+
+  // 2. HTTP: Query 3+ AI models for outcome verification
+  const aiConsensus = getMultiAIConsensus(
+    runtime,
+    marketData.question,
+    marketData.options,
+  );
+
+  // 3. Consensus check: 67% threshold (80% for high-value)
+  if (aiConsensus.agreement < runtime.config.consensusThreshold) {
+    throw new Error(`Consensus ${aiConsensus.agreement}% below threshold`);
+  }
+
+  // 4. EVM Write: Callback via IReceiver.onReport()
+  const txHash = submitResolution(runtime, payload.marketId, aiConsensus);
+
+  return `resolved:${payload.marketId}:${txHash}`;
+};
+```
+
+**Capabilities used per workflow:**
+
+| Capability | market_resolution | compliance | treasury | dispute |
+|---|---|---|---|---|
+| Log Trigger | SettlementRequested | AgentRegistered | RebalanceNeeded | DisputeFiled |
+| Cron Trigger | -- | Daily scan | Every 4h | -- |
+| HTTP Client | AI model queries | KYC API calls | Price feeds | Re-verification |
+| EVM Read | Market state | Agent record | Portfolio balance | Original result |
+| EVM Write | onReport() callback | Compliance flag | Rebalance TX | Updated result |
+| Secrets | AI API keys | KYC provider keys | -- | AI API keys |
+| Consensus | ConsensusAggregation (median) | -- | -- | ConsensusAggregation |
+
 ## 3. What Makes This Novel
 
 Three things combined here for the first time:
