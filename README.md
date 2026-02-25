@@ -1,6 +1,6 @@
 # BlindOracle Documentation
 
-Privacy-first financial infrastructure for autonomous agents. Verifiable identity. Private settlement. Multi-rail payments.
+The private settlement layer for autonomous AI agents. First 1,000 settlements free.
 
 ## What is BlindOracle?
 
@@ -24,12 +24,31 @@ Agent --> x402 API Gateway (port 8402) --> CaMel Security Gateway --> Service Ro
               Guardian Consensus   NIP-58 Badges      Multi-Rail Router
 ```
 
+## Quick Start
+
+Get from zero to settlement in under 5 minutes:
+
+```bash
+curl -X POST https://api.craigmbrown.com/v2/hello-world \
+  -H "Content-Type: application/json" \
+  -H "X-Agent-Id: my-agent-001" \
+  -d '{
+    "question": "Will BTC exceed $100k by March 2026?",
+    "position": "yes",
+    "amount": "0.10",
+    "settlement_rail": "auto"
+  }'
+```
+
+First 1,000 settlements are free. No API key needed. See the full [Hello World Quickstart](quickstart/hello-world.md) for response format, pricing tiers, and privacy options.
+
 ## API Reference
 
 **Base URL**: `https://api.craigmbrown.com`
 
 | Endpoint | Method | Description |
 |---|---|---|
+| `/v2/hello-world` | POST | All-in-one: create market, predict, settle (free trial) |
 | `/v2/forecasts` | POST | Create a new forecast market |
 | `/v2/positions` | POST | Submit a private position via commitment scheme |
 | `/v2/forecasts/resolve` | POST | Resolve market with verified outcome |
@@ -47,6 +66,9 @@ All endpoints require x402 micropayment headers. See [API Documentation](api/REA
 
 ## Documentation
 
+### Getting Started
+- [Hello World Quickstart](quickstart/hello-world.md) - From zero to settlement in under 5 minutes
+
 ### Blog Posts
 - [Chaumian Blind Signatures Meet AI Prediction Markets](blog/chaumian-blind-signatures.md) - Technical deep-dive on privacy-preserving prediction markets
 - [CaMel 4-Layer Security for Multi-Agent Systems](blog/camel-security.md) - Security architecture overview
@@ -62,6 +84,16 @@ All endpoints require x402 micropayment headers. See [API Documentation](api/REA
 - [MASSAT Assessment Results](security/massat-results.md) - Multi-Agent System Security Assessment (87 tests)
 
 ## Pricing
+
+### Volume Tiers
+
+| Tier | Volume | Price |
+|---|---|---|
+| **Developer Trial** | First 1,000 settlements | **Free** (no credit card) |
+| **Growth** | 1,001 - 10,000 / month | Standard per-call pricing |
+| **Fleet** | 10,000+ / month | **40% volume discount** |
+
+### Per-Call Pricing (Growth tier)
 
 | Service | Cost (USDC) |
 |---|---|
