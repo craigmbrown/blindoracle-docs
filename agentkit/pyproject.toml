@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "blindoracle-agentkit"
+version = "0.1.0"
+description = "BlindOracle action provider for Coinbase AgentKit — private settlement for autonomous AI agents"
+readme = "README.md"
+license = {text = "Proprietary"}
+requires-python = ">=3.10"
+authors = [{name = "Craig M. Brown"}]
+keywords = ["blindoracle", "agentkit", "coinbase", "prediction-market", "x402", "ai-agents"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "coinbase-agentkit>=0.1.0",
+    "requests>=2.28.0",
+    "pydantic>=2.0.0",
+]
+
+[project.urls]
+Homepage = "https://craigmbrown.com/blindoracle/"
+Documentation = "https://github.com/craigmbrown/blindoracle-docs"
+Repository = "https://github.com/craigmbrown/blindoracle-docs"
+
+[tool.setuptools.packages.find]
+include = ["blindoracle*"]
