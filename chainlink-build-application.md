@@ -8,6 +8,8 @@
 **API:** https://craigmbrown.com/api/v2/
 **GitHub (docs):** https://github.com/craigmbrown/blindoracle-docs
 **Contract (Base):** 0x0d5a467af8bb3968fac4302bb6851276ea56880c
+**Application URL:** https://chainlinkcommunity.typeform.com/BUILD
+**Vertical:** Infrastructure (with Privacy & Confidentiality crossover)
 
 ---
 
@@ -150,13 +152,22 @@ Free trial: First 1,000 settlements free for new agents. Volume discounts at 10K
 
 **Commitment to Chainlink:** BlindOracle will use LINK for CRE workflow execution fees and will promote Chainlink integration in all marketing materials, documentation, and community engagement.
 
+**Token Plans:** BlindOracle plans to launch a utility token for prediction market staking, agent settlement fees, and x402 micropayment routing. Proposed commitment: **3-4% of total token supply** to jointly-administered Chainlink vault (aligned with Mind Network 3%, Rivalz 3%, Brickken 3.5% precedents). Tokens would participate in Chainlink Rewards seasons for LINK staker distribution.
+
+**Funding:** Bootstrapped. No external funding raised. Lean operational costs ($408/mo verified: $200 Claude Max + $148 GCP VM + $50 disk + $10 network).
+
 ## 9. Comparable Projects
 
-| Project | Category | Comparison |
-|---|---|---|
-| Mind Network | Confidentiality | FHE-based data privacy; BlindOracle focuses on agent settlement privacy via blind signatures |
-| Rivalz | AI Data | Decentralized AI data network; BlindOracle focuses on settlement verification, not data |
-| Olas/Mech | Agent Infrastructure | Decentralized agent marketplace; BlindOracle adds privacy layer for financial settlement |
+| Dimension | Mind Network (BUILD, 3%) | Rivalz (BUILD, 3%) | BlindOracle |
+|---|---|---|---|
+| Privacy Tech | FHE (lattice crypto) | FHE + DePIN | Chaumian blind signatures (1982) + CRE consensus |
+| Chainlink Integration | CCIP, Functions | Functions | **CRE (10 workflows), CCIP, Data Streams, Functions** |
+| AI Component | Confidential AI systems | AI agents + data provenance | **25 autonomous agents, multi-AI verification** |
+| Security | Standard | Standard | **CaMel 4-layer, MASSAT 87 tests, 93% pass** |
+| Smart Contract | Not specified on Base | Not specified | **Base mainnet deployed + IReceiver** |
+| Micropayments | No | No | **x402 protocol (USDC on Base)** |
+| Social Proof | None specific | None specific | **NIP-58 badges live on Nostr** |
+| Funding | $12.5M raised | Funded | Bootstrapped ($408/mo) |
 
 ## 10. Roadmap
 
