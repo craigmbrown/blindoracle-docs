@@ -62,12 +62,16 @@ First 1,000 settlements are free. No API key needed. See the full [Hello World Q
 | `/v2/settle/onchain` | POST | Withdraw to on-chain address |
 | `/v2/health` | GET | Health check (free) |
 
-All endpoints require x402 micropayment headers. See [API Documentation](api/README.md) for full details.
+All paid endpoints use x402 micropayments (USDC on Base). See the [x402 Payment Specification](api/x402-spec.md) for full protocol details.
 
 ## Documentation
 
 ### Getting Started
 - [Hello World Quickstart](quickstart/hello-world.md) - From zero to settlement in under 5 minutes
+- [x402 Payment Specification](api/x402-spec.md) - Open spec for x402 micropayments on BlindOracle
+
+### Integration
+- [Coinbase AgentKit Plugin](https://github.com/craigmbrown/blindoracle-docs/tree/main/agentkit) - Action provider for AgentKit (Python)
 
 ### Blog Posts
 - [Chaumian Blind Signatures Meet AI Prediction Markets](blog/chaumian-blind-signatures.md) - Technical deep-dive on privacy-preserving prediction markets
