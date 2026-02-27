@@ -68,12 +68,25 @@ All paid endpoints use x402 micropayments (USDC on Base). See the [x402 Payment 
 
 ### Getting Started
 - [Hello World Quickstart](quickstart/hello-world.md) - From zero to settlement in under 5 minutes
+- [RWA Markets Quickstart](quickstart/rwa-quickstart.md) - Deploy an RWA stock prediction market in 5 minutes
 - [x402 Payment Specification](api/x402-spec.md) - Open spec for x402 micropayments on BlindOracle
+
+### RWA Stock Prediction Markets (NEW)
+ACE-compliant prediction markets for tokenized stocks on Robinhood Chain, powered by Chainlink Data Streams.
+
+- [RWA Overview](rwa/overview.md) - Architecture, market lifecycle, and supported assets
+- [Contract Reference](rwa/contracts.md) - All 6 contracts: functions, events, errors, ABIs
+- [ACE Compliance](rwa/compliance.md) - PolicyProtected enforcement, sanctions, limits, hold periods
+- [Deployment Guide](rwa/deployment.md) - Robinhood Chain testnet deployment with Foundry
+- [Test Results](rwa/test-results.md) - 105 tests, gas benchmarks, on-chain fork validation
+- [On-Chain API](api/rwa-market-api.md) - Solidity function reference with `cast` examples
+- [Data Streams Resolution](cre/rwa-data-streams-resolution.md) - How Chainlink Data Streams resolves markets
 
 ### Integration
 - [Coinbase AgentKit Plugin](https://github.com/craigmbrown/blindoracle-docs/tree/main/agentkit) - Action provider for AgentKit (Python)
 
 ### Blog Posts
+- [RWA Stock Prediction Markets on Robinhood Chain](blog/rwa-stock-prediction-markets.md) - ACE-compliant markets for tokenized stocks (NEW)
 - [Chaumian Blind Signatures Meet AI Prediction Markets](blog/chaumian-blind-signatures.md) - Technical deep-dive on privacy-preserving prediction markets
 - [CaMel 4-Layer Security for Multi-Agent Systems](blog/camel-security.md) - Security architecture overview
 - [Guardian Federations for AI Agents](blog/fedimint-ai-agents.md) - Tutorial on guardian-network integration
@@ -86,6 +99,7 @@ All paid endpoints use x402 micropayments (USDC on Base). See the [x402 Payment 
 
 ### Security
 - [MASSAT Assessment Results](security/massat-results.md) - Multi-Agent System Security Assessment (87 tests)
+- [RWA Compliance & Security](security/rwa-compliance-security.md) - ACE compliance model, threat analysis, access control
 
 ## Pricing
 
