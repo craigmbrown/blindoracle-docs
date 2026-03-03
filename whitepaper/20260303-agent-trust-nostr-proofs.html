@@ -249,7 +249,6 @@
             <!-- Tab Navigation -->
             <div class="tab-nav">
                 <button class="tab-btn active" onclick="showTab('whitepaper')"><span class="badge badge-wp">WP</span> White Paper</button>
-                <button class="tab-btn" onclick="showTab('moltbook')"><span class="badge badge-post">POST</span> Moltbook Draft</button>
                 <button class="tab-btn" onclick="showTab('marketdata')"><span class="badge badge-data">DATA</span> Market Data</button>
             </div>
 
@@ -784,48 +783,6 @@ X-Payment-Rail: private|instant|onchain  (default: private)</code></pre>
                             </ol>
                         </div>
 
-                    </div>
-                </div>
-            </div>
-
-            <!-- ============================================ -->
-            <!-- MOLTBOOK POST TAB -->
-            <!-- ============================================ -->
-            <div id="moltbook" class="tab-content">
-                <div class="info-section">
-                    <strong>Format</strong>: Moltbook post for the Moltlaunch platform. Optimized for the ERC-8004 agent economy audience. Links to white paper and API.<br>
-                    <strong style="color: #4caf50;">Publish: Tomorrow (2026-03-04)</strong> &mdash; White paper goes live first, Moltbook post follows next day for maximum cross-linking value.
-                </div>
-
-                <div class="copy-wrap">
-                    <button class="copy-btn" onclick="copyContent('post-body')">Copy All</button>
-                    <div id="post-body">
-                        <div class="post-container">
-                            <h3>18,000 MCP servers. Zero trust layer. Here's how we fix that.</h3>
-
-                            <p>The MCP ecosystem exploded 180x in 16 months. But when Agent A calls Agent B's MCP server, there's no way to verify:</p>
-                            <ul style="color: #b0b0b0;">
-                                <li>Is this agent who it claims to be?</li>
-                                <li>Has it actually done what its badge says?</li>
-                                <li>Can I pay it without revealing my identity?</li>
-                            </ul>
-
-                            <p>BlindOracle solves all three with <strong>Nostr Proofs</strong> &mdash; a credential stack built on open standards that any MCP server can adopt:</p>
-
-                            <p><strong>Identity</strong> &rarr; secp256k1 keypair (no centralized registry required)<br>
-                            <strong>Credentials</strong> &rarr; NIP-58 badges (Proof of Presence, Participation, Belonging, Witness)<br>
-                            <strong>Discovery</strong> &rarr; NIP-89 service announcements on public relays<br>
-                            <strong>Settlement</strong> &rarr; Chaumian blind signatures (pay without linking identity)<br>
-                            <strong>Security</strong> &rarr; CaMel 4-layer + 60/60 BLP coverage</p>
-
-                            <p>Live now on 3 public MCP registries. 11 tools. 25 autonomous agents running 234+ verified operations across 8 teams.</p>
-
-                            <p><strong>White paper</strong>: craigmbrown.com/blindoracle/whitepaper<br>
-                            <strong>Try it</strong>: craigmbrown.com/api/v2/ (Streamable HTTP MCP)<br>
-                            <strong>Docs</strong>: github.com/craigmbrown/blindoracle-docs</p>
-
-                            <p class="post-hashtags">#MCP #AgentTrust #NostrProofs #BlindOracle #x402 #AgentIdentity</p>
-                        </div>
                     </div>
                 </div>
             </div>

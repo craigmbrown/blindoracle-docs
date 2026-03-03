@@ -229,5 +229,403 @@
       "description": "Commit whitepaper redesign to blindoracle-docs"
     },
     "tool_use_id": "toolu_01WW7yQX8386JAM5w6xLuezR"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "git push origin main 2>&1",
+      "description": "Push blindoracle-docs to GitHub"
+    },
+    "tool_use_id": "toolu_01YPDk34xDdsnVQe3cs8qL2w"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "tar czf /tmp/blindoracle-whitepaper-deploy.tar.gz whitepaper/ index.html",
+      "description": "Create tarball of whitepaper + index for deployment"
+    },
+    "tool_use_id": "toolu_01TKFpKjpWRFv54scNPVh7PF"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "cp /home/craigmbrown/Project/deploy/web/blindoracle/index.html /tmp/blindoracle-main-index.html",
+      "description": "Copy updated main site index to tmp for deployment"
+    },
+    "tool_use_id": "toolu_012FQ7mmXRfcmuoxFqyn2woj"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute scp /tmp/blindoracle-whitepaper-deploy.tar.gz craigmbrown-website:/tmp/ --zone=us-central1-a 2>&1",
+      "description": "Upload whitepaper tarball to craigmbrown-website VM"
+    },
+    "tool_use_id": "toolu_01VWdp6oyaAWVWKc9bvUGLj3"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute scp /tmp/blindoracle-main-index.html craigmbrown-website:/tmp/ --zone=us-central1-a 2>&1",
+      "description": "Upload main site index to craigmbrown-website VM"
+    },
+    "tool_use_id": "toolu_01VDuTXCoziyHo5EDdwsQWR2"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"\ncd /var/www/craigmbrown.com/blindoracle/whitepaper/ && \\\nsudo tar xzf /tmp/blindoracle-whitepaper-deploy.tar.gz --strip-components=0 && \\\nsudo cp /tmp/blindoracle-main-index.html /var/www/craigmbrown.com/blindoracle/index.html && \\\nsudo chown -R www-data:www-data /var/www/craigmbrown.com/blindoracle/ && \\\necho 'Files deployed successfully' && \\\nls -la /var/www/craigmbrown.com/blindoracle/whitepaper/20260303-agent-trust-nostr-proofs.html && \\\nls -la /var/www/craigmbrown.com/blindoracle/index.html\n\" 2>&1",
+      "description": "Extract whitepaper + main site index on craigmbrown-website VM"
+    },
+    "tool_use_id": "toolu_01Vq7T2tJYj3rWsSsDQiPmxN"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"\nls -la /var/www/craigmbrown.com/blindoracle/whitepaper/ && \\\necho '---' && \\\nls -la /var/www/craigmbrown.com/blindoracle/whitepaper/whitepaper/ 2>/dev/null || echo 'no nested whitepaper dir'\n\" 2>&1",
+      "description": "Check deployed file structure"
+    },
+    "tool_use_id": "toolu_01WyCrED8t1QTS1R6p3QHex4"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"\ngrep -n 'location.*blindoracle\\|\\.md' /etc/nginx/sites-enabled/* /etc/nginx/conf.d/* /etc/nginx/nginx.conf 2>/dev/null | head -20\n\" 2>&1",
+      "description": "Check current nginx config for blindoracle and .md handling"
+    },
+    "tool_use_id": "toolu_01EFm2w5QBoeLaGBzEyGJgtR"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"\ngrep -n 'blindoracle\\|\\.md\\|location' /etc/nginx/sites-enabled/default 2>/dev/null | head -30\n\" 2>&1",
+      "description": "Check nginx default site config"
+    },
+    "tool_use_id": "toolu_012adzZGp3DSdTfuQNrrVrfx"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"cat /etc/nginx/sites-enabled/default\" 2>&1 | head -80",
+      "description": "Read nginx config file"
+    },
+    "tool_use_id": "toolu_01Y9Zuy2pkFvr4qCHvaWjCLj"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"ls /etc/nginx/sites-enabled/ /etc/nginx/conf.d/ 2>/dev/null\" 2>&1",
+      "description": "Find nginx config files"
+    },
+    "tool_use_id": "toolu_015dvgkrTjxY2ukQhmgB4VYe"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"cat /etc/nginx/sites-enabled/craigmbrown.com\" 2>&1",
+      "description": "Read nginx site config"
+    },
+    "tool_use_id": "toolu_016sZtXfiGsmUgL3SyXZMC9e"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"sudo cat /etc/nginx/sites-enabled/craigmbrown.com\" 2>&1",
+      "description": "Read nginx site config with sudo"
+    },
+    "tool_use_id": "toolu_01GxyPCxpnPACwLFVEgYAcaK"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "gcloud compute ssh craigmbrown-website --zone=us-central1-a --command=\"\nsudo sed -i '/location ~\\* \\\\\\.html\\$ {/i\\\\\n    # Serve .md files as plain text in browser (agent-friendly)\\\\\n    location ~* \\\\\\\\.md\\$ {\\\\\n        default_type text/plain;\\\\\n        charset utf-8;\\\\\n        add_header Cache-Control \\\"no-cache\\\" always;\\\\\n    }\\\\\n' /etc/nginx/sites-enabled/craigmbrown.com && \\\nsudo nginx -t 2>&1 && \\\nsudo systemctl reload nginx && \\\necho 'Nginx reloaded successfully'\n\" 2>&1",
+      "description": "Add .md MIME type rule to nginx and reload"
+    },
+    "tool_use_id": "toolu_016pcVYjpDg2PpybzXpuvgGp"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -sI \"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/20260303-agent-trust-nostr-proofs.html\" 2>&1 | head -10",
+      "description": "Verify whitepaper is accessible"
+    },
+    "tool_use_id": "toolu_017h6SkjLtBv6M27i9XpArML"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -sI \"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/agent-trust-nostr-proofs.md\" 2>&1 | grep -i \"content-type\\|HTTP\"",
+      "description": "Verify .md files serve as text/plain"
+    },
+    "tool_use_id": "toolu_01T4NDJhy1smhYtRK4NRVJaj"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -s \"https://craigmbrown.com/blindoracle/index.html\" 2>&1 | grep -i \"whitepaper\\|Docs\\|Publications\"",
+      "description": "Verify main site has Docs link"
+    },
+    "tool_use_id": "toolu_01RsET1KFXZZUghotNpw9uo7"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Write",
+    "tool_input": {
+      "file_path": "/home/craigmbrown/Project/html-output/20260303-whitepaper-deployment-complete.html",
+      "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Whitepaper Deployment Complete - BlindOracle</title>\n    <style>\n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;\n            line-height: 1.6;\n            color: #e0e0e0;\n            background: #1a1a1a;\n            margin: 0;\n            padding: 20px;\n        }\n        article {\n            max-width: 900px;\n            margin: 0 auto;\n            background: #2d2d2d;\n            border-radius: 8px;\n            padding: 30px;\n            box-shadow: 0 20px 40px rgba(0,0,0,0.5);\n        }\n        h1, h2, h3 { color: #e0e0e0; }\n        h1 { border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }\n        h2 { border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 30px; }\n        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco','Menlo','Ubuntu Mono',monospace; }\n        a { color: #4a9eff; text-decoration: none; }\n        a:hover { color: #79c0ff; text-decoration: underline; }\n        table { width: 100%; border-collapse: collapse; margin-top: 15px; }\n        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }\n        td { padding: 10px; border: 1px solid #404040; }\n        tr:nth-child(even) { background: #1a1a1a; }\n        .success { background: #1b5e20; color: #4caf50; padding: 3px 8px; border-radius: 3px; font-weight: bold; }\n        .info-section { background: #1e3a5f; border-left: 4px solid #4a9eff; padding: 15px; border-radius: 4px; margin: 20px 0; }\n        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }\n        .metric-card { background: #1a1a1a; border: 1px solid #404040; padding: 20px; border-radius: 8px; text-align: center; }\n        .metric-value { font-size: 2em; font-weight: bold; color: #4caf50; }\n        .metric-label { color: #808080; font-size: 0.9em; margin-top: 5px; }\n        .timestamp { color: #808080; font-size: 0.85em; }\n        footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }\n    </style>\n</head>\n<body>\n    <article>\n        <header>\n            <h1>Whitepaper Deployment Complete</h1>\n            <p class=\"timestamp\">Deployed: 2026-03-03 17:28 UTC</p>\n        </header>\n        <main>\n            <div class=\"grid\">\n                <div class=\"metric-card\">\n                    <div class=\"metric-value\">4/4</div>\n                    <div class=\"metric-label\">Tasks Completed</div>\n                </div>\n                <div class=\"metric-card\">\n                    <div class=\"metric-value\">LIVE</div>\n                    <div class=\"metric-label\">Deployment Status</div>\n                </div>\n                <div class=\"metric-card\">\n                    <div class=\"metric-value\">3</div>\n                    <div class=\"metric-label\">Whitepapers Published</div>\n                </div>\n                <div class=\"metric-card\">\n                    <div class=\"metric-value\">6</div>\n                    <div class=\"metric-label\">Blog Posts Live</div>\n                </div>\n            </div>\n\n            <h2>Deployment Tasks</h2>\n            <table>\n                <tr><th>Task</th><th>Status</th><th>Details</th></tr>\n                <tr>\n                    <td>1. Deploy Redesigned Whitepaper</td>\n                    <td><span class=\"success\">DONE</span></td>\n                    <td>Whitepaper with tabs, CSS diagrams, bar charts, SRVL cross-refs deployed to <code>/blindoracle/whitepaper/whitepaper/</code></td>\n                </tr>\n                <tr>\n                    <td>2. Push to GitHub</td>\n                    <td><span class=\"success\">DONE</span></td>\n                    <td>Commit <code>7bb8325</code> pushed to <code>craigmbrown/blindoracle-docs</code> main</td>\n                </tr>\n                <tr>\n                    <td>3. Nginx .md MIME Type Fix</td>\n                    <td><span class=\"success\">DONE</span></td>\n                    <td><code>.md</code> files now serve as <code>text/plain; charset=utf-8</code> \u2014 viewable in browser, agent-friendly</td>\n                </tr>\n                <tr>\n                    <td>4. Main Site Docs Link</td>\n                    <td><span class=\"success\">DONE</span></td>\n                    <td>\"Docs\" added to nav bar + \"Publications\" footer column with 4 paper links</td>\n                </tr>\n            </table>\n\n            <h2>Live URLs</h2>\n            <table>\n                <tr><th>Resource</th><th>URL</th></tr>\n                <tr>\n                    <td>Agent Trust Whitepaper (HTML)</td>\n                    <td><a href=\"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/20260303-agent-trust-nostr-proofs.html\">craigmbrown.com/blindoracle/whitepaper/whitepaper/20260303-agent-trust-nostr-proofs.html</a></td>\n                </tr>\n                <tr>\n                    <td>Agent Trust Whitepaper (MD)</td>\n                    <td><a href=\"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/agent-trust-nostr-proofs.md\">craigmbrown.com/.../agent-trust-nostr-proofs.md</a></td>\n                </tr>\n                <tr>\n                    <td>Publications Landing Page</td>\n                    <td><a href=\"https://craigmbrown.com/blindoracle/whitepaper/\">craigmbrown.com/blindoracle/whitepaper/</a></td>\n                </tr>\n                <tr>\n                    <td>Main BlindOracle Site</td>\n                    <td><a href=\"https://craigmbrown.com/blindoracle/\">craigmbrown.com/blindoracle/</a></td>\n                </tr>\n                <tr>\n                    <td>GitHub Repo</td>\n                    <td><a href=\"https://github.com/craigmbrown/blindoracle-docs\">github.com/craigmbrown/blindoracle-docs</a></td>\n                </tr>\n            </table>\n\n            <h2>Whitepaper Enhancements</h2>\n            <div class=\"info-section\">\n                <ul style=\"margin: 0; padding-left: 20px;\">\n                    <li>3-tab navigation: White Paper / Moltbook Draft / Market Data</li>\n                    <li>CSS architecture diagrams: Trust Flow (8-step), Nostr Proof Stack (5-layer), Settlement Protocol (3-phase)</li>\n                    <li>Bar charts: Feature Coverage Comparison (6 competitors), Market Growth ($10.86B to $236B)</li>\n                    <li>SRVL Protocol cross-reference + Related Papers section</li>\n                    <li>Copy-to-clipboard buttons, metric cards, credential type cards</li>\n                    <li>Moltbook tab marked for 2026-03-04 publish</li>\n                </ul>\n            </div>\n\n            <h2>Next Step</h2>\n            <div class=\"info-section\">\n                <p><strong>Tomorrow (2026-03-04):</strong> Publish the Moltbook post version of the agent trust whitepaper for cross-linking value.</p>\n            </div>\n        </main>\n        <footer>\n            <p>All 4 deployment tasks completed successfully. Whitepaper live at craigmbrown.com.</p>\n        </footer>\n    </article>\n</body>\n</html>"
+    },
+    "tool_use_id": "toolu_0189t2qBnzzzeLRZ24DzzTrb"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "python3 -c \"\nimport requests\nurls = {\n    'wp': 'https://craigmbrown.com/blindoracle/whitepaper/whitepaper/20260303-agent-trust-nostr-proofs.html',\n    'dash': 'http://34.58.12.50:8080/20260303-whitepaper-deployment-complete.html'\n}\nfor key, url in urls.items():\n    try:\n        r = requests.get('https://tinyurl.com/api-create.php', params={'url': url}, timeout=5)\n        print(f'{key}: {r.text.strip()}')\n    except Exception as e:\n        print(f'{key}: {url}')\n\"",
+      "description": "Generate TinyURLs for whitepaper and dashboard"
+    },
+    "tool_use_id": "toolu_01MVUAi59PYXezG5aacZJ9mp"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "cd /home/craigmbrown/Project && python3 WhatsApp-Manager-Agent/WhatsApp_Manager_Agent/send_whatsapp_message_working.py --to 15712781730 --message \"$(cat <<'EOF'\n\ud83d\udcc4 Whitepaper Deployment COMPLETE!\n\n\ud83d\udcdd Agent Trust via Nostr Proofs - Redesigned\n\ud83d\udd50 2026-03-03 17:28 UTC\n\n\u2705 4/4 Tasks Done:\n1. Whitepaper deployed (tabs, diagrams, charts)\n2. GitHub pushed (7bb8325)\n3. Nginx .md MIME fix (text/plain)\n4. Main site Docs link + Publications footer\n\n\ud83d\udd17 Whitepaper: https://tinyurl.com/22dodlph\n\ud83d\udd17 Dashboard: https://tinyurl.com/2385r3jz\n\n\ud83d\udcc1 20260303-whitepaper-deployment-complete.html\n\u23ed\ufe0f Tomorrow: Publish Moltbook post\nEOF\n)\" 2>&1",
+      "description": "Send WhatsApp deployment notification"
+    },
+    "tool_use_id": "toolu_01G67ZKoD1J9w2Ytgkdr3QFY"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "grep -n 'href=' whitepaper/20260303-agent-trust-nostr-proofs.html",
+      "description": "Find all links in whitepaper"
+    },
+    "tool_use_id": "toolu_01UJKCLE7tm2f53c1aeP7fqP"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Read",
+    "tool_input": {
+      "file_path": "/home/craigmbrown/Project/blindoracle-docs/whitepaper/20260303-agent-trust-nostr-proofs.html",
+      "offset": 790,
+      "limit": 60
+    },
+    "tool_use_id": "toolu_01F7XBboYAFLnM3JHWPaeskD"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Read",
+    "tool_input": {
+      "file_path": "/home/craigmbrown/Project/blindoracle-docs/whitepaper/20260303-agent-trust-nostr-proofs.html",
+      "offset": 248,
+      "limit": 15
+    },
+    "tool_use_id": "toolu_01HrvTtPaEYS2CEmERdSjqcB"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -sI \"https://craigmbrown.com/blindoracle/whitepaper/20260303-agent-trust-nostr-proofs.html\" 2>&1 | grep \"HTTP\\|location\"",
+      "description": "Check if whitepaper link without nested dir works"
+    },
+    "tool_use_id": "toolu_01A4dGnrVnWVN9pvewSVab85"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "curl -sI \"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/20260303-agent-trust-nostr-proofs.html\" | grep HTTP && \\\ncurl -sI \"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/20260224-srvl-whitepaper.html\" | grep HTTP && \\\ncurl -sI \"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/20260224-commitment-scheme-whitepaper.html\" | grep HTTP && \\\ncurl -sI \"https://craigmbrown.com/blindoracle/whitepaper/\" | grep HTTP && \\\ncurl -sI \"https://craigmbrown.com/blindoracle/whitepaper/whitepaper/agent-trust-nostr-proofs.md\" | grep HTTP",
+      "description": "Verify all actual file paths return 200"
+    },
+    "tool_use_id": "toolu_01Qh7iLSx4M2H7amgKP5zCW4"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "# Check main site footer links (currently broken)\ncurl -sI \"https://craigmbrown.com/blindoracle/whitepaper/20260303-agent-trust-nostr-proofs.html\" | grep HTTP && \\\ncurl -sI \"https://craigmbrown.com/blindoracle/whitepaper/20260224-commitment-scheme-whitepaper.html\" | grep HTTP && \\\ncurl -sI \"https://craigmbrown.com/blindoracle/whitepaper/20260224-srvl-whitepaper.html\" | grep HTTP",
+      "description": "Check main site footer link paths (likely 404)"
+    },
+    "tool_use_id": "toolu_019VMwEjXbXaDbVqxRdi2dZh"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Edit",
+    "tool_input": {
+      "file_path": "/home/craigmbrown/Project/blindoracle-docs/whitepaper/20260303-agent-trust-nostr-proofs.html",
+      "old_string": "                <button class=\"tab-btn active\" onclick=\"showTab('whitepaper')\"><span class=\"badge badge-wp\">WP</span> White Paper</button>\n                <button class=\"tab-btn\" onclick=\"showTab('moltbook')\"><span class=\"badge badge-post\">POST</span> Moltbook Draft</button>\n                <button class=\"tab-btn\" onclick=\"showTab('marketdata')\"><span class=\"badge badge-data\">DATA</span> Market Data</button>",
+      "new_string": "                <button class=\"tab-btn active\" onclick=\"showTab('whitepaper')\"><span class=\"badge badge-wp\">WP</span> White Paper</button>\n                <button class=\"tab-btn\" onclick=\"showTab('marketdata')\"><span class=\"badge badge-data\">DATA</span> Market Data</button>",
+      "replace_all": false
+    },
+    "tool_use_id": "toolu_01SpoHBubmtLZpmi1KzRmnge"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Edit",
+    "tool_input": {
+      "file_path": "/home/craigmbrown/Project/blindoracle-docs/whitepaper/20260303-agent-trust-nostr-proofs.html",
+      "old_string": "            <!-- ============================================ -->\n            <!-- MOLTBOOK POST TAB -->\n            <!-- ============================================ -->\n            <div id=\"moltbook\" class=\"tab-content\">\n                <div class=\"info-section\">\n                    <strong>Format</strong>: Moltbook post for the Moltlaunch platform. Optimized for the ERC-8004 agent economy audience. Links to white paper and API.<br>\n                    <strong style=\"color: #4caf50;\">Publish: Tomorrow (2026-03-04)</strong> &mdash; White paper goes live first, Moltbook post follows next day for maximum cross-linking value.\n                </div>\n\n                <div class=\"copy-wrap\">\n                    <button class=\"copy-btn\" onclick=\"copyContent('post-body')\">Copy All</button>\n                    <div id=\"post-body\">\n                        <div class=\"post-container\">\n                            <h3>18,000 MCP servers. Zero trust layer. Here's how we fix that.</h3>\n\n                            <p>The MCP ecosystem exploded 180x in 16 months. But when Agent A calls Agent B's MCP server, there's no way to verify:</p>\n                            <ul style=\"color: #b0b0b0;\">\n                                <li>Is this agent who it claims to be?</li>\n                                <li>Has it actually done what its badge says?</li>\n                                <li>Can I pay it without revealing my identity?</li>\n                            </ul>\n\n                            <p>BlindOracle solves all three with <strong>Nostr Proofs</strong> &mdash; a credential stack built on open standards that any MCP server can adopt:</p>\n\n                            <p><strong>Identity</strong> &rarr; secp256k1 keypair (no centralized registry required)<br>\n                            <strong>Credentials</strong> &rarr; NIP-58 badges (Proof of Presence, Participation, Belonging, Witness)<br>\n                            <strong>Discovery</strong> &rarr; NIP-89 service announcements on public relays<br>\n                            <strong>Settlement</strong> &rarr; Chaumian blind signatures (pay without linking identity)<br>\n                            <strong>Security</strong> &rarr; CaMel 4-layer + 60/60 BLP coverage</p>\n\n                            <p>Live now on 3 public MCP registries. 11 tools. 25 autonomous agents running 234+ verified operations across 8 teams.</p>\n\n                            <p><strong>White paper</strong>: craigmbrown.com/blindoracle/whitepaper<br>\n                            <strong>Try it</strong>: craigmbrown.com/api/v2/ (Streamable HTTP MCP)<br>\n                            <strong>Docs</strong>: github.com/craigmbrown/blindoracle-docs</p>\n\n                            <p class=\"post-hashtags\">#MCP #AgentTrust #NostrProofs #BlindOracle #x402 #AgentIdentity</p>\n                        </div>\n                    </div>\n                </div>\n            </div>\n\n            <!-- ============================================ -->",
+      "new_string": "            <!-- ============================================ -->",
+      "replace_all": false
+    },
+    "tool_use_id": "toolu_013BM4UXe3JSPxUKViGhgCWJ"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Edit",
+    "tool_input": {
+      "file_path": "/home/craigmbrown/Project/deploy/web/blindoracle/index.html",
+      "old_string": "                <h5>Publications</h5>\n                <ul>\n                    <li><a href=\"whitepaper/\">All Publications</a></li>\n                    <li><a href=\"whitepaper/20260303-agent-trust-nostr-proofs.html\">Agent Trust via Nostr</a></li>\n                    <li><a href=\"whitepaper/20260224-commitment-scheme-whitepaper.html\">Commitment Scheme</a></li>\n                    <li><a href=\"whitepaper/20260224-srvl-whitepaper.html\">SRVL Protocol</a></li>\n                </ul>",
+      "new_string": "                <h5>Publications</h5>\n                <ul>\n                    <li><a href=\"whitepaper/\">All Publications</a></li>\n                    <li><a href=\"whitepaper/whitepaper/20260303-agent-trust-nostr-proofs.html\">Agent Trust via Nostr</a></li>\n                    <li><a href=\"whitepaper/whitepaper/20260224-commitment-scheme-whitepaper.html\">Commitment Scheme</a></li>\n                    <li><a href=\"whitepaper/whitepaper/20260224-srvl-whitepaper.html\">SRVL Protocol</a></li>\n                </ul>",
+      "replace_all": false
+    },
+    "tool_use_id": "toolu_01AfAbPUcEFKTmkUTeKyafMf"
+  },
+  {
+    "session_id": "e63f9e06-3b77-48ae-b896-f7fe03d65e36",
+    "transcript_path": "/home/craigmbrown/.claude/projects/-home-craigmbrown-Project/e63f9e06-3b77-48ae-b896-f7fe03d65e36.jsonl",
+    "cwd": "/home/craigmbrown/Project/blindoracle-docs",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "PreToolUse",
+    "tool_name": "Bash",
+    "tool_input": {
+      "command": "git add -A && git commit -m \"$(cat <<'EOF'\nfix: remove Moltbook draft tab from whitepaper\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n)\" && git push origin main 2>&1",
+      "description": "Commit and push Moltbook removal"
+    },
+    "tool_use_id": "toolu_0123WbTZ4VQAyszj2DwMeCeU"
   }
 ]
