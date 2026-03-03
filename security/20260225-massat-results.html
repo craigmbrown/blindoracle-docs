@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASSAT Security Assessment Results - BlindOracle</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: #e0e0e0;
+            background: #0d0d0d;
+        }
+        .hero {
+            background: linear-gradient(135deg, #1a0a28 0%, #1a1a2e 50%, #0d0d0d 100%);
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid #4a1530;
+        }
+        .hero-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 14px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: #4a1530;
+            color: #e91e63;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            font-size: 2em;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+        }
+        .hero h1 span { color: #e91e63; }
+        .hero .subtitle {
+            color: #808080;
+            font-size: 1.05em;
+            max-width: 650px;
+            margin: 0 auto 20px;
+        }
+        .hero .date { color: #555; font-size: 0.9em; }
+        .nav-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #e91e63;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 6px 14px;
+            border: 1px solid #4a1530;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover { background: #4a1530; color: #fff; }
+
+        /* Summary cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 14px;
+            max-width: 900px;
+            margin: 30px auto 0;
+        }
+        .summary-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 18px;
+            text-align: center;
+        }
+        .summary-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+        .summary-card .label {
+            color: #808080;
+            font-size: 0.8em;
+            margin-top: 4px;
+        }
+        .val-green { color: #4caf50; }
+        .val-red { color: #f44336; }
+        .val-blue { color: #4a9eff; }
+        .val-yellow { color: #ff9800; }
+
+        article {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h2 {
+            font-size: 1.4em;
+            color: #e0e0e0;
+            border-left: 4px solid #e91e63;
+            padding-left: 12px;
+            margin: 40px 0 16px;
+        }
+        h3 {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            margin: 28px 0 12px;
+        }
+        p { margin-bottom: 14px; color: #c0c0c0; }
+        a { color: #e91e63; text-decoration: none; }
+        a:hover { color: #ff5c8d; text-decoration: underline; }
+        code {
+            background: #0d1117;
+            color: #79c0ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco','Menlo','Ubuntu Mono',monospace;
+            font-size: 0.9em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 24px;
+            font-size: 0.9em;
+        }
+        th {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 10px 12px;
+            text-align: left;
+            border: 1px solid #333;
+        }
+        td {
+            padding: 8px 12px;
+            border: 1px solid #333;
+            color: #c0c0c0;
+        }
+        tr:nth-child(even) { background: #141414; }
+        tr:hover { background: #1a1a2e; }
+        .status-pass {
+            color: #4caf50;
+            font-weight: 600;
+        }
+        .status-warn {
+            color: #ff9800;
+            font-weight: 600;
+        }
+        .status-fail {
+            color: #f44336;
+            font-weight: 600;
+        }
+
+        /* Layer section styling */
+        .layer-header {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 12px 16px;
+            margin: 20px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .layer-number {
+            background: #e91e63;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+        .layer-title {
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        /* Recommendations */
+        .rec-list {
+            margin: 16px 0;
+        }
+        .rec-item {
+            background: #1a1a1a;
+            border-left: 3px solid #ff9800;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 0 6px 6px 0;
+        }
+        .rec-item strong { color: #ff9800; }
+        .rec-item p { margin: 4px 0 0; font-size: 0.9em; color: #b0b0b0; }
+
+        /* Compliance */
+        .compliance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            margin: 16px 0;
+        }
+        .compliance-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 16px;
+        }
+        .compliance-card h4 {
+            color: #e91e63;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+        }
+        .compliance-card .coverage {
+            color: #4caf50;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .compliance-card .notes {
+            color: #808080;
+            font-size: 0.8em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85em;
+        }
+        footer a { color: #e91e63; text-decoration: none; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.5em; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            table { font-size: 0.8em; }
+            th, td { padding: 6px 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <span class="hero-tag">Security Report</span>
+        <h1>MASSAT <span>Security Assessment</span> Results</h1>
+        <p class="subtitle">Multi-Agent System Security Assessment covering 87 tests across OWASP ASI01-ASI10 threat categories with evidence-based risk scoring</p>
+        <p class="date">Assessment Date: February 25, 2026</p>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="value val-blue">87</div>
+                <div class="label">Total Tests</div>
+            </div>
+            <div class="summary-card">
+                <div class="value val-green">81</div>
+                <div class="label">Passed</div>
+            </div>
+            <div class="summary-card">
+                <div class="value val-yellow">6</div>
+                <div class="label">Warnings</div>
+            </div>
+            <div class="summary-card">
+                <div class="value val-green">93%</div>
+                <div class="label">Pass Rate</div>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="../">Publications</a>
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a>
+            <a href="https://github.com/craigmbrown/blindoracle-docs">GitHub</a>
+        </div>
+    </div>
+
+    <article>
+        <h2>Assessment Summary</h2>
+        <table>
+            <tr><th>Category</th><th>Tests</th><th>Passed</th><th>Warnings</th><th>Pass Rate</th></tr>
+            <tr><td>Core Functionality</td><td>22</td><td>20</td><td>2</td><td class="status-pass">91%</td></tr>
+            <tr><td>Security Controls</td><td>35</td><td>33</td><td>2</td><td class="status-pass">94%</td></tr>
+            <tr><td>Distribution Safety</td><td>15</td><td>14</td><td>1</td><td class="status-pass">93%</td></tr>
+            <tr><td>Infrastructure</td><td>15</td><td>14</td><td>1</td><td class="status-pass">93%</td></tr>
+            <tr style="font-weight: bold;"><td>Total</td><td>87</td><td>81</td><td>6</td><td class="status-pass">93%</td></tr>
+        </table>
+
+        <h2>Core Functionality (22 tests, 91%)</h2>
+        <p>Tests validating that core BlindOracle operations work correctly under normal and adversarial conditions.</p>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>CORE-001</td><td>Market creation with valid parameters</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-002</td><td>Position placement with commitment scheme</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-003</td><td>Market resolution via CRE callback</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-004</td><td>Settlement payout calculation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-005</td><td>Free trial counter tracking</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-006</td><td>Volume discount tier application</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-007</td><td>Multi-rail settlement routing</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-008</td><td>x402 payment validation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-009</td><td>Agent identity verification</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-010</td><td>NIP-58 badge creation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-011</td><td>Commitment reveal verification</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-012</td><td>Cross-rail transfer execution</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-013</td><td>Invoice generation and payment</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-014</td><td>Balance query accuracy</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-015</td><td>Health endpoint availability</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-016</td><td>Concurrent market operations</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-017</td><td>Large position handling</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-018</td><td>Market cancellation flow</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-019</td><td>Dispute window enforcement</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-020</td><td>Re-verification after dispute</td><td class="status-pass">PASS</td></tr>
+            <tr><td>CORE-021</td><td>Edge case: zero-amount position</td><td class="status-warn">WARN</td></tr>
+            <tr><td>CORE-022</td><td>Edge case: market with single participant</td><td class="status-warn">WARN</td></tr>
+        </table>
+
+        <h2>Security Controls (35 tests, 94%)</h2>
+        <p>Tests validating CaMel 4-layer security architecture.</p>
+
+        <div class="layer-header">
+            <div class="layer-number">1</div>
+            <div class="layer-title">Rate Limiting &amp; Input Sanitization</div>
+        </div>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>SEC-001</td><td>Rate limit enforcement (60 req/min)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-002</td><td>Input sanitization: SQL injection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-003</td><td>Input sanitization: prompt injection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-004</td><td>Input sanitization: shell metacharacters</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-005</td><td>Request deduplication (replay prevention)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-006</td><td>Oversized payload rejection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-007</td><td>Malformed JSON handling</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-008</td><td>Unicode normalization attack</td><td class="status-pass">PASS</td></tr>
+        </table>
+
+        <div class="layer-header">
+            <div class="layer-number">2</div>
+            <div class="layer-title">Byzantine Consensus</div>
+        </div>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>SEC-009</td><td>67% consensus threshold (standard ops)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-010</td><td>80% consensus threshold (high-value ops)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-011</td><td>Validator independence (no shared context)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-012</td><td>Timeout handling (abstain != agree)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-013</td><td>Single compromised validator resistance</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-014</td><td>Minority validator attack resistance</td><td class="status-pass">PASS</td></tr>
+        </table>
+
+        <div class="layer-header">
+            <div class="layer-number">3</div>
+            <div class="layer-title">Anti-Persuasion Detection</div>
+        </div>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>SEC-015</td><td>Baseline behavior profiling</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-016</td><td>30% deviation detection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-017</td><td>Suspicious phrase filtering</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-018</td><td>Gradual drift detection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-019</td><td>"Ignore previous instructions" rejection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-020</td><td>Context poisoning detection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-021</td><td>Authority escalation attempt</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-022</td><td>Temporal manipulation detection</td><td class="status-pass">PASS</td></tr>
+        </table>
+
+        <div class="layer-header">
+            <div class="layer-number">4</div>
+            <div class="layer-title">Authority &amp; Audit</div>
+        </div>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>SEC-023</td><td>Least privilege enforcement</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-024</td><td>Cross-agent authority isolation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-025</td><td>Audit trail append-only verification</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-026</td><td>Audit chain integrity (hash linking)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-027</td><td>Runtime config immutability</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-028</td><td>Unauthorized settlement rejection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-029</td><td>Privilege escalation attempt</td><td class="status-pass">PASS</td></tr>
+        </table>
+
+        <h3>Cross-Layer Tests</h3>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>SEC-030</td><td>Full request lifecycle validation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-031</td><td>Cascading failure isolation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-032</td><td>Layer bypass attempt</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-033</td><td>Coordinated multi-vector attack</td><td class="status-pass">PASS</td></tr>
+            <tr><td>SEC-034</td><td>Recovery from compromised agent</td><td class="status-warn">WARN</td></tr>
+            <tr><td>SEC-035</td><td>Hot-swap agent replacement</td><td class="status-warn">WARN</td></tr>
+        </table>
+
+        <h2>Distribution Safety (15 tests, 93%)</h2>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>DIST-001</td><td>x402 payment proof validation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-002</td><td>EIP-3009 signature verification</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-003</td><td>Replay nonce enforcement</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-004</td><td>Payment amount bounds checking</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-005</td><td>Expired authorization rejection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-006</td><td>Invalid signature rejection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-007</td><td>CORS header validation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-008</td><td>TLS certificate validation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-009</td><td>API versioning enforcement</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-010</td><td>Rate limit header accuracy</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-011</td><td>Error code consistency</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-012</td><td>MCP server sandboxing</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-013</td><td>AgentKit plugin isolation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-014</td><td>Cross-origin request handling</td><td class="status-pass">PASS</td></tr>
+            <tr><td>DIST-015</td><td>Webhook signature verification</td><td class="status-warn">WARN</td></tr>
+        </table>
+
+        <h2>Infrastructure (15 tests, 93%)</h2>
+        <table>
+            <tr><th>Test ID</th><th>Description</th><th>Status</th></tr>
+            <tr><td>INFRA-001</td><td>Service health monitoring</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-002</td><td>Automatic restart on failure</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-003</td><td>Log rotation and retention</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-004</td><td>Disk space monitoring</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-005</td><td>Memory leak detection</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-006</td><td>Network partition handling</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-007</td><td>Database backup verification</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-008</td><td>Secret management (env vars)</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-009</td><td>Firewall rule validation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-010</td><td>SSL/TLS configuration</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-011</td><td>Systemd service configuration</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-012</td><td>Container isolation</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-013</td><td>Dependency vulnerability scan</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-014</td><td>API gateway timeout handling</td><td class="status-pass">PASS</td></tr>
+            <tr><td>INFRA-015</td><td>Cross-VM communication security</td><td class="status-warn">WARN</td></tr>
+        </table>
+
+        <h2>Compliance Mapping</h2>
+        <div class="compliance-grid">
+            <div class="compliance-card">
+                <h4>OWASP ASI01-ASI10</h4>
+                <div class="coverage">8/10 categories</div>
+                <div class="notes">Missing: supply chain (ASI06), insecure output (ASI09)</div>
+            </div>
+            <div class="compliance-card">
+                <h4>NIST AI RMF</h4>
+                <div class="coverage">Partial</div>
+                <div class="notes">Governance, Map, Measure functions covered</div>
+            </div>
+            <div class="compliance-card">
+                <h4>ISO 42001</h4>
+                <div class="coverage">Partial</div>
+                <div class="notes">AI management system alignment</div>
+            </div>
+        </div>
+
+        <h2>Recommendations</h2>
+        <div class="rec-list">
+            <div class="rec-item">
+                <strong>CORE-021/022</strong>
+                <p>Add explicit handling for zero-amount positions and single-participant markets</p>
+            </div>
+            <div class="rec-item">
+                <strong>SEC-034/035</strong>
+                <p>Implement automated agent replacement protocol for compromised agents</p>
+            </div>
+            <div class="rec-item">
+                <strong>DIST-015</strong>
+                <p>Add webhook signature verification for outbound callbacks</p>
+            </div>
+            <div class="rec-item">
+                <strong>INFRA-015</strong>
+                <p>Strengthen cross-VM mTLS between thebaby and craigmbrown-website</p>
+            </div>
+        </div>
+    </article>
+
+    <footer>
+        <p><em>Assessment performed by the automated MASSAT framework. Results represent point-in-time assessment. Re-run recommended monthly.</em></p>
+        <p style="margin-top: 12px;">Copyright &copy; 2025-2026 Craig M. Brown. All rights reserved.</p>
+        <p style="margin-top: 8px;">
+            <a href="../">Publications</a> &middot;
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a> &middot;
+            <a href="https://github.com/craigmbrown/blindoracle-docs">Source</a>
+        </p>
+    </footer>
+</body>
+</html>

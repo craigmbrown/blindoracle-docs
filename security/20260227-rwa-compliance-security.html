@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA Markets Security &amp; Compliance Model - BlindOracle</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: #e0e0e0;
+            background: #0d0d0d;
+        }
+        .hero {
+            background: linear-gradient(135deg, #1a0a28 0%, #1a1a2e 50%, #0d0d0d 100%);
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid #4a1530;
+        }
+        .hero-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 14px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: #4a1530;
+            color: #e91e63;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            font-size: 2em;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+        }
+        .hero h1 span { color: #e91e63; }
+        .hero .subtitle {
+            color: #808080;
+            font-size: 1.05em;
+            max-width: 700px;
+            margin: 0 auto 20px;
+        }
+        .hero .meta { color: #555; font-size: 0.85em; }
+        .nav-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #e91e63;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 6px 14px;
+            border: 1px solid #4a1530;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover { background: #4a1530; color: #fff; }
+        article {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h2 {
+            font-size: 1.4em;
+            color: #e0e0e0;
+            border-left: 4px solid #e91e63;
+            padding-left: 12px;
+            margin: 40px 0 16px;
+        }
+        h3 {
+            font-size: 1.1em;
+            color: #b0b0b0;
+            margin: 24px 0 12px;
+        }
+        h4 {
+            font-size: 0.95em;
+            color: #c0c0c0;
+            margin: 16px 0 8px;
+        }
+        p { margin-bottom: 14px; color: #c0c0c0; }
+        strong { color: #e0e0e0; }
+        a { color: #e91e63; text-decoration: none; }
+        a:hover { color: #ff5c8d; text-decoration: underline; }
+        code {
+            background: #0d1117;
+            color: #79c0ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco','Menlo','Ubuntu Mono',monospace;
+            font-size: 0.88em;
+        }
+        pre {
+            background: #0d1117;
+            border-left: 3px solid #e91e63;
+            padding: 16px;
+            overflow-x: auto;
+            border-radius: 6px;
+            margin: 14px 0 20px;
+        }
+        pre code { background: none; padding: 0; font-size: 0.85em; line-height: 1.5; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0 24px;
+            font-size: 0.88em;
+        }
+        th {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 10px 12px;
+            text-align: left;
+            border: 1px solid #333;
+        }
+        td {
+            padding: 8px 12px;
+            border: 1px solid #333;
+            color: #c0c0c0;
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: #141414; }
+        tr:hover { background: #1a1a2e; }
+        ul, ol { margin: 10px 0 16px 24px; color: #c0c0c0; }
+        li { margin-bottom: 6px; }
+
+        /* Architecture diagram */
+        .arch-diagram {
+            background: #0d1117;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .arch-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .arch-box {
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            border: 1px solid;
+        }
+        .arch-l2 { background: #1e3a5f; color: #4a9eff; border-color: #2a5a8f; min-width: 500px; }
+        .arch-layer { background: #4a1530; color: #e91e63; border-color: #6a2540; }
+        .arch-contract { background: #1b5e20; color: #4caf50; border-color: #2a7a30; }
+        .arch-connector {
+            color: #555;
+            font-size: 1.2em;
+            margin: 4px 0;
+        }
+
+        /* Security layer cards */
+        .layer-section {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 16px 0;
+            border-top: 3px solid #e91e63;
+        }
+        .layer-section h3 {
+            color: #e91e63;
+            margin-top: 0;
+        }
+
+        /* Access control matrix highlight */
+        .permission-yes { color: #4caf50; font-weight: 600; }
+        .permission-no { color: #f44336; }
+        .permission-cond { color: #ff9800; }
+
+        /* Severity badges */
+        .sev-critical { background: #330000; color: #f44336; padding: 2px 8px; border-radius: 3px; font-weight: 600; font-size: 0.8em; }
+        .sev-high { background: #332200; color: #ff9800; padding: 2px 8px; border-radius: 3px; font-weight: 600; font-size: 0.8em; }
+        .sev-medium { background: #1e3a5f; color: #4a9eff; padding: 2px 8px; border-radius: 3px; font-weight: 600; font-size: 0.8em; }
+        .sev-low { background: #1b5e20; color: #4caf50; padding: 2px 8px; border-radius: 3px; font-weight: 600; font-size: 0.8em; }
+
+        /* Callout */
+        .callout {
+            background: #1e3a5f;
+            border-left: 4px solid #4a9eff;
+            padding: 16px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        .callout p { color: #b0d4ff; margin-bottom: 0; }
+
+        /* Incident levels */
+        .incident-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .incident-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 14px;
+        }
+        .incident-card .level { font-weight: bold; margin-bottom: 4px; }
+        .incident-card .time { color: #808080; font-size: 0.85em; }
+
+        /* Audit timeline */
+        .audit-timeline {
+            margin: 16px 0;
+        }
+        .audit-item {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+        .audit-status {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+        }
+        .audit-done { background: #1b5e20; color: #4caf50; }
+        .audit-planned { background: #1e3a5f; color: #4a9eff; }
+
+        /* Known limitations */
+        .limitation {
+            background: #1a1a1a;
+            border-left: 3px solid #ff9800;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 0 6px 6px 0;
+        }
+        .limitation strong { color: #ff9800; }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85em;
+        }
+        footer a { color: #e91e63; text-decoration: none; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.4em; }
+            .arch-l2 { min-width: auto; }
+            table { font-size: 0.8em; }
+            th, td { padding: 6px 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <span class="hero-tag">Security Report</span>
+        <h1>RWA Markets <span>Security &amp; Compliance</span> Model</h1>
+        <p class="subtitle">Security architecture, threat model, and compliance enforcement for BlindOracle's RWA prediction markets on Robinhood Chain</p>
+        <p class="meta">Version 1.0 &middot; February 27, 2026 &middot; Chain: Robinhood Chain (46630) &middot; Solidity 0.8.24</p>
+        <div class="nav-links">
+            <a href="../">Publications</a>
+            <a href="20260225-massat-results.html">MASSAT Results</a>
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a>
+        </div>
+    </div>
+
+    <article>
+        <div class="callout">
+            <p><strong>Design principle:</strong> No single layer failure should compromise user funds or market integrity. If the policy engine goes down, reentrancy guards still protect. If reentrancy is bypassed, the fixed-price model limits economic damage.</p>
+        </div>
+
+        <h2>Security Architecture</h2>
+        <div class="arch-diagram">
+            <div class="arch-row">
+                <div class="arch-box arch-l2">Robinhood Chain (L2) -- Sequencer ordering | L1 finality | Native compliance hooks</div>
+            </div>
+            <div class="arch-connector">&darr;</div>
+            <div class="arch-row">
+                <div class="arch-box arch-layer">ACE PolicyProtected (Chainlink)</div>
+                <div class="arch-box arch-layer">OpenZeppelin ReentrancyGuard</div>
+                <div class="arch-box arch-layer">Ownable Access Control</div>
+            </div>
+            <div class="arch-connector">&darr;</div>
+            <div class="arch-row">
+                <div class="arch-box arch-contract">RWAPredictionMarket (user-facing)</div>
+            </div>
+            <div class="arch-connector">&darr;</div>
+            <div class="arch-row">
+                <div class="arch-box arch-contract">DataStreamConsumer (oracle layer)</div>
+            </div>
+        </div>
+
+        <h2>Security Layers</h2>
+
+        <div class="layer-section">
+            <h3>Layer 1: ACE PolicyProtected</h3>
+            <p>Every user-facing function that touches funds runs through the <code>runPolicy</code> modifier before executing.</p>
+            <pre><code>abstract contract PolicyProtected {
+    IPolicyEngine public policyEngine;
+
+    modifier runPolicy() {
+        if (address(policyEngine) != address(0)) {
+            policyEngine.checkPolicy(msg.sender, msg.data);
+        }
+        _;
+    }
+}</code></pre>
+            <p><strong>What the policy engine checks:</strong></p>
+            <ul>
+                <li>Caller identity against KYC/AML registries</li>
+                <li>Transaction amount limits (per-tx and cumulative)</li>
+                <li>Geographic restrictions</li>
+                <li>Sanctioned address lists</li>
+                <li>Custom compliance rules defined in <code>CompliancePolicyRules</code></li>
+            </ul>
+        </div>
+
+        <div class="layer-section">
+            <h3>Layer 2: CompliancePolicyRules</h3>
+            <p>The specific rule set encoding the actual compliance logic.</p>
+            <pre><code>contract CompliancePolicyRules is IPolicyRules {
+    function checkPolicy(address caller, bytes calldata data) external view {
+        bytes4 selector = bytes4(data[:4]);
+        if (selector == RWAPredictionMarket.buyShares.selector) {
+            _checkBuyRules(caller, data);
+        } else if (selector == RWAPredictionMarket.claimWinnings.selector) {
+            _checkClaimRules(caller);
+        }
+    }
+}</code></pre>
+            <p><strong>Enforcement points:</strong> <code>buyShares()</code>, <code>sellShares()</code>, <code>claimWinnings()</code></p>
+        </div>
+
+        <div class="layer-section">
+            <h3>Layer 3: OpenZeppelin ReentrancyGuard</h3>
+            <p>The <code>nonReentrant</code> modifier prevents reentrancy attacks on all functions that transfer tokens.</p>
+            <pre><code>contract RWAPredictionMarket is PolicyProtected, ReentrancyGuard, Ownable {
+    function buyShares(bool isYes, uint256 amount)
+        external runPolicy nonReentrant { ... }
+    function sellShares(bool isYes, uint256 amount)
+        external runPolicy nonReentrant { ... }
+    function claimWinnings()
+        external runPolicy nonReentrant { ... }
+}</code></pre>
+        </div>
+
+        <div class="layer-section">
+            <h3>Layer 4: Ownable Access Control</h3>
+            <pre><code>// Only owner can:
+function emergencyResolve(bool _yesWins, string calldata reason) external onlyOwner { ... }
+function withdrawFees(address to) external onlyOwner { ... }
+function setPolicyEngine(address engine) external onlyOwner { ... }</code></pre>
+        </div>
+
+        <h2>Threat Model</h2>
+        <table>
+            <tr><th>Threat</th><th>Severity</th><th>Mitigation</th></tr>
+            <tr>
+                <td>Front-running share purchases</td>
+                <td><span class="sev-medium">Medium</span></td>
+                <td>L2 sequencer FIFO ordering; fixed 1:1 pricing eliminates MEV from slippage</td>
+            </tr>
+            <tr>
+                <td>Reentrancy on token transfers</td>
+                <td><span class="sev-critical">Critical</span></td>
+                <td>OpenZeppelin <code>ReentrancyGuard</code> on all fund-moving functions; checks-effects-interactions pattern</td>
+            </tr>
+            <tr>
+                <td>Oracle price manipulation</td>
+                <td><span class="sev-critical">Critical</span></td>
+                <td>Data Streams DON consensus; staleness threshold; <code>verifyAndStore</code> validates report structure</td>
+            </tr>
+            <tr>
+                <td>Stale oracle data</td>
+                <td><span class="sev-high">High</span></td>
+                <td>Configurable staleness threshold (default 3600s); <code>isPriceFresh()</code> check; <code>StalePrice</code> revert</td>
+            </tr>
+            <tr>
+                <td>Compliance evasion</td>
+                <td><span class="sev-high">High</span></td>
+                <td><code>runPolicy</code> modifier on all user-facing fund operations; contract-level enforcement</td>
+            </tr>
+            <tr>
+                <td>Unauthorized admin actions</td>
+                <td><span class="sev-high">High</span></td>
+                <td><code>Ownable</code> restricts all admin functions; owner key management critical</td>
+            </tr>
+            <tr>
+                <td>Wash trading</td>
+                <td><span class="sev-medium">Medium</span></td>
+                <td>Fixed pricing eliminates price manipulation; policy engine can enforce per-address limits</td>
+            </tr>
+            <tr>
+                <td>Collateral token rug pull</td>
+                <td><span class="sev-medium">Medium</span></td>
+                <td>Collateral whitelist on factory; only owner-approved tokens; USDC primary collateral</td>
+            </tr>
+            <tr>
+                <td>Replay attacks</td>
+                <td><span class="sev-medium">Medium</span></td>
+                <td><code>expiresAt</code> and <code>validFromTimestamp</code> fields in PremiumReport; staleness check</td>
+            </tr>
+            <tr>
+                <td>Integer overflow/underflow</td>
+                <td><span class="sev-low">Low</span></td>
+                <td>Solidity 0.8.24 built-in overflow checks; no unchecked blocks in critical math</td>
+            </tr>
+            <tr>
+                <td>DoS on resolution</td>
+                <td><span class="sev-low">Low</span></td>
+                <td><code>resolve()</code> is permissionless; any address can resolve post-expiration</td>
+            </tr>
+            <tr>
+                <td>Flash loan attacks</td>
+                <td><span class="sev-low">Low</span></td>
+                <td>Fixed 1:1 pricing; no AMM pool; no on-chain reserve price oracle</td>
+            </tr>
+        </table>
+
+        <h2>Access Control Matrix</h2>
+
+        <h3>RWAMarketFactory</h3>
+        <table>
+            <tr><th>Function</th><th>Owner</th><th>User</th><th>Anyone</th><th>Modifiers</th></tr>
+            <tr><td><code>createMarket</code></td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>onlyOwner</code></td></tr>
+            <tr><td><code>approveCollateral</code></td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>onlyOwner</code></td></tr>
+            <tr><td><code>revokeCollateral</code></td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>onlyOwner</code></td></tr>
+            <tr><td><code>setPolicyEngine</code></td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>onlyOwner</code></td></tr>
+            <tr><td><code>getMarket</code></td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td><code>view</code></td></tr>
+        </table>
+
+        <h3>RWAPredictionMarket</h3>
+        <table>
+            <tr><th>Function</th><th>Owner</th><th>User (pass)</th><th>User (fail)</th><th>Anyone</th><th>Modifiers</th></tr>
+            <tr><td><code>buyShares</code></td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>runPolicy</code>, <code>nonReentrant</code></td></tr>
+            <tr><td><code>sellShares</code></td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>runPolicy</code>, <code>nonReentrant</code></td></tr>
+            <tr><td><code>claimWinnings</code></td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>runPolicy</code>, <code>nonReentrant</code></td></tr>
+            <tr><td><code>resolve</code></td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td class="permission-cond">Post-exp</td><td>none</td></tr>
+            <tr><td><code>emergencyResolve</code></td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>onlyOwner</code></td></tr>
+        </table>
+
+        <h3>DataStreamConsumer</h3>
+        <table>
+            <tr><th>Function</th><th>Owner</th><th>User</th><th>Anyone</th><th>Modifiers</th></tr>
+            <tr><td><code>verifyAndStore</code></td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td>none</td></tr>
+            <tr><td><code>registerFeed</code></td><td class="permission-yes">Yes</td><td class="permission-no">No</td><td class="permission-no">No</td><td><code>onlyOwner</code></td></tr>
+            <tr><td><code>getLatestPrice</code></td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td><code>view</code></td></tr>
+            <tr><td><code>isPriceFresh</code></td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td class="permission-yes">Yes</td><td><code>view</code></td></tr>
+        </table>
+
+        <p><strong>Key observations:</strong> All fund-moving functions require both <code>runPolicy</code> and <code>nonReentrant</code>. <code>resolve()</code> is intentionally permissionless post-expiration. <code>verifyAndStore()</code> is permissionless.</p>
+
+        <h2>ACE Policy Integration</h2>
+        <pre><code>User calls buyShares(true, 100)
+    |
+    v
+runPolicy modifier fires
+    |
+    v
+policyEngine.checkPolicy(msg.sender, msg.data)
+    |
+    +-- Policy engine decodes msg.data
+    |   +-- Extracts function selector: buyShares
+    |   +-- Extracts parameters: isYes=true, amount=100
+    |   +-- Checks caller against compliance rules
+    |
+    +-- PASS: continue to buyShares logic
+    |
+    +-- FAIL: revert entire transaction</code></pre>
+
+        <h3>CompliancePolicyRules Configuration</h3>
+        <pre><code>struct PolicyConfig {
+    bool kycRequired;           // Require KYC verification
+    bool amlCheckRequired;      // Run AML screening
+    uint256 maxTransactionSize; // Per-transaction limit
+    uint256 maxDailyVolume;     // Per-address daily limit
+    bool geoRestricted;         // Enable geographic restrictions
+    bytes32[] blockedRegions;   // Blocked jurisdiction codes
+    address sanctionsList;      // Address of sanctions oracle
+}</code></pre>
+
+        <h2>Emergency Procedures</h2>
+        <h3>Emergency Resolution</h3>
+        <pre><code>cast send $MARKET "emergencyResolve(bool,string)" \
+  true \
+  "Data Streams feed offline for 48h. Resolving based on \
+NYSE closing price from Bloomberg terminal." \
+  --rpc-url $RPC_URL --private-key $PK</code></pre>
+
+        <h3>Emergency Resolution Criteria</h3>
+        <table>
+            <tr><th>Scenario</th><th>Action</th><th>Example</th></tr>
+            <tr><td>Oracle feed offline &gt; 24h past expiration</td><td>Emergency resolve using off-chain data</td><td>Data Streams provider outage</td></tr>
+            <tr><td>Oracle reports clearly wrong price</td><td>Emergency resolve using correct data</td><td>Reported TSLA at $3 instead of $300</td></tr>
+            <tr><td>Smart contract bug discovered</td><td>Emergency resolve to protect user funds</td><td>Logic error in resolution</td></tr>
+            <tr><td>Regulatory order</td><td>Emergency resolve per legal requirement</td><td>Court order to halt market</td></tr>
+        </table>
+
+        <h3>Pause Mechanism</h3>
+        <pre><code>// Emergency policy that blocks everything
+contract EmergencyPausePolicy is IPolicyRules {
+    function checkPolicy(address, bytes calldata) external pure {
+        revert("Market paused - emergency");
+    }
+}</code></pre>
+        <p>Deploy and set as the policy engine to effectively pause the market without modifying the market contract itself.</p>
+
+        <h2>Test Coverage</h2>
+        <table>
+            <tr><th>Category</th><th>Tests</th><th>Status</th><th>Description</th></tr>
+            <tr><td>Unit: RWAMarketFactory</td><td>18</td><td class="permission-yes">PASS</td><td>Market creation, collateral mgmt, pagination</td></tr>
+            <tr><td>Unit: RWAPredictionMarket</td><td>32</td><td class="permission-yes">PASS</td><td>Buy/sell, resolution, claims, edge cases</td></tr>
+            <tr><td>Unit: DataStreamConsumer</td><td>22</td><td class="permission-yes">PASS</td><td>Report decoding, staleness, feed management</td></tr>
+            <tr><td>Unit: CompliancePolicyRules</td><td>15</td><td class="permission-yes">PASS</td><td>Policy enforcement, rule configuration</td></tr>
+            <tr><td>Integration: Full lifecycle</td><td>8</td><td class="permission-yes">PASS</td><td>Create &rarr; trade &rarr; resolve &rarr; claim flows</td></tr>
+            <tr><td>Integration: Multi-market</td><td>5</td><td class="permission-yes">PASS</td><td>Multiple concurrent markets, shared oracle</td></tr>
+            <tr><td>Fork: Robinhood Chain</td><td>3</td><td class="permission-yes">PASS</td><td>On-chain fork validation against live state</td></tr>
+            <tr><td>Edge: Boundary conditions</td><td>2</td><td class="permission-yes">PASS</td><td>Zero amounts, max uint256, exact strike</td></tr>
+            <tr style="font-weight: bold;"><td>Total</td><td>105</td><td class="permission-yes">PASS</td><td>100% passing</td></tr>
+        </table>
+
+        <h2>Planned Audits</h2>
+        <div class="audit-timeline">
+            <div class="audit-item">
+                <span class="audit-status audit-done">Complete</span>
+                <div>
+                    <strong>Internal review</strong> -- All contracts, 105 tests, BlindOracle team
+                </div>
+            </div>
+            <div class="audit-item">
+                <span class="audit-status audit-done">Complete</span>
+                <div>
+                    <strong>Static analysis</strong> -- Slither, Mythril, Aderyn. 0 High, 0 Medium, 3 Low (informational)
+                </div>
+            </div>
+            <div class="audit-item">
+                <span class="audit-status audit-planned">Planned</span>
+                <div>
+                    <strong>Formal verification</strong> -- Critical paths (resolution, claims), pre-mainnet
+                </div>
+            </div>
+            <div class="audit-item">
+                <span class="audit-status audit-planned">Planned</span>
+                <div>
+                    <strong>External audit</strong> -- Full contract system, targeting Chainlink-recommended auditors
+                </div>
+            </div>
+            <div class="audit-item">
+                <span class="audit-status audit-planned">Planned</span>
+                <div>
+                    <strong>Bug bounty</strong> -- Public bounty program via Immunefi, post-audit
+                </div>
+            </div>
+        </div>
+
+        <h2>Known Limitations</h2>
+        <div class="limitation">
+            <strong>1. Owner centralization</strong>
+            <p>The owner can <code>emergencyResolve</code> and <code>withdrawFees</code>. Intentional for current phase. Future: multi-sig or DAO governance.</p>
+        </div>
+        <div class="limitation">
+            <strong>2. Policy engine single point</strong>
+            <p>If compromised, all policy-protected functions affected. Mitigation: upgradeable by owner.</p>
+        </div>
+        <div class="limitation">
+            <strong>3. Fixed pricing model</strong>
+            <p>1-share-1-USDC is manipulation-resistant but no price discovery. Deliberate trade-off for security.</p>
+        </div>
+        <div class="limitation">
+            <strong>4. Oracle dependency</strong>
+            <p>Markets cannot resolve without oracle data (except emergency resolution). If Data Streams permanently unavailable, owner must emergency-resolve.</p>
+        </div>
+
+        <h2>Incident Response</h2>
+        <div class="incident-grid">
+            <div class="incident-card">
+                <div class="level" style="color: #f44336;">P0 - Critical</div>
+                <div>Active exploit, funds at risk</div>
+                <div class="time">Response: &lt; 1 hour</div>
+            </div>
+            <div class="incident-card">
+                <div class="level" style="color: #ff9800;">P1 - High</div>
+                <div>Vulnerability discovered, no active exploit</div>
+                <div class="time">Response: &lt; 4 hours</div>
+            </div>
+            <div class="incident-card">
+                <div class="level" style="color: #4a9eff;">P2 - Medium</div>
+                <div>Non-critical bug affecting UX</div>
+                <div class="time">Response: &lt; 24 hours</div>
+            </div>
+            <div class="incident-card">
+                <div class="level" style="color: #4caf50;">P3 - Low</div>
+                <div>Minor issue, no security impact</div>
+                <div class="time">Response: &lt; 1 week</div>
+            </div>
+        </div>
+
+        <h3>P0 Response Playbook</h3>
+        <ol>
+            <li><strong>Contain:</strong> Deploy <code>EmergencyPausePolicy</code> to halt all user-facing functions</li>
+            <li><strong>Assess:</strong> Determine scope of compromise (which markets, how much funds)</li>
+            <li><strong>Communicate:</strong> Notify users via all channels (frontend, Discord, Twitter)</li>
+            <li><strong>Remediate:</strong> Emergency-resolve affected markets if needed</li>
+            <li><strong>Fix:</strong> Deploy patched contracts</li>
+            <li><strong>Restore:</strong> Update policy engine to resume operations</li>
+            <li><strong>Review:</strong> Post-incident report within 48 hours</li>
+        </ol>
+    </article>
+
+    <footer>
+        <p><em>Security model version: 1.0 | Chain: Robinhood Chain (46630) | Compiler: Solidity 0.8.24</em></p>
+        <p style="margin-top: 12px;">Copyright &copy; 2025-2026 Craig M. Brown. All rights reserved.</p>
+        <p style="margin-top: 8px;">
+            <a href="../">Publications</a> &middot;
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a> &middot;
+            <a href="https://github.com/craigmbrown/blindoracle-docs">Source</a>
+        </p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA Stock Prediction Markets on Robinhood Chain - BlindOracle</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.7;
+            color: #e0e0e0;
+            background: #0d0d0d;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0a1628 0%, #1a1a2e 50%, #0d0d0d 100%);
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid #1e3a5f;
+        }
+        .hero-tag {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 14px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: #1b5e20;
+            color: #4caf50;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            font-size: 2.2em;
+            color: #e0e0e0;
+            margin-bottom: 12px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero h1 span { color: #4a9eff; }
+        .hero .subtitle {
+            color: #808080;
+            font-size: 1.1em;
+            max-width: 650px;
+            margin: 0 auto 20px;
+        }
+        .hero .date { color: #555; font-size: 0.9em; }
+        .nav-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #4a9eff;
+            text-decoration: none;
+            font-size: 0.9em;
+            padding: 6px 14px;
+            border: 1px solid #1e3a5f;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover { background: #1e3a5f; color: #fff; }
+        article {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #e0e0e0;
+            border-left: 4px solid #4a9eff;
+            padding-left: 12px;
+            margin: 40px 0 16px;
+        }
+        h3 {
+            font-size: 1.15em;
+            color: #b0b0b0;
+            margin: 28px 0 12px;
+        }
+        p {
+            margin-bottom: 16px;
+            color: #c0c0c0;
+        }
+        .lede {
+            font-size: 1.15em;
+            color: #b0b0b0;
+            border-left: 3px solid #4a9eff;
+            padding-left: 16px;
+            margin: 0 0 30px;
+            font-style: italic;
+        }
+        strong { color: #e0e0e0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        code {
+            background: #0d1117;
+            color: #79c0ff;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco','Menlo','Ubuntu Mono',monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #0d1117;
+            border-left: 3px solid #4a9eff;
+            padding: 16px;
+            overflow-x: auto;
+            border-radius: 6px;
+            margin: 16px 0;
+        }
+        pre code { background: none; padding: 0; font-size: 0.85em; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0 24px;
+        }
+        th {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid #333;
+            font-size: 0.9em;
+        }
+        td {
+            padding: 10px 14px;
+            border: 1px solid #333;
+            color: #c0c0c0;
+            font-size: 0.9em;
+        }
+        tr:nth-child(even) { background: #141414; }
+        tr:hover { background: #1a1a2e; }
+        td:last-child { text-align: center; }
+        ul, ol {
+            margin: 12px 0 16px 24px;
+            color: #c0c0c0;
+        }
+        li { margin-bottom: 6px; }
+
+        /* Flow diagram */
+        .flow-diagram {
+            background: #0d1117;
+            border: 1px solid #1e3a5f;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+            text-align: center;
+        }
+        .flow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .flow-step {
+            background: #1e3a5f;
+            color: #4a9eff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 600;
+            border: 1px solid #2a5a8f;
+        }
+        .flow-arrow {
+            color: #4a9eff;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+
+        /* Integration cards */
+        .integration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .int-card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            border-top: 3px solid #4a9eff;
+        }
+        .int-card h4 {
+            color: #4a9eff;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        .int-card p {
+            color: #808080;
+            font-size: 0.85em;
+            margin-bottom: 0;
+        }
+
+        /* Example box */
+        .example-box {
+            background: #1a1a2e;
+            border: 1px solid #1e3a5f;
+            border-radius: 8px;
+            padding: 24px;
+            margin: 24px 0;
+        }
+        .example-box h4 {
+            color: #4a9eff;
+            margin-bottom: 12px;
+        }
+        .example-box .actor {
+            margin-bottom: 12px;
+        }
+        .example-box .actor-name {
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+        .example-box .actor-desc {
+            color: #b0b0b0;
+            font-size: 0.9em;
+        }
+
+        /* Security layers */
+        .security-layers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            margin: 16px 0 24px;
+        }
+        .sec-layer {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 14px;
+            text-align: center;
+        }
+        .sec-layer .icon { font-size: 1.6em; margin-bottom: 6px; }
+        .sec-layer .name { color: #e0e0e0; font-weight: 600; font-size: 0.9em; margin-bottom: 4px; }
+        .sec-layer .desc { color: #808080; font-size: 0.8em; }
+
+        /* Roadmap */
+        .roadmap {
+            margin: 20px 0;
+        }
+        .roadmap-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            align-items: flex-start;
+        }
+        .roadmap-dot {
+            width: 12px;
+            height: 12px;
+            min-width: 12px;
+            border-radius: 50%;
+            background: #4a9eff;
+            margin-top: 6px;
+        }
+        .roadmap-content h4 {
+            color: #e0e0e0;
+            font-size: 0.95em;
+            margin-bottom: 4px;
+        }
+        .roadmap-content p {
+            color: #808080;
+            font-size: 0.85em;
+            margin-bottom: 0;
+        }
+
+        .callout {
+            background: #1e3a5f;
+            border-left: 4px solid #4a9eff;
+            padding: 16px;
+            border-radius: 4px;
+            margin: 24px 0;
+        }
+        .callout p { color: #b0d4ff; margin-bottom: 0; }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85em;
+        }
+        footer a { color: #4a9eff; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.5em; }
+            .flow-steps { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+            .integration-grid { grid-template-columns: 1fr; }
+            .security-layers { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <span class="hero-tag">Blog Post</span>
+        <h1>RWA Stock Prediction Markets on <span>Robinhood Chain</span></h1>
+        <p class="subtitle">ACE-compliant prediction markets for tokenized stocks powered by Chainlink Data Streams. Six contracts, 105 tests, zero off-chain dependencies.</p>
+        <p class="date">February 27, 2026</p>
+        <div class="nav-links">
+            <a href="../">Publications</a>
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a>
+            <a href="https://github.com/craigmbrown/blindoracle-rwa-markets">GitHub</a>
+        </div>
+    </div>
+
+    <article>
+        <p class="lede">There is a gap in the market and it is frustratingly obvious. Robinhood Chain has tokenized stocks. You can hold TSLA on-chain. But you cannot bet on where those stocks will be next month using the same on-chain rails. Until now.</p>
+
+        <h2>What We Built</h2>
+        <p>BlindOracle RWA Markets brings binary prediction markets to tokenized stocks on Robinhood Chain. The mechanics are simple: pick a stock, pick a strike price, pick a date, and trade YES or NO shares.</p>
+        <p>"Will TSLA close above $300 by March 31, 2026?" Buy YES if you think it will. Buy NO if you don't. When the market expires, Chainlink Data Streams delivers the price, the contract resolves, and winners collect.</p>
+        <p>Six Solidity contracts. 105 tests. Zero off-chain dependencies for resolution.</p>
+
+        <div class="callout">
+            <p>The system is not a prototype. It compiles, deploys, and resolves against a live Robinhood Chain fork with gas costs under <strong>$0.001 per transaction</strong>.</p>
+        </div>
+
+        <h2>Why Chainlink, Why Three Integrations</h2>
+        <p>The entire system is designed around three Chainlink services, each solving a different problem:</p>
+
+        <div class="integration-grid">
+            <div class="int-card">
+                <h4>1. ACE (PolicyProtected)</h4>
+                <p>On-chain compliance checks via <code>runPolicy</code> modifier before every fund operation. KYC, sanctions, geographic restrictions enforced at the contract level. You literally cannot call <code>buyShares()</code> without passing the policy check.</p>
+            </div>
+            <div class="int-card">
+                <h4>2. Data Streams V3</h4>
+                <p>Institutional-grade stock prices via pull-based model. <code>PremiumReport</code> carries median price from the DON, bid/ask spread, timestamps. Resolution is permissionless -- anyone can submit and resolve.</p>
+            </div>
+            <div class="int-card">
+                <h4>3. BUILD Program</h4>
+                <p>Priority access to new Chainlink services, co-marketing, and dedicated technical support. For a platform dependent on oracle reliability, a direct line to the Chainlink team is infrastructure.</p>
+            </div>
+        </div>
+
+        <h3>Resolution Flow</h3>
+        <div class="flow-diagram">
+            <div class="flow-steps">
+                <div class="flow-step">Market Expires</div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">Fetch Data Streams Report</div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">verifyAndStore()</div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">resolve()</div>
+                <span class="flow-arrow">&rarr;</span>
+                <div class="flow-step">Oracle Price vs Strike</div>
+            </div>
+        </div>
+        <p>Notice: resolution is <strong>permissionless</strong>. The market operator cannot block it. The outcome is determined entirely by oracle-signed data verified on-chain.</p>
+
+        <h2>How It Works: Alice and Bob Trade TSLA</h2>
+        <div class="example-box">
+            <h4>Market: "Will TSLA be above $300 by March 31, 2026?"</h4>
+            <div class="actor">
+                <span class="actor-name">Alice</span> thinks TSLA will moon. She calls <code>buyShares(true, 100)</code> -- buying 100 YES shares for 100 USDC. ACE policy engine checks her address, approves, shares minted.
+            </div>
+            <div class="actor">
+                <span class="actor-name">Bob</span> thinks TSLA is overvalued. He calls <code>buyShares(false, 100)</code> -- buying 100 NO shares for 100 USDC.
+            </div>
+            <div class="actor">
+                <span class="actor-name">March 31 arrives.</span> A resolver fetches the latest TSLA price from Chainlink Data Streams: <strong>$312.45</strong>. Report submitted on-chain, <code>resolve()</code> called. YES wins. Alice gets ~200 USDC minus fees. Bob gets nothing.
+            </div>
+        </div>
+        <p>Simple. Transparent. Fully on-chain. No one had to trust the operator to report the correct price.</p>
+
+        <h2>Contract Architecture</h2>
+        <table>
+            <tr><th>Contract</th><th>Purpose</th><th>LOC</th></tr>
+            <tr><td><code>RWAMarketFactory</code></td><td>Deploys and indexes markets, manages collateral whitelist</td><td>~180</td></tr>
+            <tr><td><code>RWAPredictionMarket</code></td><td>Core market logic: buy, sell, resolve, claim</td><td>~250</td></tr>
+            <tr><td><code>DataStreamConsumer</code></td><td>Decodes and stores Chainlink Data Streams reports</td><td>~150</td></tr>
+            <tr><td><code>CompliancePolicyRules</code></td><td>ACE compliance rule implementation</td><td>~120</td></tr>
+            <tr><td><code>PolicyProtected</code></td><td>Abstract base for policy-enforced contracts</td><td>~30</td></tr>
+            <tr><td><code>MockCollateralToken</code></td><td>Test ERC-20 for local development</td><td>~40</td></tr>
+        </table>
+
+        <h3>Supported Assets</h3>
+        <table>
+            <tr><th>Asset</th><th>Symbol</th><th>Feed Status</th></tr>
+            <tr><td>Tesla</td><td>TSLA</td><td>Active</td></tr>
+            <tr><td>Amazon</td><td>AMZN</td><td>Active</td></tr>
+            <tr><td>Robinhood</td><td>HOOD</td><td>Active</td></tr>
+            <tr><td>Palantir</td><td>PLTR</td><td>Active</td></tr>
+            <tr><td>AMD</td><td>AMD</td><td>Active</td></tr>
+        </table>
+        <p>Adding a new asset is a single function call: <code>registerFeed(feedId, symbol)</code> on the DataStreamConsumer, then <code>createMarket()</code> on the factory.</p>
+
+        <h2>Security Model</h2>
+        <div class="security-layers">
+            <div class="sec-layer">
+                <div class="icon">&#x1f6e1;</div>
+                <div class="name">ACE PolicyProtected</div>
+                <div class="desc">Compliance checks before every fund operation</div>
+            </div>
+            <div class="sec-layer">
+                <div class="icon">&#x1f512;</div>
+                <div class="name">ReentrancyGuard</div>
+                <div class="desc">OpenZeppelin on all token-transferring functions</div>
+            </div>
+            <div class="sec-layer">
+                <div class="icon">&#x1f511;</div>
+                <div class="name">Ownable</div>
+                <div class="desc">Admin functions restricted to owner</div>
+            </div>
+            <div class="sec-layer">
+                <div class="icon">&#x1f4b2;</div>
+                <div class="name">Fixed Pricing</div>
+                <div class="desc">1 share = 1 USDC eliminates AMM manipulation</div>
+            </div>
+        </div>
+        <p>The fixed pricing model is a deliberate design choice. AMM-based prediction markets enable price discovery but introduce manipulation surfaces. Our model sacrifices price discovery for simplicity and security. No curve to manipulate, no pool to drain, no flash loan attack to execute.</p>
+
+        <h2>Test Suite</h2>
+        <p>105 tests covering unit, integration, and fork scenarios. All passing. Fork tests deploy against live Robinhood Chain state to validate gas costs, token integration, and chain compatibility.</p>
+        <pre><code>forge test -vv
+# [PASS] testBuyYesShares() (gas: 156789)
+# [PASS] testResolveAboveStrike() (gas: 234567)
+# [PASS] testClaimWinnings() (gas: 189012)
+# ... 105 tests, 0 failures</code></pre>
+
+        <h2>What's Next</h2>
+        <div class="roadmap">
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-content">
+                    <h4>Chainlink Automation for Auto-Resolution</h4>
+                    <p>Automated <code>checkUpkeep</code>/<code>performUpkeep</code> to watch for expired markets and trigger resolution. Interface built, awaiting Automation availability on Robinhood Chain.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-content">
+                    <h4>CCIP for Cross-Chain Markets</h4>
+                    <p>Accept collateral from Ethereum mainnet USDC or Arbitrum USDC via Chainlink CCIP. Users on Ethereum can participate in Robinhood Chain markets without manual bridging.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-content">
+                    <h4>CRE for Workflow Orchestration</h4>
+                    <p>Trigger &rarr; Read &rarr; Compute &rarr; Write workflows. Monitor expirations, fetch Data Streams reports, resolve markets -- all within decentralized Chainlink infrastructure.</p>
+                </div>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-content">
+                    <h4>External Audit</h4>
+                    <p>Formal external audit before mainnet deployment. Targeting auditors recommended by Chainlink BUILD. Current static analysis: zero high or medium severity findings.</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Try It</h2>
+        <pre><code>git clone https://github.com/craigmbrown/blindoracle-rwa-markets.git
+cd blindoracle-rwa-markets
+forge build
+forge test  # 105 tests, all green</code></pre>
+        <p>From there, the <a href="../quickstart/rwa-quickstart.md">quickstart guide</a> walks you through deploying to a local anvil instance, creating a TSLA market, buying shares, resolving, and claiming -- all in about 5 minutes.</p>
+        <p>For the full contract API reference, see the <a href="../api/rwa-market-api.md">on-chain API docs</a>. For the security model and threat analysis, see the <a href="20260227-rwa-compliance-security.html">security documentation</a>.</p>
+
+        <div class="callout">
+            <p><strong>BlindOracle</strong> is a Chainlink BUILD member building privacy-preserving prediction markets. The RWA Markets module brings ACE-compliant stock prediction markets to Robinhood Chain using Chainlink Data Streams V3 for trustless resolution.</p>
+        </div>
+    </article>
+
+    <footer>
+        <p>Copyright &copy; 2025-2026 Craig M. Brown. All rights reserved.</p>
+        <p style="margin-top: 8px;">
+            <a href="../">Publications</a> &middot;
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a> &middot;
+            <a href="https://github.com/craigmbrown/blindoracle-rwa-markets">GitHub</a> &middot;
+            <a href="https://craigmbrown.com">craigmbrown.com</a>
+        </p>
+    </footer>
+</body>
+</html>
