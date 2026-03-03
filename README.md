@@ -94,8 +94,12 @@ ACE-compliant prediction markets for tokenized stocks on Robinhood Chain, powere
 - [Chainlink CRE Privacy Integration](blog/chainlink-cre-privacy.md) - CRE workflow privacy layer
 
 ### Technical Papers
+- [Agent-to-Agent Trust via Nostr Proofs](whitepaper/agent-trust-nostr-proofs.md) - 5-layer Nostr Proof Stack for agent identity, credentials, and private settlement (NEW)
 - [Commitment Scheme Whitepaper](whitepaper/commitment-scheme.md) - SHA256(secret || position || amount) specification
 - [SRVL Protocol Whitepaper](whitepaper/srvl-protocol.md) - Service verification and lifecycle protocol
+
+### Publications Landing Page
+Browse all whitepapers, blog posts, and security reports at [craigmbrown.com/blindoracle/whitepaper](https://craigmbrown.com/blindoracle/whitepaper/)
 
 ### Security
 - [MASSAT Assessment Results](security/massat-results.md) - Multi-Agent System Security Assessment (87 tests)

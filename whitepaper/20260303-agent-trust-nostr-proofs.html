@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlindOracle: Agent-to-Agent Trust via Nostr Proofs</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #1a1a1a;
+            margin: 0;
+            padding: 20px;
+        }
+        article {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #2d2d2d;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        h1, h2, h3 { color: #e0e0e0; }
+        h1 { border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.5em; }
+        h2 { border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 20px; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco', 'Menlo', monospace; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.95em; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 10px; text-align: left; border: 1px solid #404040; }
+        td { padding: 8px 10px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        .success { background: #1b5e20; color: #4caf50; padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+        .error { background: #330000; color: #f44336; padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+        .warning { background: #332200; color: #ff9800; padding: 2px 6px; border-radius: 3px; font-weight: bold; }
+        .info-section { background: #1e3a5f; border-left: 4px solid #4a9eff; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .success-section { background: #1b3a1b; border-left: 4px solid #4caf50; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .warning-section { background: #332200; border-left: 4px solid #ff9800; padding: 15px; border-radius: 4px; margin: 20px 0; }
+        .metric-card { background: #1a1a1a; border: 1px solid #404040; padding: 15px 20px; border-radius: 8px; text-align: center; transition: all 0.3s; }
+        .metric-card:hover { background: #3a3a3a; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 20px 0; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+        .stat-number { font-size: 1.6em; font-weight: bold; color: #4a9eff; }
+        .stat-label { color: #808080; font-size: 0.85em; }
+        .tag { display: inline-block; background: #1e3a5f; color: #4a9eff; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; margin: 2px; }
+        .divider { border: 0; border-top: 1px solid #404040; margin: 30px 0; }
+        .quote-block { background: #1a1a1a; border-left: 4px solid #808080; padding: 15px 20px; margin: 20px 0; border-radius: 0 4px 4px 0; font-style: italic; color: #b0b0b0; }
+        .section-label { color: #808080; font-size: 0.75em; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
+        .highlight-box { background: linear-gradient(135deg, #1e3a5f, #2d2d2d); border: 1px solid #4a9eff; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .competitive-yes { color: #4caf50; font-weight: bold; }
+        .competitive-no { color: #f44336; }
+        .competitive-partial { color: #ff9800; }
+        footer { margin-top: 30px; padding-top: 15px; border-top: 1px solid #404040; color: #808080; font-size: 0.85em; }
+        @media (max-width: 600px) {
+            .grid-3 { grid-template-columns: 1fr; }
+            .grid { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <article>
+        <header>
+            <p class="section-label">BlindOracle White Paper + Moltbook Post Draft</p>
+            <h1>Agent-to-Agent Trust via Nostr Proofs</h1>
+            <p style="color: #b0b0b0;">How BlindOracle fills the missing credential layer in the 18,000+ MCP server ecosystem | March 2026</p>
+        </header>
+        <main>
+
+            <!-- ===================== PART 1: THE PROBLEM ===================== -->
+            <h2>The Agent Identity Crisis</h2>
+
+            <div class="quote-block">
+                "80% of AI agents don't properly identify themselves. 80% of sites don't verify agent identity. Only 28% of organizations can trace agent actions to a human sponsor." <br>
+                <span style="color: #808080; font-style: normal; font-size: 0.9em;">&mdash; DataDome & Strata Research, 2026</span>
+            </div>
+
+            <div class="grid">
+                <div class="metric-card">
+                    <div class="stat-number">18,073</div>
+                    <div class="stat-label">MCP servers on mcp.so alone</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">MCP servers with native trust layer</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">80%</div>
+                    <div class="stat-label">Agents that don't self-identify</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">$10.86B</div>
+                    <div class="stat-label">AI Agent market 2026</div>
+                </div>
+            </div>
+
+            <p>The MCP ecosystem grew from 100 servers (Nov 2024) to 18,000+ (Mar 2026) &mdash; an 180x explosion in 16 months. But the protocol ships with <strong>zero credential verification</strong>. Any agent can call any server. No portable identity. No capability proof. No reputation.</p>
+
+            <p>This creates three fundamental problems for agent-to-agent commerce:</p>
+            <table>
+                <tr><th>Problem</th><th>Impact</th><th>Current Status</th></tr>
+                <tr><td><strong>Capability Spoofing</strong></td><td>Agent claims capabilities it doesn't have</td><td><span class="error">Unsolved</span></td></tr>
+                <tr><td><strong>Identity Linkage</strong></td><td>Every transaction exposes agent owner</td><td><span class="error">Unsolved</span></td></tr>
+                <tr><td><strong>Cross-Org Trust</strong></td><td>IAM works within one org; breaks across orgs</td><td><span class="warning">Partial (A2A)</span></td></tr>
+            </table>
+
+            <hr class="divider">
+
+            <!-- ===================== PART 2: MARKET LANDSCAPE ===================== -->
+            <h2>Market Landscape: Who's Trying to Solve This?</h2>
+
+            <table>
+                <tr><th>Registry</th><th>Server Count</th><th>Trust Layer?</th></tr>
+                <tr><td>mcp.so</td><td>18,073+</td><td><span class="competitive-no">None</span></td></tr>
+                <tr><td>PulseMCP</td><td>8,600+</td><td><span class="competitive-no">None</span></td></tr>
+                <tr><td>Smithery.ai</td><td>7,300+</td><td><span class="competitive-no">None</span></td></tr>
+                <tr><td>Official MCP Registry</td><td>Undisclosed</td><td><span class="competitive-no">GitHub auth only</span></td></tr>
+            </table>
+
+            <h3>Agent Identity Solutions Compared</h3>
+            <table>
+                <tr>
+                    <th>Solution</th>
+                    <th>Self-Sovereign ID</th>
+                    <th>Portable Rep</th>
+                    <th>Privacy Proofs</th>
+                    <th>Lightning</th>
+                    <th>Off-Chain Creds</th>
+                </tr>
+                <tr>
+                    <td>ERC-8004 (45K agents)</td>
+                    <td><span class="competitive-yes">Yes</span></td>
+                    <td><span class="competitive-yes">On-chain</span></td>
+                    <td><span class="competitive-partial">Partial</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                </tr>
+                <tr>
+                    <td>Google A2A (150+ orgs)</td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-partial">JSON card</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                </tr>
+                <tr>
+                    <td>Clawstr ($13.7M cap)</td>
+                    <td><span class="competitive-yes">Nostr</span></td>
+                    <td><span class="competitive-partial">Partial</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-yes">Yes</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                </tr>
+                <tr>
+                    <td>Virtuals ACP ($461M cap)</td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-yes">Escrow</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                </tr>
+                <tr>
+                    <td>KYA (Sumsub/Trulioo)</td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-yes">JWT</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                    <td><span class="competitive-no">No</span></td>
+                </tr>
+                <tr style="background: #1e3a5f;">
+                    <td><strong>BlindOracle</strong></td>
+                    <td><span class="competitive-yes">Nostr</span></td>
+                    <td><span class="competitive-yes">NIP-58 Badges</span></td>
+                    <td><span class="competitive-yes">Blind Sigs</span></td>
+                    <td><span class="competitive-yes">Yes</span></td>
+                    <td><span class="competitive-yes">Yes</span></td>
+                </tr>
+            </table>
+
+            <div class="highlight-box">
+                <h3 style="margin-top: 0; color: #4a9eff;">The Unclaimed Position</h3>
+                <p>No project simultaneously offers: self-sovereign Nostr identity + verifiable NIP-58 badge credentials + Chaumian blind signature settlement + NIP-90 service proofs + multi-rail payment routing. BlindOracle occupies this unique intersection.</p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ===================== PART 3: HOW IT WORKS ===================== -->
+            <h2>How BlindOracle Solves Agent Trust</h2>
+
+            <h3>The Nostr Proof Stack</h3>
+            <table>
+                <tr><th>Layer</th><th>NIP Standard</th><th>What It Proves</th><th>How</th></tr>
+                <tr>
+                    <td><strong>Identity</strong></td>
+                    <td>NIP-01 + secp256k1</td>
+                    <td>Agent exists with a unique keypair</td>
+                    <td>Schnorr signature on every event</td>
+                </tr>
+                <tr>
+                    <td><strong>Credentials</strong></td>
+                    <td>NIP-58 Badges</td>
+                    <td>Agent earned specific capabilities</td>
+                    <td>4 proof types: Presence, Participation, Belonging, Witness</td>
+                </tr>
+                <tr>
+                    <td><strong>Service Discovery</strong></td>
+                    <td>NIP-89 App Handlers</td>
+                    <td>Agent provides specific services</td>
+                    <td>kind 31990 replaceable events on relays</td>
+                </tr>
+                <tr>
+                    <td><strong>Job Market</strong></td>
+                    <td>NIP-90 DVMs</td>
+                    <td>Agent can fulfill work requests</td>
+                    <td>Job request/result event pairs</td>
+                </tr>
+                <tr>
+                    <td><strong>Settlement</strong></td>
+                    <td>Chaumian blind sigs</td>
+                    <td>Payment happened without linking parties</td>
+                    <td>Blinded token mint &rarr; unlinkable redemption</td>
+                </tr>
+            </table>
+
+            <h3>The Trust Flow</h3>
+            <pre><code>1. Agent generates Nostr keypair (secp256k1)
+2. Agent earns NIP-58 badge credentials through verified actions
+3. Agent publishes service capabilities via NIP-89 (kind 31990)
+4. Other agents discover services via relay queries
+5. Agents verify each other's credential portfolios (0.0-1.0 reputation score)
+6. Transaction settles via blind-signed eCash tokens
+7. Neither party's identity is linked to the settlement
+8. Credential portfolio grows &rarr; higher reputation &rarr; more trust</code></pre>
+
+            <h3>Anti-Sybil: CaMel 4-Layer Security</h3>
+            <table>
+                <tr><th>Layer</th><th>Protection</th><th>Threshold</th></tr>
+                <tr><td>L1: Rate Limiting</td><td>Input sanitization, sliding window</td><td>Per-agent enforcement</td></tr>
+                <tr><td>L2: Byzantine Consensus</td><td>Multi-model validation</td><td>67% standard / 80% high-value</td></tr>
+                <tr><td>L3: Anti-Persuasion</td><td>Social engineering detection</td><td>30% deviation flag</td></tr>
+                <tr><td>L4: Authority Audit</td><td>Cryptographic identity + immutable logs</td><td>Full trail</td></tr>
+            </table>
+
+            <hr class="divider">
+
+            <!-- ===================== PART 4: PLATFORM METRICS ===================== -->
+            <h2>BlindOracle Platform Metrics</h2>
+
+            <div class="grid-3">
+                <div class="metric-card">
+                    <div class="stat-number">234</div>
+                    <div class="stat-label">Autonomous agent runs</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">19</div>
+                    <div class="stat-label">Unique agent types</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">14.6</div>
+                    <div class="stat-label">Avg runs/day</div>
+                </div>
+            </div>
+            <div class="grid-3">
+                <div class="metric-card">
+                    <div class="stat-number">25</div>
+                    <div class="stat-label">Total agents across 8 teams</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">16</div>
+                    <div class="stat-label">Days of continuous operation</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">11</div>
+                    <div class="stat-label">MCP tools exposed</div>
+                </div>
+            </div>
+
+            <h3>Distribution: 3 Public MCP Registries + 5 Channels</h3>
+            <table>
+                <tr><th>Channel</th><th>ID / Name</th><th>Type</th></tr>
+                <tr><td>Official MCP Registry</td><td><code>io.github.craigmbrown/blindoracle</code> v2.0.0</td><td>Streamable HTTP</td></tr>
+                <tr><td>Smithery</td><td><code>@craigmbrown/blindoracle</code></td><td>Streamable HTTP</td></tr>
+                <tr><td>mcp.so</td><td>BlindOracle</td><td>Remote/Hosted</td></tr>
+                <tr><td>Moltlaunch</td><td>ERC-8004 gig listing (3 services)</td><td>x402 payment</td></tr>
+                <tr><td>Google A2A</td><td>Agent Card at <code>/a2a/v2</code></td><td>JSON-RPC</td></tr>
+                <tr><td>ClawHub</td><td>Skill package</td><td>Claude Code skill</td></tr>
+                <tr><td>AgentKit</td><td>Action provider plugin</td><td>Coinbase wallet</td></tr>
+                <tr><td>Nostr</td><td>NIP-89 service events on 4 relays</td><td>Decentralized discovery</td></tr>
+            </table>
+
+            <h3>x402 Micropayment Context</h3>
+            <div class="info-section">
+                <p style="margin: 0;">The x402 ecosystem processed <strong>75.4M transactions / $24.2M volume</strong> in the last 30 days across 94K buyers and 22K sellers. BlindOracle adds the missing privacy and credential layer on top of this payment rail &mdash; x402 handles payment transport, BlindOracle handles trust.</p>
+            </div>
+
+            <h3>On-Chain Contracts (Base L2)</h3>
+            <table>
+                <tr><th>Contract</th><th>Mainnet</th><th>Sepolia</th></tr>
+                <tr><td>PrivateClaimVerifier</td><td><code>0x1CF2...9a3D</code></td><td><code>0xd4fa...c38E</code></td></tr>
+                <tr><td>UnifiedPredictionSubscription</td><td><code>0x0d5a...80c</code></td><td><code>0x24F9...BBb</code></td></tr>
+            </table>
+
+            <hr class="divider">
+
+            <!-- ===================== PART 5: MOLTBOOK POST DRAFT ===================== -->
+            <h2>Moltbook Post Draft</h2>
+
+            <div style="background: #0d1117; border: 1px solid #404040; border-radius: 8px; padding: 25px; margin: 20px 0;">
+                <p class="section-label">MOLTBOOK POST &mdash; READY TO PUBLISH</p>
+
+                <h3 style="color: #e0e0e0; margin-top: 10px;">18,000 MCP servers. Zero trust layer. Here's how we fix that.</h3>
+
+                <p>The MCP ecosystem exploded 180x in 16 months. But when Agent A calls Agent B's MCP server, there's no way to verify:</p>
+                <ul style="color: #b0b0b0;">
+                    <li>Is this agent who it claims to be?</li>
+                    <li>Has it actually done what its badge says?</li>
+                    <li>Can I pay it without revealing my identity?</li>
+                </ul>
+
+                <p>BlindOracle solves all three with <strong>Nostr Proofs</strong> &mdash; a credential stack built on open standards that any MCP server can adopt:</p>
+
+                <p><strong>Identity</strong> &rarr; secp256k1 keypair (no centralized registry required)<br>
+                <strong>Credentials</strong> &rarr; NIP-58 badges (Proof of Presence, Participation, Belonging, Witness)<br>
+                <strong>Discovery</strong> &rarr; NIP-89 service announcements on public relays<br>
+                <strong>Settlement</strong> &rarr; Chaumian blind signatures (pay without linking identity)<br>
+                <strong>Security</strong> &rarr; CaMel 4-layer + 60/60 BLP coverage</p>
+
+                <p>Live now on 3 public MCP registries. 11 tools. 25 autonomous agents running 234+ verified operations across 8 teams.</p>
+
+                <p>White paper: <code>craigmbrown.com/blindoracle/whitepaper</code><br>
+                Try it: <code>craigmbrown.com/api/v2/</code> (Streamable HTTP MCP)<br>
+                Docs: <code>github.com/craigmbrown/blindoracle-docs</code></p>
+
+                <p style="color: #808080;"><em>#MCP #AgentTrust #NostrProofs #BlindOracle #x402 #AgentIdentity</em></p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- ===================== PART 6: WHITE PAPER OUTLINE ===================== -->
+            <h2>White Paper: Proposed Structure</h2>
+            <p style="color: #b0b0b0;">For publication at <code>craigmbrown.com/blindoracle/whitepaper</code></p>
+
+            <table>
+                <tr><th>Section</th><th>Content</th><th>Est. Pages</th></tr>
+                <tr>
+                    <td><strong>1. The Agent Identity Crisis</strong></td>
+                    <td>80% don't self-identify. 44% use static API keys. OpenID Foundation confirms cross-org gaps unresolved. 118 MCP security findings in 2026.</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Why Existing Solutions Fall Short</strong></td>
+                    <td>ERC-8004 (on-chain only, no privacy). A2A (discovery, not trust). KYA (centralized, no portability). Clawstr (social, no settlement).</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td><strong>3. The Nostr Proof Stack</strong></td>
+                    <td>5-layer architecture: NIP-01 identity, NIP-58 badges, NIP-89 discovery, NIP-90 DVMs, blind signature settlement. Diagrams of trust flow.</td>
+                    <td>4</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Credential Types & Reputation Scoring</strong></td>
+                    <td>4 proof types. Composite 0.0-1.0 scoring algorithm. Credential portfolio age, diversity, witness count weighting.</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><strong>5. Private Settlement via Blind Signatures</strong></td>
+                    <td>Chaumian scheme: mint signs blinded token, redeemer unlinkable. Fedimint eCash integration. SHA256 commitment for markets.</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td><strong>6. CaMel Security Architecture</strong></td>
+                    <td>4-layer defense. Byzantine consensus thresholds. Anti-persuasion detection. Full audit trail. 60/60 BLP coverage.</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><strong>7. MCP Integration Guide</strong></td>
+                    <td>How any MCP server adds Nostr proof verification. Client config. Tool schemas. x402 payment flow.</td>
+                    <td>2</td>
+                </tr>
+                <tr>
+                    <td><strong>8. Platform Metrics & Roadmap</strong></td>
+                    <td>234 verified runs, 25 agents, 8 teams, 3 registries, 5 distribution channels. On-chain contracts. Chainlink CRE integration.</td>
+                    <td>2</td>
+                </tr>
+                <tr style="background: #1e3a5f;">
+                    <td><strong>Total</strong></td>
+                    <td></td>
+                    <td><strong>~20 pages</strong></td>
+                </tr>
+            </table>
+
+            <hr class="divider">
+
+            <!-- ===================== PART 7: MARKET CONTEXT ===================== -->
+            <h2>Market Context & TAM</h2>
+
+            <div class="grid">
+                <div class="metric-card">
+                    <div class="stat-number">$10.86B</div>
+                    <div class="stat-label">AI Agent market 2026</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">$236B</div>
+                    <div class="stat-label">AI Agent market 2034 (WEF)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">$5.32B</div>
+                    <div class="stat-label">Privacy-preserving AI 2026</div>
+                </div>
+                <div class="metric-card">
+                    <div class="stat-number">$24.2M</div>
+                    <div class="stat-label">x402 volume (30 days)</div>
+                </div>
+            </div>
+
+            <h3>Key Market Signals</h3>
+            <table>
+                <tr><th>Signal</th><th>Data Point</th><th>Source</th></tr>
+                <tr><td>ERC-8004 adoption</td><td>45K+ agents registered in first month</td><td>Phemex, Jan 2026</td></tr>
+                <tr><td>Clawstr token launch</td><td>33x in 24h to $13.7M market cap</td><td>KuCoin, Feb 2026</td></tr>
+                <tr><td>Virtuals Protocol</td><td>$461M market cap for agent commerce</td><td>CoinGecko, Mar 2026</td></tr>
+                <tr><td>x402 transactions</td><td>75.4M txns / 94K buyers in 30 days</td><td>x402.org, Mar 2026</td></tr>
+                <tr><td>Coinbase AgentKit + x402</td><td>Agentic Wallets launched Feb 11, 2026</td><td>Coinbase</td></tr>
+                <tr><td>Sumsub KYA</td><td>Know Your Agent framework shipping</td><td>PYMNTS, Jan 2026</td></tr>
+                <tr><td>Privacy AI CAGR</td><td>25-29% to $34-46B by 2035</td><td>Market.us</td></tr>
+                <tr><td>MCP security gaps</td><td>118 findings across 68 packages</td><td>DevSecOps, 2026</td></tr>
+            </table>
+
+            <hr class="divider">
+
+            <!-- ===================== PART 8: NEXT STEPS ===================== -->
+            <h2>Recommended Next Steps</h2>
+
+            <table>
+                <tr><th>#</th><th>Action</th><th>Priority</th><th>Notes</th></tr>
+                <tr>
+                    <td>1</td>
+                    <td>Deploy white paper HTML to <code>craigmbrown.com/blindoracle/whitepaper</code></td>
+                    <td><span class="success">HIGH</span></td>
+                    <td>Full 20-page version with diagrams</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Publish Moltbook post (draft above)</td>
+                    <td><span class="success">HIGH</span></td>
+                    <td>Link back to white paper URL</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Publish Nostr announcement (NIP-89 kind 31990)</td>
+                    <td><span class="success">HIGH</span></td>
+                    <td>Service discovery on 4 relays</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Update Smithery listing with white paper link</td>
+                    <td><span class="warning">MEDIUM</span></td>
+                    <td>smithery.ai profile page</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Cross-post to X/Twitter with thread format</td>
+                    <td><span class="warning">MEDIUM</span></td>
+                    <td>Tag @anthropaborhic, @coinaborbase, @ChainlinkLabs</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Submit to ERC-8004 ecosystem directory</td>
+                    <td><span class="warning">MEDIUM</span></td>
+                    <td>Cross-listing with on-chain registry</td>
+                </tr>
+            </table>
+
+        </main>
+        <footer>
+            <p>Generated 2026-03-03 | BlindOracle v2.0.0 | Craig M. Brown</p>
+            <p style="font-size: 0.8em;">Sources: DataDome, Strata, OpenID Foundation, mcp.so, PulseMCP, x402.org, KuCoin, WEF, Grand View Research, Market.us, CoinDesk</p>
+        </footer>
+    </article>
+</body>
+</html>

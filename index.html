@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlindOracle Publications - Whitepapers, Blog Posts & Technical Docs</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #0d0d0d;
+        }
+        .hero {
+            background: linear-gradient(135deg, #0a1628 0%, #1a1a2e 50%, #0d0d0d 100%);
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 1px solid #1e3a5f;
+        }
+        .hero h1 {
+            font-size: 2.2em;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+        }
+        .hero h1 span { color: #4a9eff; }
+        .hero p { color: #808080; font-size: 1.1em; max-width: 600px; margin: 0 auto; }
+        .container { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+        .section-title {
+            font-size: 1.4em;
+            color: #e0e0e0;
+            border-left: 4px solid #4a9eff;
+            padding-left: 12px;
+            margin: 40px 0 20px;
+        }
+        .section-title:first-of-type { margin-top: 0; }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .card {
+            background: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+            padding: 24px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .card:hover {
+            border-color: #4a9eff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(74, 158, 255, 0.15);
+        }
+        .card-tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        .tag-whitepaper { background: #1e3a5f; color: #4a9eff; }
+        .tag-blog { background: #1b5e20; color: #4caf50; }
+        .tag-security { background: #4a1530; color: #e91e63; }
+        .tag-new { background: #332200; color: #ff9800; }
+        .card h3 {
+            font-size: 1.05em;
+            color: #e0e0e0;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .card p {
+            color: #808080;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+        .card-date { color: #555; font-size: 0.8em; margin-top: 10px; }
+        .card-formats { margin-top: 10px; }
+        .card-formats a {
+            color: #4a9eff;
+            font-size: 0.85em;
+            text-decoration: none;
+            margin-right: 12px;
+        }
+        .card-formats a:hover { text-decoration: underline; color: #79c0ff; }
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+        .stat { text-align: center; }
+        .stat-value { font-size: 1.6em; font-weight: bold; color: #4a9eff; }
+        .stat-label { color: #666; font-size: 0.8em; }
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid #1a1a1a;
+            color: #555;
+            font-size: 0.85em;
+        }
+        footer a { color: #4a9eff; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        .nav-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #4a9eff;
+            text-decoration: none;
+            font-size: 0.95em;
+            padding: 6px 14px;
+            border: 1px solid #1e3a5f;
+            border-radius: 20px;
+            transition: all 0.2s;
+        }
+        .nav-links a:hover {
+            background: #1e3a5f;
+            color: #fff;
+        }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.6em; }
+            .stats-bar { gap: 20px; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1><span>BlindOracle</span> Publications</h1>
+        <p>Whitepapers, blog posts, and technical documentation for the agent-native settlement layer</p>
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Whitepapers</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">6</div>
+                <div class="stat-label">Blog Posts</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Security Reports</div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a>
+            <a href="https://craigmbrown.com/api/v2/">API</a>
+            <a href="https://github.com/craigmbrown/blindoracle-docs">GitHub</a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- WHITEPAPERS -->
+        <h2 class="section-title">Whitepapers</h2>
+        <div class="card-grid">
+            <div class="card">
+                <span class="card-tag tag-whitepaper">Whitepaper</span>
+                <span class="card-tag tag-new">New</span>
+                <h3>Agent-to-Agent Trust via Nostr Proofs</h3>
+                <p>How BlindOracle fills the missing credential layer in the 18,000+ MCP server ecosystem. Covers the 5-layer Nostr Proof Stack, NIP-58 badges, blind signature settlement, and competitive analysis.</p>
+                <div class="card-date">March 2026</div>
+                <div class="card-formats">
+                    <a href="whitepaper/20260303-agent-trust-nostr-proofs.html">HTML</a>
+                    <a href="whitepaper/agent-trust-nostr-proofs.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-whitepaper">Whitepaper</span>
+                <h3>Commitment Scheme for Privacy-Preserving Information Markets</h3>
+                <p>SHA256-based commitment unlinkability specification with blind-signed token integration. Covers computational hiding, binding properties, and guardian-network consensus settlement.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="whitepaper/20260224-commitment-scheme-whitepaper.html">HTML</a>
+                    <a href="whitepaper/commitment-scheme.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-whitepaper">Whitepaper</span>
+                <h3>SRVL Protocol</h3>
+                <p>Service verification and lifecycle protocol for autonomous agent operations. Defines service registration, health monitoring, and capability attestation flows.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="whitepaper/20260224-srvl-whitepaper.html">HTML</a>
+                    <a href="whitepaper/srvl-protocol.md">Markdown</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLOG POSTS -->
+        <h2 class="section-title">Blog Posts</h2>
+        <div class="card-grid">
+            <div class="card">
+                <span class="card-tag tag-blog">Blog</span>
+                <h3>RWA Stock Prediction Markets on Robinhood Chain</h3>
+                <p>ACE-compliant prediction markets for tokenized stocks powered by Chainlink Data Streams. Architecture, compliance, and deployment guide.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="blog/rwa-stock-prediction-markets.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-blog">Blog</span>
+                <h3>Chainlink CRE Privacy Integration</h3>
+                <p>How BlindOracle integrates with Chainlink's Compute Runtime Environment to add a privacy layer for prediction market workflows.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="blog/20260224-blog-chainlink-cre-privacy.html">HTML</a>
+                    <a href="blog/chainlink-cre-privacy.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-blog">Blog</span>
+                <h3>Chaumian Blind Signatures Meet AI Prediction Markets</h3>
+                <p>Technical deep-dive on privacy-preserving prediction markets using Chaumian blind signature schemes for unlinkable settlement.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="blog/20260224-blog-chaumian-blind-signatures.html">HTML</a>
+                    <a href="blog/chaumian-blind-signatures.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-blog">Blog</span>
+                <h3>CaMel 4-Layer Security for Multi-Agent Systems</h3>
+                <p>Security architecture overview covering rate limiting, Byzantine consensus, anti-persuasion detection, and authority audit trails.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="blog/20260224-blog-camel-security.html">HTML</a>
+                    <a href="blog/camel-security.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-blog">Blog</span>
+                <h3>Guardian Federations for AI Agents</h3>
+                <p>Tutorial on Fedimint-inspired guardian-network integration for multi-agent consensus and custodial settlement.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="blog/20260224-blog-fedimint-ai-agents.html">HTML</a>
+                    <a href="blog/fedimint-ai-agents.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-blog">Blog</span>
+                <h3>Instant Micropayments for Agent-to-Agent Settlement</h3>
+                <p>Sub-cent settlement implementation using Lightning Network rails for autonomous agent-to-agent payment flows.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="blog/20260224-blog-lightning-micropayments.html">HTML</a>
+                    <a href="blog/lightning-micropayments.md">Markdown</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECURITY -->
+        <h2 class="section-title">Security</h2>
+        <div class="card-grid">
+            <div class="card">
+                <span class="card-tag tag-security">Security</span>
+                <h3>MASSAT Assessment Results</h3>
+                <p>Multi-Agent System Security Assessment covering 87 tests across OWASP ASI01-ASI10 threat categories with evidence-based risk scoring.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="security/massat-results.md">Markdown</a>
+                </div>
+            </div>
+            <div class="card">
+                <span class="card-tag tag-security">Security</span>
+                <h3>RWA Compliance & Security</h3>
+                <p>ACE compliance model, threat analysis, and access control architecture for RWA stock prediction markets on Robinhood Chain.</p>
+                <div class="card-date">February 2026</div>
+                <div class="card-formats">
+                    <a href="security/rwa-compliance-security.md">Markdown</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Copyright &copy; 2025-2026 Craig M. Brown. All rights reserved.</p>
+        <p style="margin-top: 8px;">
+            <a href="https://craigmbrown.com/blindoracle/">Platform</a> &middot;
+            <a href="https://craigmbrown.com/api/v2/">API</a> &middot;
+            <a href="https://github.com/craigmbrown/blindoracle-docs">Source</a> &middot;
+            <a href="https://craigmbrown.com">craigmbrown.com</a>
+        </p>
+    </footer>
+</body>
+</html>
