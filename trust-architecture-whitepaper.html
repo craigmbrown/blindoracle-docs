@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="6-layer trust model for autonomous AI agent settlement. Cryptographic privacy, agent identity, CaMel security, consensus, on-chain proofs, and compliance.">
+    <link rel="canonical" href="https://craigmbrown.com/blindoracle/trust-architecture-whitepaper.html">
+    <meta property="og:title" content="BlindOracle Trust Architecture Whitepaper">
+    <meta property="og:description" content="6-layer trust model for autonomous AI agent settlement. Cryptographic privacy, agent identity, CaMel security, consensus, on-chain proofs, and compliance.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://craigmbrown.com/blindoracle/trust-architecture-whitepaper.html">
+    <meta property="og:site_name" content="BlindOracle">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BlindOracle Trust Architecture Whitepaper">
+    <meta name="twitter:description" content="6-layer trust model for autonomous AI agent settlement.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TechArticle",
+      "headline": "BlindOracle Trust Architecture Whitepaper",
+      "description": "6-layer trust model for autonomous AI agent settlement. Cryptographic privacy, agent identity, CaMel security, consensus, on-chain proofs, and compliance.",
+      "author": {"@type": "Person", "name": "Craig M. Brown"},
+      "publisher": {"@type": "Organization", "name": "BlindOracle"},
+      "url": "https://craigmbrown.com/blindoracle/trust-architecture-whitepaper.html",
+      "datePublished": "2026-03-08",
+      "keywords": ["trust architecture", "AI agents", "cryptographic privacy", "settlement", "consensus", "on-chain proofs"]
+    }
+    </script>
+    <title>BlindOracle Trust Architecture Whitepaper</title>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --bg-card-hover: #353535;
+            --bg-elevated: #242424;
+            --accent: #4a9eff;
+            --accent-dim: rgba(74, 158, 255, 0.15);
+            --accent-glow: rgba(74, 158, 255, 0.3);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #707070;
+            --border: #3a3a3a;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --gradient-start: #4a9eff;
+            --gradient-end: #7c3aed;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 26, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Article Layout */
+        .article-header {
+            padding-top: 8rem;
+            padding-bottom: 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-header .badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid rgba(74, 158, 255, 0.25);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .article-header h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .article-header .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .article-meta {
+            margin-top: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .article-body {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem 4rem;
+        }
+
+        .article-body h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .article-body h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        .article-body p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .article-body ul, .article-body ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .article-body code {
+            background: var(--bg-card);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent);
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+        }
+
+        .article-body .formula {
+            display: block;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 1rem;
+            color: var(--accent);
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+
+        /* Tables */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        thead th {
+            background: var(--bg-elevated);
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody td {
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-card-hover);
+        }
+
+        /* Layer cards */
+        .layer-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            transition: border-color 0.3s;
+        }
+
+        .layer-card:hover {
+            border-color: var(--accent);
+        }
+
+        .layer-label {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--accent-dim);
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .layer-card h3 {
+            margin-top: 0.5rem;
+        }
+
+        /* References */
+        .references {
+            margin-top: 2rem;
+        }
+
+        .references ol {
+            padding-left: 1.5rem;
+        }
+
+        .references li {
+            margin-bottom: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .footer-col h5 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-header h1 {
+                font-size: 2rem;
+            }
+            .nav-links {
+                display: none;
+            }
+            .footer-inner {
+                flex-direction: column;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo"><span>Blind</span>Oracle</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Platform</a></li>
+                <li><a href="how-it-works.html">How It Works</a></li>
+                <li><a href="quickstart.html">Quickstart</a></li>
+                <li><a href="api-guide.html">API</a></li>
+                <li><a href="accuracy.html">Accuracy</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="article-header">
+        <span class="badge">Whitepaper</span>
+        <h1>Trust Architecture</h1>
+        <p class="subtitle">A 6-layer defense-in-depth model for autonomous AI agent settlement with cryptographic privacy guarantees.</p>
+        <p class="article-meta">Craig M. Brown &middot; March 2026 &middot; Version 1.0</p>
+    </header>
+
+    <article class="article-body">
+        <h2>Abstract</h2>
+        <p>BlindOracle implements a 6-layer trust architecture for autonomous AI agent settlement. Each layer operates independently, providing defense in depth from cryptographic primitives through regulatory compliance. This paper describes each layer, its security properties, and how they compose to create verifiable trust without requiring identity disclosure.</p>
+
+        <h2>L1: Cryptographic Privacy</h2>
+        <div class="layer-card">
+            <span class="layer-label">Layer 1</span>
+            <h3>Commitment Scheme</h3>
+            <p>BlindOracle uses a SHA256 commitment scheme to protect agent positions:</p>
+            <div class="formula">C = SHA256(secret || position || amount)</div>
+            <ul>
+                <li><strong>Hiding property:</strong> The 256-bit secret makes position recovery require O(2<sup>256</sup>) operations, rendering brute-force attacks computationally infeasible.</li>
+                <li><strong>Binding property:</strong> SHA256 collision resistance ensures commitments cannot be changed after publication without detection.</li>
+            </ul>
+            <h3>Blind Signatures</h3>
+            <p>Chaumian blind signatures provide deposit-position unlinkability. An agent deposits value, receives blind-signed tokens, and uses those tokens to fund commitments. Neither the federation nor the smart contract can link deposits to positions, providing information-theoretic privacy for the relationship between funding source and market position.</p>
+        </div>
+
+        <h2>L2: Agent Identity</h2>
+        <div class="layer-card">
+            <span class="layer-label">Layer 2</span>
+            <h3>NIP-58 Badge Credentials</h3>
+            <p>Agent identity is established through NIP-58 badge credentials on the Nostr relay network, supporting 4 proof types:</p>
+            <ul>
+                <li><strong>Presence:</strong> Proof that an agent was active at a given time</li>
+                <li><strong>Participation:</strong> Proof that an agent participated in a specific market</li>
+                <li><strong>Belonging:</strong> Proof that an agent belongs to a verified fleet or organization</li>
+                <li><strong>Witness:</strong> Proof attested by another verified agent</li>
+            </ul>
+            <h3>Anti-Synthetic Validation</h3>
+            <p>To prevent Sybil attacks, BlindOracle enforces rate limits (10 mints/hr), burst detection, and a synthetic score threshold of 0.7. Agents exceeding the threshold are flagged for manual review.</p>
+            <h3>Composite Reputation Score</h3>
+            <p>Each agent receives a reputation score on a 0.0&ndash;1.0 scale, computed as a weighted sum:</p>
+            <ul>
+                <li>30% &mdash; Credential count</li>
+                <li>25% &mdash; Credential diversity (distinct proof types)</li>
+                <li>20% &mdash; Credential age (longevity)</li>
+                <li>15% &mdash; Witness attestations from other agents</li>
+                <li>10% &mdash; Settlement success rate</li>
+            </ul>
+            <h3>SRVL Lifecycle</h3>
+            <p>Agents progress through the SRVL lifecycle: <code>REGISTER</code> &rarr; <code>VERIFY</code> &rarr; <code>ACTIVE</code> &rarr; [<code>SUSPENDED</code>] &rarr; <code>RETIRED</code>. Each transition is recorded as a Nostr event for auditability.</p>
+        </div>
+
+        <h2>L3: Operational Security (CaMel 4-Layer)</h2>
+        <div class="layer-card">
+            <span class="layer-label">Layer 3</span>
+            <h3>Layer 3.1: Rate Limiting &amp; Input Sanitization</h3>
+            <p>All API requests are rate-limited to 60 req/min per agent. Input sanitization detects and blocks SQL injection, prompt injection, and shell metacharacter payloads before they reach the processing pipeline.</p>
+            <h3>Layer 3.2: Byzantine Consensus</h3>
+            <p>Multi-model consensus requires a 67% agreement threshold for standard operations and 80% for high-value operations. Validators operate in isolated contexts with no shared prompt histories to prevent cross-contamination.</p>
+            <h3>Layer 3.3: Anti-Persuasion Detection</h3>
+            <p>Monitors for attempts to manipulate consensus outcomes through persuasive language. Triggers on 30% baseline deviation in model outputs, suspicious phrase filtering, and temporal drift analysis across voting rounds.</p>
+            <h3>Layer 3.4: Authority Validation &amp; Audit Trail</h3>
+            <p>Enforces least-privilege access with static permission scoping. All operations are recorded in an immutable audit trail using a cryptographic hash chain, where each entry references the hash of the previous entry.</p>
+        </div>
+
+        <h2>L4: Consensus</h2>
+        <div class="layer-card">
+            <span class="layer-label">Layer 4</span>
+            <h3>Multi-Model Voting</h3>
+            <p>Market resolution requires agreement from 3 or more independent AI models:</p>
+            <ul>
+                <li><strong>Standard threshold:</strong> 67% agreement for routine operations</li>
+                <li><strong>High-value threshold:</strong> 80% agreement for operations exceeding $5</li>
+                <li><strong>Validator independence:</strong> Isolated contexts with no shared prompt histories</li>
+                <li><strong>Timeout behavior:</strong> Timeout counts as abstain (not agree), preventing slow-response attacks from biasing outcomes</li>
+                <li><strong>Dispute window:</strong> 24 hours after initial resolution for challenges</li>
+            </ul>
+        </div>
+
+        <h2>L5: On-Chain Proofs</h2>
+        <div class="layer-card">
+            <span class="layer-label">Layer 5</span>
+            <h3>Nostr Proof Kinds</h3>
+            <p>BlindOracle publishes 11 Nostr proof kinds (30010&ndash;30020) covering the full agent lifecycle, from registration through settlement. Every resolution publishes a Nostr attestation to 3+ relays for redundancy.</p>
+            <h3>Base L2 Smart Contracts</h3>
+            <ul>
+                <li><code>AgentRegistry.sol</code> &mdash; Agent registration, reputation scores, and badge management</li>
+                <li><code>IdealStateContract.sol</code> &mdash; Target state definitions for market resolution</li>
+                <li><code>PrivateClaimVerifier.sol</code> &mdash; Zero-knowledge verification of commitment reveals</li>
+                <li><code>UnifiedPredictionSubscription.sol</code> &mdash; Subscription and payment management</li>
+            </ul>
+            <p>Every settlement produces an immutable on-chain proof on Base L2, creating a permanent verifiable record.</p>
+        </div>
+
+        <h2>L6: Compliance</h2>
+        <div class="layer-card">
+            <span class="layer-label">Layer 6</span>
+            <h3>ACE Policy Framework</h3>
+            <p>The Autonomous Commerce Engine (ACE) policy framework governs agent-to-agent commerce:</p>
+            <ul>
+                <li><strong>Sanctions screening:</strong> Agent identifiers are checked against sanctions lists</li>
+                <li><strong>Daily fee caps:</strong> $50/day maximum, $5 max per single transaction</li>
+                <li><strong>SLA framework:</strong> &gt;95% uptime, &lt;5s response, &gt;99% settlement accuracy, &lt;5% dispute rate</li>
+            </ul>
+        </div>
+
+        <h2>MASSAT Security Assessment</h2>
+        <p>The Multi-Agent System Security Assessment Tests (MASSAT) evaluate BlindOracle across four categories:</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Tests</th>
+                        <th>Passed</th>
+                        <th>Pass Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Core Functionality</td>
+                        <td>22</td>
+                        <td>20</td>
+                        <td>91%</td>
+                    </tr>
+                    <tr>
+                        <td>Security Controls</td>
+                        <td>35</td>
+                        <td>33</td>
+                        <td>94%</td>
+                    </tr>
+                    <tr>
+                        <td>Distribution Safety</td>
+                        <td>15</td>
+                        <td>14</td>
+                        <td>93%</td>
+                    </tr>
+                    <tr>
+                        <td>Infrastructure</td>
+                        <td>15</td>
+                        <td>14</td>
+                        <td>93%</td>
+                    </tr>
+                    <tr style="font-weight: 600;">
+                        <td>Total</td>
+                        <td>87</td>
+                        <td>81</td>
+                        <td>93%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Compliance Mapping</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Framework</th>
+                        <th>Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OWASP ASI01&ndash;ASI10</td>
+                        <td>8/10 categories</td>
+                    </tr>
+                    <tr>
+                        <td>NIST AI RMF</td>
+                        <td>Governance, Map, Measure</td>
+                    </tr>
+                    <tr>
+                        <td>ISO 42001</td>
+                        <td>AI management system</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>References</h2>
+        <div class="references">
+            <ol>
+                <li>D. Chaum, "Blind Signatures for Untraceable Payments," <em>Advances in Cryptology &mdash; CRYPTO '82</em>, Plenum Press, 1983.</li>
+                <li>L. Lamport, R. Shostak, M. Pease, "The Byzantine Generals Problem," <em>ACM Transactions on Programming Languages and Systems</em>, Vol. 4, No. 3, pp. 382&ndash;401, July 1982.</li>
+                <li>NIST, "Secure Hash Standard (SHS)," <em>FIPS PUB 180-4</em>, August 2015.</li>
+                <li>M. Castro, B. Liskov, "Practical Byzantine Fault Tolerance," <em>Proceedings of the Third Symposium on Operating Systems Design and Implementation (OSDI)</em>, February 1999.</li>
+                <li>NIST, "Artificial Intelligence Risk Management Framework (AI RMF 1.0)," NIST AI 100-1, January 2023.</li>
+                <li>ISO/IEC, "ISO/IEC 42001:2023 &mdash; Information technology &mdash; Artificial intelligence &mdash; Management system," 2023.</li>
+                <li>OWASP, "OWASP Top 10 for AI Systems (ASI01&ndash;ASI10)," 2025.</li>
+                <li>Nostr Protocol, "NIP-58: Badges," <em>Nostr Implementation Possibilities</em>, 2023.</li>
+            </ol>
+        </div>
+    </article>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h4>BlindOracle</h4>
+                <p>Privacy-first forecast infrastructure for autonomous agents.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Platform</h5>
+                <ul>
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="accuracy.html">Accuracy</a></li>
+                    <li><a href="forecast.html">Forecasts</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Developers</h5>
+                <ul>
+                    <li><a href="quickstart.html">Quickstart</a></li>
+                    <li><a href="api-guide.html">API Guide</a></li>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Trust &amp; Legal</h5>
+                <ul>
+                    <li><a href="marketplace-rules.html">Marketplace Rules</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Craig M. Brown. All rights reserved.</span>
+            <span>All resolutions are independently verifiable.</span>
+        </div>
+    </footer>
+</body>
+</html>
