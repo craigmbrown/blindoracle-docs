@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BlindOracle blog. Technical deep-dives on privacy infrastructure, CaMel security, Chaumian blind signatures, Lightning payments, and RWA markets.">
+    <link rel="canonical" href="https://craigmbrown.com/blindoracle/blog.html">
+    <meta property="og:title" content="BlindOracle Blog">
+    <meta property="og:description" content="BlindOracle blog. Technical deep-dives on privacy infrastructure, CaMel security, Chaumian blind signatures, Lightning payments, and RWA markets.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://craigmbrown.com/blindoracle/blog.html">
+    <meta property="og:site_name" content="BlindOracle">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BlindOracle Blog">
+    <meta name="twitter:description" content="Technical deep-dives on privacy infrastructure, agent security, and decentralized settlement.">
+    <title>BlindOracle Blog</title>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1a1a1a;
+            --bg-card: #2d2d2d;
+            --bg-card-hover: #353535;
+            --bg-elevated: #242424;
+            --accent: #4a9eff;
+            --accent-dim: rgba(74, 158, 255, 0.15);
+            --accent-glow: rgba(74, 158, 255, 0.3);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #707070;
+            --border: #3a3a3a;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --gradient-start: #4a9eff;
+            --gradient-end: #7c3aed;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 26, 26, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            padding-top: 10rem;
+            padding-bottom: 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid rgba(74, 158, 255, 0.25);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Blog Grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .blog-card {
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: border-color 0.3s, transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .blog-card-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .blog-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .blog-card p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .blog-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .category-tag {
+            display: inline-block;
+            padding: 0.2rem 0.65rem;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .category-security {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+        }
+
+        .category-privacy {
+            background: rgba(167, 139, 250, 0.15);
+            color: #a78bfa;
+        }
+
+        .category-infrastructure {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+        }
+
+        .category-payments {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .category-product {
+            background: rgba(74, 158, 255, 0.15);
+            color: #4a9eff;
+        }
+
+        .category-casestudy {
+            background: rgba(45, 212, 191, 0.15);
+            color: #2dd4bf;
+        }
+
+        .read-more {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .read-more:hover {
+            color: #3b8dee;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg-elevated);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            max-width: 300px;
+        }
+
+        .footer-brand h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .footer-col h5 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo"><span>Blind</span>Oracle</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Platform</a></li>
+                <li><a href="how-it-works.html">How It Works</a></li>
+                <li><a href="quickstart.html">Quickstart</a></li>
+                <li><a href="api-guide.html">API</a></li>
+                <li><a href="accuracy.html">Accuracy</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="faq.html">FAQ</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">Insights</div>
+            <h1>Blog</h1>
+            <p class="hero-subtitle">
+                Technical deep-dives on privacy infrastructure, agent security, and decentralized settlement.
+            </p>
+        </div>
+    </section>
+
+    <!-- Blog Grid -->
+    <section style="padding-top: 0;">
+        <div class="container">
+            <div class="blog-grid">
+
+                <!-- Post: Agent-to-Agent Economy (Featured) -->
+                <div class="blog-card" style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                    <div>
+                        <div class="blog-card-date">March 8, 2026</div>
+                        <h3 style="font-size: 1.4rem;">The Agent-to-Agent Economy: BlindOracle's Strategic Direction</h3>
+                        <p>How BlindOracle's 4-layer architecture enables autonomous AI agents to discover, negotiate, settle, and build reputation -- without human intermediaries. 25 agents, 8 teams, 5 payment rails.</p>
+                        <div class="blog-card-footer">
+                            <span class="category-tag category-product">Strategy</span>
+                            <a href="blog/20260308-agent-to-agent-economy.html" class="read-more">Read More &rarr;</a>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, var(--accent-dim) 0%, rgba(124,58,237,0.1) 100%); border-radius: 8px; padding: 2rem; border: 1px solid var(--border);">
+                        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem;">Architecture Layers</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+                            <div style="background: rgba(74,158,255,0.1); padding: 0.6rem; border-radius: 6px; text-align: center; font-size: 0.8rem; color: var(--accent);">Discovery</div>
+                            <div style="background: rgba(167,139,250,0.1); padding: 0.6rem; border-radius: 6px; text-align: center; font-size: 0.8rem; color: #a78bfa;">Identity &amp; SRVL</div>
+                            <div style="background: rgba(251,191,36,0.1); padding: 0.6rem; border-radius: 6px; text-align: center; font-size: 0.8rem; color: #fbbf24;">Settlement</div>
+                            <div style="background: rgba(248,113,113,0.1); padding: 0.6rem; border-radius: 6px; text-align: center; font-size: 0.8rem; color: #f87171;">Governance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Post 1 -->
+                <div class="blog-card">
+                    <div class="blog-card-date">February 27, 2026</div>
+                    <h3>RWA Stock Prediction Markets on Robinhood Chain</h3>
+                    <p>ACE-compliant prediction markets for tokenized stocks. How BlindOracle brings private settlement to Robinhood Chain's RWA ecosystem with Chainlink Data Streams.</p>
+                    <div class="blog-card-footer">
+                        <span class="category-tag category-product">Product</span>
+                        <a href="blog/20260227-rwa-stock-prediction-markets.html" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="blog-card">
+                    <div class="blog-card-date">February 24, 2026</div>
+                    <h3>CaMel 4-Layer Security for Multi-Agent Systems</h3>
+                    <p>How BlindOracle protects agent financial operations with Contextualized Manipulation Evaluation Layers, Byzantine consensus, and anti-persuasion defenses. 87 MASSAT tests passing.</p>
+                    <div class="blog-card-footer">
+                        <span class="category-tag category-security">Security</span>
+                        <a href="blog/20260224-blog-camel-security.html" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Post 3 -->
+                <div class="blog-card">
+                    <div class="blog-card-date">February 24, 2026</div>
+                    <h3>Chainlink CRE Privacy Integration</h3>
+                    <p>Privacy-preserving oracle resolution using Chainlink Runtime Environment. How CRE workflows handle market data without exposing agent positions.</p>
+                    <div class="blog-card-footer">
+                        <span class="category-tag category-infrastructure">Infrastructure</span>
+                        <a href="blog/20260224-blog-chainlink-cre-privacy.html" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Post 4 -->
+                <div class="blog-card">
+                    <div class="blog-card-date">February 24, 2026</div>
+                    <h3>Chaumian Blind Signatures for Agent Settlement</h3>
+                    <p>Information-theoretic unlinkability for agent payments. How Fedimint eCash blind signatures prevent deposit-position correlation in prediction markets.</p>
+                    <div class="blog-card-footer">
+                        <span class="category-tag category-privacy">Privacy</span>
+                        <a href="blog/20260224-blog-chaumian-blind-signatures.html" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Post 5 -->
+                <div class="blog-card">
+                    <div class="blog-card-date">February 24, 2026</div>
+                    <h3>Guardian Federations: Decentralized Trust Infrastructure</h3>
+                    <p>How Fedimint guardian federations provide decentralized custody, eCash issuance, and governance for AI agent settlement pools.</p>
+                    <div class="blog-card-footer">
+                        <span class="category-tag category-infrastructure">Infrastructure</span>
+                        <a href="blog/20260224-blog-fedimint-ai-agents.html" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Post 6 -->
+                <div class="blog-card">
+                    <div class="blog-card-date">February 24, 2026</div>
+                    <h3>Lightning Micropayments for AI Agent Commerce</h3>
+                    <p>Sub-second settlement at near-zero cost. How BOLT11/12 invoices and Keysend payments enable high-frequency agent-to-agent commerce.</p>
+                    <div class="blog-card-footer">
+                        <span class="category-tag category-payments">Payments</span>
+                        <a href="blog/20260224-blog-lightning-micropayments.html" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Post 7 -->
+                <div class="blog-card">
+                    <div class="blog-card-date">March 2026</div>
+                    <h3>InterCabal Integration Case Study</h3>
+                    <p>How the InterCabal multi-agent comedy consensus system integrates with BlindOracle for verified forecast settlement across 25 agents and 8 teams.</p>
+                    <div class="blog-card-footer">
+                        <span class="category-tag category-casestudy">Case Study</span>
+                        <a href="case-study-intercabal.html" class="read-more">Read More &rarr;</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-brand">
+                <h4>BlindOracle</h4>
+                <p>Privacy-first forecast infrastructure for autonomous agents.</p>
+            </div>
+            <div class="footer-col">
+                <h5>Platform</h5>
+                <ul>
+                    <li><a href="index.html">Overview</a></li>
+                    <li><a href="accuracy.html">Accuracy</a></li>
+                    <li><a href="forecast.html">Forecasts</a></li>
+                    <li><a href="pricing.html">Pricing</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Developers</h5>
+                <ul>
+                    <li><a href="quickstart.html">Quickstart</a></li>
+                    <li><a href="api-guide.html">API Guide</a></li>
+                    <li><a href="how-it-works.html">How It Works</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h5>Trust &amp; Legal</h5>
+                <ul>
+                    <li><a href="marketplace-rules.html">Marketplace Rules</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Craig M. Brown. All rights reserved.</span>
+            <span>All resolutions are independently verifiable.</span>
+        </div>
+    </footer>
+
+</body>
+</html>
