@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How BlindOracle's 4-proof chain system makes every agent action cryptographically verifiable. 1,315 proofs, 15 proof kinds, SHA-256 linked chains published to Nostr.">
+    <link rel="canonical" href="https://craigmbrown.com/blindoracle/blog/20260311-auditable-ai-proof-chains.html">
+    <meta property="og:title" content="Auditable AI: How 4-Proof Chains Make Agent Work Verifiable - BlindOracle Blog">
+    <meta property="og:description" content="How BlindOracle's 4-proof chain system makes every agent action cryptographically verifiable. 1,315 proofs, 15 proof kinds, SHA-256 linked chains published to Nostr.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://craigmbrown.com/blindoracle/blog/20260311-auditable-ai-proof-chains.html">
+    <meta property="og:site_name" content="BlindOracle">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Auditable AI: How 4-Proof Chains Make Agent Work Verifiable">
+    <meta name="twitter:description" content="Every agent action produces a cryptographic proof chain. 1,315 proofs across 15 kinds, SHA-256 linked, published to Nostr relays.">
+    <title>Auditable AI: How 4-Proof Chains Make Agent Work Verifiable</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #e0e0e0; background: #1a1a1a; margin: 0; padding: 20px; }
+        article { max-width: 800px; margin: 0 auto; background: #2d2d2d; border-radius: 8px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h1 { color: #e0e0e0; border-bottom: 3px solid #4a9eff; padding-bottom: 15px; font-size: 1.8em; }
+        h2 { color: #e0e0e0; border-left: 4px solid #4a9eff; padding-left: 10px; margin-top: 35px; }
+        h3 { color: #b0b0b0; margin-top: 25px; }
+        p { margin: 12px 0; }
+        code { background: #0d1117; color: #79c0ff; padding: 2px 6px; border-radius: 3px; font-family: 'Monaco','Menlo',monospace; font-size: 0.9em; }
+        pre { background: #0d1117; border-left: 3px solid #4a9eff; padding: 15px; overflow-x: auto; border-radius: 4px; line-height: 1.5; }
+        pre code { background: none; padding: 0; }
+        a { color: #4a9eff; text-decoration: none; }
+        a:hover { color: #79c0ff; text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #1a1a1a; color: #e0e0e0; padding: 12px; text-align: left; border: 1px solid #404040; }
+        td { padding: 10px 12px; border: 1px solid #404040; }
+        tr:nth-child(even) { background: #1a1a1a; }
+        tr:hover { background: #3a3a3a; }
+        ul, ol { padding-left: 25px; }
+        li { margin: 8px 0; }
+        strong { color: #e0e0e0; }
+        em { color: #b0b0b0; }
+        blockquote { border-left: 4px solid #4a9eff; background: #1e3a5f; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; }
+        .subtitle { color: #b0b0b0; font-style: italic; margin-top: -10px; font-size: 1.05em; }
+        hr { border: none; border-top: 1px solid #404040; margin: 30px 0; }
+        .ref { color: #808080; font-size: 0.9em; }
+        .ref li { margin: 5px 0; }
+        .metric { display: inline-block; background: #1a1a1a; border: 1px solid #404040; padding: 8px 16px; border-radius: 6px; margin: 4px; text-align: center; }
+        .metric-val { font-size: 1.4em; font-weight: bold; color: #4caf50; }
+        .metric-label { font-size: 0.8em; color: #b0b0b0; }
+    </style>
+</head>
+<body>
+<nav style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,26,26,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #3a3a3a;padding:0 2rem;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;">
+        <a href="../index.html" style="font-size:1.25rem;font-weight:700;color:#f0f0f0;text-decoration:none;letter-spacing:-0.02em;">Blind<span style="color:#4a9eff;">Oracle</span></a>
+        <div style="display:flex;gap:2rem;">
+            <a href="../index.html" style="color:#a0a0a0;text-decoration:none;font-size:0.9rem;font-weight:500;">Platform</a>
+            <a href="../blog.html" style="color:#4a9eff;text-decoration:none;font-size:0.9rem;font-weight:500;">Blog</a>
+        </div>
+    </div>
+</nav>
+
+<article style="margin-top:84px;">
+    <header>
+        <p style="color:#808080;font-size:0.85em;">March 11, 2026 &middot; 8 min read &middot; <span style="background:rgba(74,222,128,0.15);color:#4ade80;padding:2px 8px;border-radius:4px;font-size:0.8em;font-weight:700;">INFRASTRUCTURE</span></p>
+        <h1>Auditable AI: How 4-Proof Chains Make Agent Work Verifiable</h1>
+        <p class="subtitle">Can you audit what an AI agent did? We can -- here's how 1,315 cryptographic proofs make every agent action independently verifiable.</p>
+    </header>
+
+    <h2>The Problem: Trust Without Verification</h2>
+    <p>When an AI agent makes a prediction, executes a trade, or produces a benchmark score -- how do you verify it actually did the work? Most agent systems rely on logs that the agent itself produces. That's self-attestation, not verification.</p>
+    <p>BlindOracle takes a different approach: every meaningful agent action produces a <strong>cryptographic proof chain</strong> -- a sequence of SHA-256 linked proofs that capture identity, computation, results, and independent witness verification. These proofs are published to Nostr relays where anyone can verify them.</p>
+
+    <h2>The 4-Proof Chain Structure</h2>
+    <p>Every benchmark run, every forecast resolution, every agent computation produces exactly four linked proofs:</p>
+
+    <table>
+        <thead><tr><th>Step</th><th>Proof Kind</th><th>Nostr Kind</th><th>What It Proves</th></tr></thead>
+        <tbody>
+            <tr><td>1</td><td>ProofOfPresence</td><td>30010</td><td>Agent identity confirmed + timestamp</td></tr>
+            <tr><td>2</td><td>ProofOfCompute</td><td>30015</td><td>Work performed: model, duration, response excerpt</td></tr>
+            <tr><td>3</td><td>ProofOfBenchmark</td><td>30020</td><td>Score + 3-component decomposition (keyword, length, structure)</td></tr>
+            <tr><td>4</td><td>ProofOfWitness</td><td>30013</td><td>Independent verification + chain integrity seal</td></tr>
+        </tbody>
+    </table>
+
+    <p>Each proof includes the SHA-256 hash of the previous proof, creating an immutable chain. Tamper with any proof and every subsequent hash breaks.</p>
+
+    <h2>15 Proof Kinds for Complete Coverage</h2>
+    <p>Beyond the 4-proof benchmark chain, BlindOracle supports 15 distinct proof types covering the full agent lifecycle:</p>
+
+    <table>
+        <thead><tr><th>Kind</th><th>Name</th><th>Category</th><th>Count</th></tr></thead>
+        <tbody>
+            <tr><td>30010</td><td>ProofOfPresence</td><td>presence</td><td>195</td></tr>
+            <tr><td>30012</td><td>ProofOfBelonging</td><td>belonging</td><td>76</td></tr>
+            <tr><td>30013</td><td>ProofOfWitness</td><td>witnessing</td><td>229</td></tr>
+            <tr><td>30014</td><td>ProofOfDelegation</td><td>delegation</td><td>129</td></tr>
+            <tr><td>30015</td><td>ProofOfCompute</td><td>compute</td><td>248</td></tr>
+            <tr><td>30016</td><td>ProofOfService</td><td>service</td><td>--</td></tr>
+            <tr><td>30017</td><td>ProofOfReputation</td><td>reputation</td><td>--</td></tr>
+            <tr><td>30018</td><td>ProofOfAudit</td><td>audit</td><td>--</td></tr>
+            <tr><td>30019</td><td>ProofOfDeployment</td><td>compute</td><td>55</td></tr>
+            <tr><td>30020</td><td>ProofOfBenchmark</td><td>compute</td><td>128</td></tr>
+            <tr><td>30021</td><td>ReputationAttestation</td><td>fleet</td><td>55</td></tr>
+            <tr><td>30022</td><td>ProofOfResearch</td><td>research</td><td>--</td></tr>
+            <tr><td>30023</td><td>ProofOfConsensus</td><td>research</td><td>55</td></tr>
+            <tr><td>30099</td><td>EncryptedProof</td><td>backup</td><td>--</td></tr>
+            <tr><td>1</td><td>AttestationReply</td><td>integrity</td><td>55</td></tr>
+        </tbody>
+    </table>
+
+    <h2>The Numbers</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin:20px 0;">
+        <div class="metric"><div class="metric-val">1,315</div><div class="metric-label">Proofs in SQLite</div></div>
+        <div class="metric"><div class="metric-val" style="color:#4a9eff;">3,690</div><div class="metric-label">Q&A Pairs Extracted</div></div>
+        <div class="metric"><div class="metric-val" style="color:#ce93d8;">248</div><div class="metric-label">Proof Chains</div></div>
+        <div class="metric"><div class="metric-val" style="color:#ff9800;">15</div><div class="metric-label">Proof Kinds</div></div>
+        <div class="metric"><div class="metric-val">80+</div><div class="metric-label">Unique Agents</div></div>
+    </div>
+
+    <h2>Score Verification: Fully Auditable</h2>
+    <p>The benchmark scoring formula is captured redundantly across three proof kinds:</p>
+    <pre><code>final_score = (keyword_score * 0.4) + (length_score * 0.3) + (structure_score * 0.3)
+threshold = 0.5  # pass/fail boundary</code></pre>
+    <p>An auditor can reconstruct any benchmark score from the proof data alone -- no access to the original agent or its logs required. The ProofOfCompute captures the model and response, ProofOfBenchmark captures the score decomposition, and ProofOfWitness validates the chain.</p>
+
+    <h2>Cross-Agent Witness Co-Signing</h2>
+    <p>Self-attestation is not enough. In v1.2.1, we added <strong>cross-agent witness co-signing</strong>: a completely independent agent can verify and co-sign any proof chain.</p>
+    <blockquote>
+        <p>The same agent that ran the benchmark should not be the one vouching for it. Cross-witness co-signing ensures independent verification by a different agent with its own keypair.</p>
+    </blockquote>
+    <p>Co-signatures are stored in a dedicated <code>cross_witness_co_signs</code> table with SHA-256 co-sign hashes and can be queried via the <code>proof_query.py co-sign-stats</code> CLI.</p>
+
+    <h2>ProofDB: SQL-Queryable Proof Storage</h2>
+    <p>All proofs are ingested into a SQLite database (<code>data/proof_qa.db</code>) for fast querying. The ProofDB system automatically extracts Q&A pairs from proof content, making agent work searchable:</p>
+    <pre><code># Query proofs by agent
+python3 scripts/proof_query.py query --agent benchmark-L9 --limit 5
+
+# Get database statistics
+python3 scripts/proof_query.py stats
+
+# Cross-agent witness co-sign
+python3 scripts/proof_query.py co-sign &lt;chain_hash&gt; \
+  --witness audit-trail-agent \
+  --verdict valid \
+  --finding "Score formula verified"</code></pre>
+
+    <h2>Nostr Publication: Decentralized Verification</h2>
+    <p>All proofs are signed with BIP-340 Schnorr signatures and published to three Nostr relays. This means:</p>
+    <ul>
+        <li><strong>Anyone can verify</strong> -- no need to trust BlindOracle's infrastructure</li>
+        <li><strong>Censorship-resistant</strong> -- proofs exist on decentralized relays</li>
+        <li><strong>Timestamped</strong> -- Nostr event timestamps provide independent ordering</li>
+        <li><strong>Restorable</strong> -- encrypted proofs (Kind 30099) enable disaster recovery from relays</li>
+    </ul>
+
+    <h2>What's Next</h2>
+    <p>Three audit gaps remain open (MEDIUM severity) that will further strengthen the proof chain:</p>
+    <ul>
+        <li><strong>Response hash</strong> -- Adding SHA-256 hash of the full LLM response to ProofOfCompute</li>
+        <li><strong>Prompt hash</strong> -- Adding SHA-256 hash of the exact prompt sent to the model</li>
+        <li><strong>Expected keywords</strong> -- Including the keyword list used for scoring in the proof</li>
+    </ul>
+    <p>These additions will close the remaining audit gaps, making BlindOracle's proof system fully self-contained for independent audit without any access to the original infrastructure.</p>
+
+    <hr>
+
+    <h2>Resources</h2>
+    <ul class="ref">
+        <li><a href="../agent-trust-nostr-proofs.md">Agent Trust via Nostr Proofs</a> -- Technical whitepaper on the 5-layer proof stack</li>
+        <li><a href="../trust-architecture-whitepaper.html">Trust Architecture Whitepaper</a> -- Full architecture overview</li>
+        <li><a href="20260308-agent-to-agent-economy.html">The Agent-to-Agent Economy</a> -- Strategic direction for autonomous agent commerce</li>
+    </ul>
+
+    <hr>
+    <p style="color:#808080;font-size:0.85em;">Copyright &copy; 2026 Craig M. Brown. All rights reserved. | <a href="../blog.html">Back to Blog</a> | <a href="../index.html">BlindOracle Home</a></p>
+</article>
+</body>
+</html>

@@ -90,7 +90,9 @@ Three-phase trust stack for verifiable agent identity and reputation.
 
 **Phase 1 -- Nostr Proof Publishing** (deployed):
 - Pubkey: `ba3eefec0e795362...` publishing to 3 relays
-- 11 proof types across kinds 30010-30020 (Presence, Participation, Belonging, Witness, Delegation, Settlement, Capability, SLA, Reputation, Audit, Retirement)
+- 15 proof types across kinds 30010-30023 + Kind 1 + Kind 30099 (Presence, Belonging, Witness, Delegation, Compute, Service, Reputation, Audit, Deployment, Benchmark, ReputationAttestation, Research, Consensus, EncryptedProof, AttestationReply)
+- 1,315 proofs in SQLite, 3,690 Q&A pairs extracted, 248 chains ingested
+- Cross-agent witness co-signing for independent verification
 - Tier 1 agents (8) NEVER publish; Tier 2/3 agents (17) auto-publish on cron
 
 **Phase 2 -- On-Chain Reputation Scoring** (deployed):
@@ -109,7 +111,8 @@ Three-phase trust stack for verifiable agent identity and reputation.
 ### Blog Posts
 Browse all posts at [craigmbrown.com/blindoracle/blog.html](https://craigmbrown.com/blindoracle/blog.html)
 
-- [The Agent-to-Agent Economy](blog/20260308-agent-to-agent-economy.html) - How trust infrastructure enables autonomous agent commerce (NEW)
+- [Auditable AI: How 4-Proof Chains Make Agent Work Verifiable](blog/20260311-auditable-ai-proof-chains.html) - 1,315 proofs, 15 kinds, SHA-256 chains, cross-agent witness co-signing (NEW)
+- [The Agent-to-Agent Economy](blog/20260308-agent-to-agent-economy.html) - How trust infrastructure enables autonomous agent commerce
 - [RWA Stock Prediction Markets on Robinhood Chain](blog/rwa-stock-prediction-markets.md) - ACE-compliant markets for tokenized stocks
 - [Chaumian Blind Signatures Meet AI Prediction Markets](blog/chaumian-blind-signatures.md) - Technical deep-dive on privacy-preserving prediction markets
 - [CaMel 4-Layer Security for Multi-Agent Systems](blog/camel-security.md) - Security architecture overview
