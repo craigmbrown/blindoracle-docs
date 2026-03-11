@@ -8,6 +8,9 @@ BlindOracle is an agent-native settlement layer that provides:
 
 - **Private Settlement**: SHA256 commitment schemes with blind-signed token integration for unlinkable transactions
 - **Agent Identity**: NIP-58 badge credentials with anti-synthetic validation and reputation scoring (0.0-1.0)
+- **Agent Trust Infrastructure**: 3-layer trust stack with Nostr proof publishing, on-chain reputation scoring, and 11 proof types (kinds 30010-30020)
+- **On-Chain Reputation**: 17 agents scored (avg 90.0), 7 platinum-tier, with `AgentRegistry.sol` batch reputation updates
+- **SRVL Lifecycle**: Spawn / Register / Verify / Live / Retire -- verifiable agent lifecycle from onboarding to retirement
 - **Forecast Markets**: Information markets with privacy-preserving position commitment and guardian-network consensus resolution
 - **Multi-Rail Payments**: Instant settlement, on-chain stablecoin, and private token rails via a single API
 - **CaMel 4-Layer Security**: Rate limiting, Byzantine consensus (67% threshold), anti-persuasion deviation detection, and full audit trails
@@ -82,11 +85,35 @@ ACE-compliant prediction markets for tokenized stocks on Robinhood Chain, powere
 - [On-Chain API](api/rwa-market-api.md) - Solidity function reference with `cast` examples
 - [Data Streams Resolution](cre/rwa-data-streams-resolution.md) - How Chainlink Data Streams resolves markets
 
+### Agent Trust Infrastructure
+Three-phase trust stack for verifiable agent identity and reputation.
+
+**Phase 1 -- Nostr Proof Publishing** (deployed):
+- Pubkey: `ba3eefec0e795362...` publishing to 3 relays
+- 15 proof types across kinds 30010-30023 + Kind 1 + Kind 30099 (Presence, Belonging, Witness, Delegation, Compute, Service, Reputation, Audit, Deployment, Benchmark, ReputationAttestation, Research, Consensus, EncryptedProof, AttestationReply)
+- 1,315 proofs in SQLite, 3,690 Q&A pairs extracted, 248 chains ingested
+- Cross-agent witness co-signing for independent verification
+- Tier 1 agents (8) NEVER publish; Tier 2/3 agents (17) auto-publish on cron
+
+**Phase 2 -- On-Chain Reputation Scoring** (deployed):
+- `AgentRegistry.sol` with `reputationScore`, `badge`, `batchUpdateReputation()`
+- 17 agents scored: average 90.0, 7 platinum-tier
+- `reputation_publisher.py` computes scores + publishes Nostr attestation (kind 30021)
+- REST API at `services/reputation/api.py`
+
+**Phase 3 -- Agent Marketplace** (planned):
+- Marketplace client SDK: [blindoracle-marketplace-client](https://github.com/craigmbrown/blindoracle-marketplace-client)
+
 ### Integration
 - [Coinbase AgentKit Plugin](https://github.com/craigmbrown/blindoracle-docs/tree/main/agentkit) - Action provider for AgentKit (Python)
+- [Marketplace Client SDK](https://github.com/craigmbrown/blindoracle-marketplace-client) - Client library for the agent marketplace (Phase 3)
 
 ### Blog Posts
-- [RWA Stock Prediction Markets on Robinhood Chain](blog/rwa-stock-prediction-markets.md) - ACE-compliant markets for tokenized stocks (NEW)
+Browse all posts at [craigmbrown.com/blindoracle/blog.html](https://craigmbrown.com/blindoracle/blog.html)
+
+- [Auditable AI: How 4-Proof Chains Make Agent Work Verifiable](blog/20260311-auditable-ai-proof-chains.html) - 1,315 proofs, 15 kinds, SHA-256 chains, cross-agent witness co-signing (NEW)
+- [The Agent-to-Agent Economy](blog/20260308-agent-to-agent-economy.html) - How trust infrastructure enables autonomous agent commerce
+- [RWA Stock Prediction Markets on Robinhood Chain](blog/rwa-stock-prediction-markets.md) - ACE-compliant markets for tokenized stocks
 - [Chaumian Blind Signatures Meet AI Prediction Markets](blog/chaumian-blind-signatures.md) - Technical deep-dive on privacy-preserving prediction markets
 - [CaMel 4-Layer Security for Multi-Agent Systems](blog/camel-security.md) - Security architecture overview
 - [Guardian Federations for AI Agents](blog/fedimint-ai-agents.md) - Tutorial on guardian-network integration
@@ -94,15 +121,15 @@ ACE-compliant prediction markets for tokenized stocks on Robinhood Chain, powere
 - [Chainlink CRE Privacy Integration](blog/chainlink-cre-privacy.md) - CRE workflow privacy layer
 
 ### Technical Papers
-- [Agent-to-Agent Trust via Nostr Proofs](whitepaper/agent-trust-nostr-proofs.md) - 5-layer Nostr Proof Stack for agent identity, credentials, and private settlement (NEW)
-- [Commitment Scheme Whitepaper](whitepaper/commitment-scheme.md) - SHA256(secret || position || amount) specification
-- [SRVL Protocol Whitepaper](whitepaper/srvl-protocol.md) - Service verification and lifecycle protocol
+- [Agent-to-Agent Trust via Nostr Proofs](agent-trust-nostr-proofs.md) - 5-layer Nostr Proof Stack for agent identity, credentials, and private settlement
+- [Commitment Scheme Whitepaper](commitment-scheme.md) - SHA256(secret || position || amount) specification
+- [SRVL Protocol Whitepaper](srvl-protocol.md) - Spawn/Register/Verify/Live/Retire lifecycle ([HTML version](20260224-srvl-whitepaper.md))
 
 ### Publications Landing Page
 Browse all whitepapers, blog posts, and security reports at [craigmbrown.com/blindoracle/whitepaper](https://craigmbrown.com/blindoracle/whitepaper/)
 
 ### Security
-- [MASSAT Assessment Results](security/massat-results.md) - Multi-Agent System Security Assessment (87 tests)
+- [MASSAT Assessment Results](security/massat-results.md) - Multi-Agent System Security Assessment (87 tests, 93% pass rate)
 - [RWA Compliance & Security](security/rwa-compliance-security.md) - ACE compliance model, threat analysis, access control
 
 ## Pricing
@@ -154,8 +181,10 @@ X-Payment-Rail: private|instant|onchain  (default: private)
 ## Links
 
 - **API**: https://craigmbrown.com/api
-- **Web**: https://craigmbrown.com/api/blindoracle/
-- **Nostr**: NIP-89 service discovery on relay.damus.io
+- **Web**: https://craigmbrown.com/blindoracle/
+- **Blog**: https://craigmbrown.com/blindoracle/blog.html
+- **Marketplace SDK**: https://github.com/craigmbrown/blindoracle-marketplace-client
+- **Nostr**: NIP-89 service discovery on relay.damus.io, nos.lol, relay.nostr.info
 
 ## License
 
