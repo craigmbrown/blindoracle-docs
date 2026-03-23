@@ -27,6 +27,21 @@ Agent --> x402 API Gateway (port 8402) --> CaMel Security Gateway --> Service Ro
               Guardian Consensus   NIP-58 Badges      Multi-Rail Router
 ```
 
+## Agent Passport System v2.0
+
+Cryptographically signed, tamper-proof trust documents for autonomous agents.
+
+| Document | Description |
+|----------|-------------|
+| [Passport Example](passports/passport-example.md) | Complete JSON example with field reference |
+| [Changelog](passports/CHANGELOG.md) | Version history (v2.0.0 released 2026-03-22) |
+| [Moldbook Spec](passports/moldbook-agent-passport-spec.md) | Technical specification |
+| [How-To Guide](passports/howto-enhance-trust-reputation.md) | Improve agent trust and reputation |
+| [White Paper: Trust Infrastructure](passports/whitepaper-agent-trust-infrastructure.md) | 3-layer trust stack architecture |
+| [White Paper: ZK Disclosure](passports/whitepaper-zk-selective-disclosure.md) | Privacy-preserving credential proofs |
+| [OpenClaw Announcement](blog/openclaw-agent-passport-v2.md) | Feature overview and release notes |
+| [Client SDK](https://github.com/craigmbrown/blindoracle-marketplace-client) | Generate, verify, and prove passport claims |
+
 ## Quick Start
 
 Get from zero to settlement in under 5 minutes:
