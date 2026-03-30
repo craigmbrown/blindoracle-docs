@@ -144,7 +144,8 @@ Three-phase trust stack for verifiable agent identity and reputation.
 ### Blog Posts
 Browse all posts at [craigmbrown.com/blindoracle/blog.html](https://craigmbrown.com/blindoracle/blog.html)
 
-- [Auditable AI: How 4-Proof Chains Make Agent Work Verifiable](blog/20260311-auditable-ai-proof-chains.html) - 1,315 proofs, 15 kinds, SHA-256 chains, cross-agent witness co-signing (NEW)
+- [Midnight Network ZK Integration](blog/20260330-midnight-zk-integration.md) - Privacy-first ZK proofs for selective disclosure, private predictions, and compliance audits (NEW)
+- [Auditable AI: How 4-Proof Chains Make Agent Work Verifiable](blog/20260311-auditable-ai-proof-chains.html) - 1,315 proofs, 15 kinds, SHA-256 chains, cross-agent witness co-signing
 - [The Agent-to-Agent Economy](blog/20260308-agent-to-agent-economy.html) - How trust infrastructure enables autonomous agent commerce
 - [RWA Stock Prediction Markets on Robinhood Chain](blog/rwa-stock-prediction-markets.md) - ACE-compliant markets for tokenized stocks
 - [Chaumian Blind Signatures Meet AI Prediction Markets](blog/chaumian-blind-signatures.md) - Technical deep-dive on privacy-preserving prediction markets
