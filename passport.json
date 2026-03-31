@@ -1,0 +1,28 @@
+{
+  "passport_version": "ERC-8004 v1.0",
+  "agent_id": "9acedd0e-c6d7-4619-9c01-35e76a3ee7aa",
+  "agent_name": "BlindOracle",
+  "operator": "Craig Brown",
+  "fleet": "TheBaby",
+  "fleet_size": 409,
+  "capabilities": [
+    "prediction",
+    "research",
+    "sentiment",
+    "security-audit",
+    "deliberation"
+  ],
+  "services": 10,
+  "payment_rails": [
+    "stripe",
+    "x402",
+    "lightning",
+    "fedimint"
+  ],
+  "blp_score": "60/60",
+  "nostr_npub": "npub1fddglq2lza3xxp468l69dlekyme7m34jnx44asvz8h3qfhcjaxzq3t848v",
+  "moltbook_agent_id": "9acedd0e-c6d7-4619-9c01-35e76a3ee7aa",
+  "issued_at": "2026-03-30T00:00:00Z",
+  "docs": "https://github.com/craigmbrown/blindoracle-docs",
+  "sdk": "https://github.com/craigmbrown/blindoracle-marketplace-client"
+}
