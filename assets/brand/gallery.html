@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BO Card Gallery — Final Rendered Assets</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;line-height:1.6;color:#e0e0e0;background:#1a1a1a;margin:0;padding:20px}
+article{max-width:1200px;margin:0 auto;background:#2d2d2d;border-radius:8px;padding:30px;box-shadow:0 20px 40px rgba(0,0,0,.5)}
+h1{color:#e0e0e0;border-bottom:3px solid #00ff41;padding-bottom:15px}
+h2{color:#e0e0e0;border-left:4px solid #00ff41;padding-left:10px;margin-top:35px}
+h3{color:#00ff41;font-family:'Courier New',monospace;margin-top:20px;letter-spacing:1px}
+.sub{color:#b0b0b0;font-size:14px}
+.asset{background:#0a0a0a;border:1px solid #404040;border-radius:10px;padding:22px;margin:22px 0}
+.asset.fav{border-color:#00ff41;box-shadow:0 0 24px rgba(0,255,65,.15)}
+.asset .badge{display:inline-block;background:#00ff41;color:#000;padding:3px 10px;border-radius:3px;font-family:'Courier New',monospace;font-size:11px;font-weight:700;letter-spacing:1px;margin-right:8px}
+.asset .badge.ghost{background:transparent;color:#b0b0b0;border:1px solid #404040}
+.asset img{max-width:100%;border-radius:6px;display:block;margin:14px 0;background:#000}
+.asset .paths{background:#0d1117;padding:12px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;color:#b0ffc0;overflow-x:auto}
+.asset .paths code{color:#00ff41}
+.asset .paths a{color:#79c0ff}
+table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px}
+th{background:#1a1a1a;color:#e0e0e0;padding:10px;text-align:left;border:1px solid #404040}
+td{padding:9px;border:1px solid #404040}
+tr:nth-child(even){background:#1a1a1a}
+.success-section{background:#1b5e20;border-left:4px solid #4caf50;padding:14px 18px;border-radius:4px;margin:18px 0}
+.warning-section{background:#332200;border-left:4px solid #ff9800;padding:14px 18px;border-radius:4px;margin:18px 0}
+.info-section{background:#1e3a5f;border-left:4px solid #4a9eff;padding:14px 18px;border-radius:4px;margin:18px 0}
+code{background:#0d1117;color:#79c0ff;padding:2px 6px;border-radius:3px;font-family:'Courier New',monospace}
+a{color:#4a9eff}
+footer{margin-top:40px;padding-top:20px;border-top:1px solid #404040;color:#808080;font-size:13px}
+</style>
+</head>
+<body>
+<article>
+<header>
+<h1>BO Card Gallery — Rendered</h1>
+<p class="sub">All 6 cards exported as PNG. Favorites (1, 5, 6) also as 6-second animated GIFs. Ready for X / LinkedIn / email / Telegram / Discord.</p>
+</header>
+
+<div class="success-section">
+<strong>Render summary:</strong> 6 PNGs @ 2× DPR + 3 GIFs (12 fps, 6s loop, 800px wide).
+Total output: 9 files, ~5.5 MB in <code>/home/craigmbrown/Project/html-output/cards/</code>.
+</div>
+
+<!-- ============ FAV: CARD 1 ============ -->
+<div class="asset fav">
+  <span class="badge">FAVORITE</span>
+  <span class="badge ghost">HERO 1400×900</span>
+  <span class="badge ghost">LinkedIn · blog · email</span>
+  <h3>Card 1 · "12 protocols. 14 days. One pattern."</h3>
+  <p class="sub">Trend peg: Drift $280M + 12-protocol exploit streak (Apr 1-18). Animated ticker of incidents. Typewriter hook "$1.22 per contract scan".</p>
+  <h3 style="font-size:13px">Static PNG</h3>
+  <img src="cards/card1-hero-exploit-wave.png" alt="Card 1 static">
+  <h3 style="font-size:13px">Animated GIF (6s loop)</h3>
+  <img src="cards/card1-hero-exploit-wave.gif" alt="Card 1 animated">
+  <div class="paths">
+    PNG: <code>/home/craigmbrown/Project/html-output/cards/card1-hero-exploit-wave.png</code><br>
+    GIF: <code>/home/craigmbrown/Project/html-output/cards/card1-hero-exploit-wave.gif</code><br>
+    URL: <a href="http://34.58.12.50:8080/cards/card1-hero-exploit-wave.png">card1.png</a> ·
+    <a href="http://34.58.12.50:8080/cards/card1-hero-exploit-wave.gif">card1.gif</a>
+  </div>
+</div>
+
+<!-- ============ CARD 2 ============ -->
+<div class="asset">
+  <span class="badge ghost">SQUARE 900×1100</span>
+  <span class="badge ghost">X · Telegram</span>
+  <h3>Card 2 · "$28K/day" contrarian</h3>
+  <p class="sub">Trend peg: ERC-8004 + x402 adoption gap. Bar-chart of today vs. real vs. run-rate target.</p>
+  <img src="cards/card2-square-28k-contrarian.png" alt="Card 2">
+  <div class="paths">
+    PNG: <code>/home/craigmbrown/Project/html-output/cards/card2-square-28k-contrarian.png</code><br>
+    URL: <a href="http://34.58.12.50:8080/cards/card2-square-28k-contrarian.png">card2.png</a>
+  </div>
+</div>
+
+<!-- ============ CARD 3 ============ -->
+<div class="asset">
+  <span class="badge ghost">SQUARE 900×1100</span>
+  <span class="badge ghost">ALERT · red accent · email inline</span>
+  <h3>Card 3 · "26 routers. 1 wallet. $500K gone."</h3>
+  <p class="sub">Trend peg: LLM router drain incident (CoinDesk Apr 13). Glitch animation on the loss figure.</p>
+  <img src="cards/card3-alert-router-drain.png" alt="Card 3">
+  <div class="paths">
+    PNG: <code>/home/craigmbrown/Project/html-output/cards/card3-alert-router-drain.png</code><br>
+    URL: <a href="http://34.58.12.50:8080/cards/card3-alert-router-drain.png">card3.png</a>
+  </div>
+</div>
+
+<!-- ============ CARD 4 ============ -->
+<div class="asset">
+  <span class="badge ghost">SQUARE 900×1100</span>
+  <span class="badge ghost">evergreen offer</span>
+  <h3>Card 4 · "Every agent. One passport."</h3>
+  <p class="sub">Evergreen value-stack card. Four pill bullets: ERC-8004 · x402 · Fedimint · ZK delegation.</p>
+  <img src="cards/card4-value-stack.png" alt="Card 4">
+  <div class="paths">
+    PNG: <code>/home/craigmbrown/Project/html-output/cards/card4-value-stack.png</code><br>
+    URL: <a href="http://34.58.12.50:8080/cards/card4-value-stack.png">card4.png</a>
+  </div>
+</div>
+
+<!-- ============ FAV: CARD 5 ============ -->
+<div class="asset fav">
+  <span class="badge">FAVORITE</span>
+  <span class="badge ghost">HERO 1400×900</span>
+  <span class="badge ghost">email hero · LinkedIn cover</span>
+  <h3>Card 5 · "Three things you can do today"</h3>
+  <p class="sub">Lulu magazine stack: three parallel hooks (audit, passport, wire). Rise-up staggered animation + stats ticker.</p>
+  <h3 style="font-size:13px">Static PNG</h3>
+  <img src="cards/card5-email-hero-3hooks.png" alt="Card 5 static">
+  <h3 style="font-size:13px">Animated GIF</h3>
+  <img src="cards/card5-email-hero-3hooks.gif" alt="Card 5 animated">
+  <div class="paths">
+    PNG: <code>/home/craigmbrown/Project/html-output/cards/card5-email-hero-3hooks.png</code><br>
+    GIF: <code>/home/craigmbrown/Project/html-output/cards/card5-email-hero-3hooks.gif</code><br>
+    URL: <a href="http://34.58.12.50:8080/cards/card5-email-hero-3hooks.png">card5.png</a> ·
+    <a href="http://34.58.12.50:8080/cards/card5-email-hero-3hooks.gif">card5.gif</a>
+  </div>
+</div>
+
+<!-- ============ FAV: CARD 6 ============ -->
+<div class="asset fav">
+  <span class="badge">FAVORITE</span>
+  <span class="badge ghost">BANK 1200×1400 · 4 sub-cards</span>
+  <span class="badge ghost">reply cards · sig · stickers</span>
+  <h3>Card 6 · Four reusable stat cards</h3>
+  <p class="sub">$3.4B hacks · $0 free tier · 24hr speed · 4-standard stack. Reuse individually for replies, Telegram stickers, email signatures.</p>
+  <h3 style="font-size:13px">Static PNG (full bank)</h3>
+  <img src="cards/card6-bank-four-reply-cards.png" alt="Card 6 bank">
+  <h3 style="font-size:13px">Animated GIF</h3>
+  <img src="cards/card6-bank-four-reply-cards.gif" alt="Card 6 animated">
+  <div class="paths">
+    PNG: <code>/home/craigmbrown/Project/html-output/cards/card6-bank-four-reply-cards.png</code><br>
+    GIF: <code>/home/craigmbrown/Project/html-output/cards/card6-bank-four-reply-cards.gif</code><br>
+    URL: <a href="http://34.58.12.50:8080/cards/card6-bank-four-reply-cards.png">card6.png</a> ·
+    <a href="http://34.58.12.50:8080/cards/card6-bank-four-reply-cards.gif">card6.gif</a>
+  </div>
+</div>
+
+<h2>Channel Assignment Plan</h2>
+<table>
+<thead><tr><th>Card</th><th>Primary channel</th><th>Secondary</th><th>Format</th></tr></thead>
+<tbody>
+<tr><td>Card 1 ★</td><td>LinkedIn article hero</td><td>Blog OG + X quote-post of Cointelegraph</td><td>GIF (LinkedIn autoplays) + PNG fallback</td></tr>
+<tr><td>Card 2</td><td>X thread card-1</td><td>Telegram pin · Discord announce</td><td>PNG</td></tr>
+<tr><td>Card 3</td><td>Cold-email inline chart</td><td>X reply to breaking router-drain coverage</td><td>PNG</td></tr>
+<tr><td>Card 4</td><td>Website hero swap</td><td>Pinned X post · Nostr</td><td>PNG</td></tr>
+<tr><td>Card 5 ★</td><td>Email hero (outbound + newsletter)</td><td>LinkedIn post cover</td><td>GIF inline + PNG fallback</td></tr>
+<tr><td>Card 6 ★</td><td>Email sig · X reply stickers · Telegram</td><td>Sliced into 4 individual PNGs on demand</td><td>GIF + PNG per panel</td></tr>
+</tbody>
+</table>
+
+<div class="info-section">
+<h3 style="margin-top:0;color:#4a9eff">&gt; ready to ship — pick channels</h3>
+<p>Assets are rendered and staged. Because cross-posting to X/LinkedIn/Telegram/Discord touches public state, I'm holding one more confirmation before the daemons send. Reply with:</p>
+<ul>
+<li><code>ship 1 to linkedin + blog</code></li>
+<li><code>ship 5 to email newsletter</code></li>
+<li><code>ship 6 to X replies + telegram</code></li>
+<li><code>ship all favorites everywhere</code> — I cross-post 1/5/6 to the channels in the table</li>
+<li><code>hold</code> — don't ship, I'll review manually first</li>
+</ul>
+<p>Cards 2/3/4 stay on the shelf as PNG-only backups unless you promote them too.</p>
+</div>
+
+<h2>Regenerate</h2>
+<p class="sub">Source HTML: <code>/home/craigmbrown/Project/html-output/20260418-bo-bold-visual-hook-cards.html</code><br>
+Scripts: <code>scripts/card_exporter.py</code> (PNG) · <code>scripts/card_gif_exporter.py</code> (GIF)<br>
+Tweak copy in the source HTML, re-run the two scripts, done.</p>
+
+<footer>
+Generated 2026-04-18 · rendered via Chromium + Playwright 1.47 · assembled via ffmpeg 5.1.8<br>
+Gallery: <code>/home/craigmbrown/Project/html-output/20260418-bo-card-gallery-final.html</code>
+</footer>
+</article>
+</body>
+</html>

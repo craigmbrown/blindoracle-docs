@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bold Visual Hook Cards — Green-on-Black · Lulu-Style · Animated</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;line-height:1.6;color:#e0e0e0;background:#1a1a1a;margin:0;padding:20px}
+article{max-width:1200px;margin:0 auto;background:#2d2d2d;border-radius:8px;padding:30px;box-shadow:0 20px 40px rgba(0,0,0,.5)}
+h1{color:#e0e0e0;border-bottom:3px solid #00ff41;padding-bottom:15px;margin-bottom:6px}
+h2{color:#e0e0e0;border-left:4px solid #00ff41;padding-left:12px;margin-top:38px}
+h3{color:#00ff41;margin-top:22px;font-family:'Courier New',monospace;letter-spacing:1px}
+.sub{color:#b0b0b0;font-size:14px;margin-top:0}
+.intro{background:#0a0a0a;border:1px solid #00ff41;padding:16px 20px;border-radius:6px;color:#b0ffc0;margin:18px 0}
+.intro strong{color:#00ff41}
+
+/* === THE CARD SYSTEM — Green on Black, Lulu-magazine aesthetic === */
+.card{position:relative;background:#0a0a0a;color:#00ff41;border-radius:12px;overflow:hidden;margin:28px 0;box-shadow:0 10px 40px rgba(0,255,65,.08),0 4px 14px rgba(0,0,0,.6);border:1px solid rgba(0,255,65,.25)}
+.card .scanline{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,255,65,.03) 0 2px,transparent 2px 4px);pointer-events:none;mix-blend-mode:screen}
+.card .glow{position:absolute;inset:-40px;background:radial-gradient(circle at 20% 20%,rgba(0,255,65,.18),transparent 60%);pointer-events:none}
+
+/* size variants */
+.card-xl{aspect-ratio:1200/627;padding:44px 54px}     /* LinkedIn hero */
+.card-sq{aspect-ratio:1/1;padding:40px 44px;max-width:720px;margin-left:auto;margin-right:auto} /* X 1080×1080 */
+.card-wide{aspect-ratio:1600/900;padding:48px 56px} /* YouTube thumb */
+
+/* Type hierarchy */
+.eyebrow{font-family:'Courier New',monospace;font-size:13px;letter-spacing:3px;text-transform:uppercase;color:#00ff41;opacity:.8;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:28px;height:2px;background:#00ff41;display:inline-block}
+.hook-1{font-family:'Arial Black',Impact,sans-serif;font-weight:900;font-size:clamp(30px,4.2vw,56px);line-height:1.02;letter-spacing:-1px;color:#00ff41;text-shadow:0 0 18px rgba(0,255,65,.35);margin:6px 0}
+.hook-1 .accent{background:#00ff41;color:#000;padding:0 10px;border-radius:4px}
+.hook-2{font-family:'Courier New',monospace;font-size:clamp(15px,1.6vw,20px);color:#b0ffc0;margin:10px 0 18px;line-height:1.4;max-width:85%}
+.value-row{display:flex;gap:22px;flex-wrap:wrap;margin-top:22px}
+.value-pill{border:1px solid #00ff41;padding:8px 14px;border-radius:100px;color:#00ff41;font-family:'Courier New',monospace;font-size:13px;font-weight:700;letter-spacing:1px;white-space:nowrap;background:rgba(0,255,65,.05)}
+.cta-strip{position:absolute;bottom:0;left:0;right:0;background:#00ff41;color:#000;font-family:'Arial Black',sans-serif;text-transform:uppercase;letter-spacing:2px;font-size:14px;padding:10px 24px;display:flex;justify-content:space-between;align-items:center}
+.cta-strip .url{font-family:'Courier New',monospace;letter-spacing:.5px}
+.corner-tag{position:absolute;top:20px;right:24px;border:1px solid #00ff41;color:#00ff41;padding:4px 10px;border-radius:3px;font-family:'Courier New',monospace;font-size:11px;letter-spacing:1px}
+
+/* Animations */
+@keyframes blink{50%{opacity:.25}}
+.blink{animation:blink 1.2s step-end infinite}
+@keyframes type{from{width:0}to{width:100%}}
+.typing{display:inline-block;overflow:hidden;white-space:nowrap;border-right:2px solid #00ff41;animation:type 2.2s steps(40,end) 1 both,blink 1s step-end infinite}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-wrap{position:absolute;bottom:44px;left:0;right:0;overflow:hidden;white-space:nowrap;border-top:1px dashed rgba(0,255,65,.3);border-bottom:1px dashed rgba(0,255,65,.3);padding:6px 0;background:rgba(0,0,0,.6)}
+.ticker{display:inline-block;animation:ticker 28s linear infinite;font-family:'Courier New',monospace;font-size:13px;color:#00ff41}
+.ticker span{margin:0 26px}
+.ticker span::before{content:"●";color:#00ff41;margin-right:8px;animation:blink 1s step-end infinite}
+@keyframes rise{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+.rise-1{animation:rise .6s ease-out .0s both}
+.rise-2{animation:rise .6s ease-out .25s both}
+.rise-3{animation:rise .6s ease-out .5s both}
+.rise-4{animation:rise .6s ease-out .75s both}
+@keyframes count{0%{opacity:0;transform:scale(.92)}60%{opacity:1;transform:scale(1.04)}100%{transform:scale(1)}}
+.count-up{animation:count 1.1s ease-out both}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(0,255,65,.6)}70%{box-shadow:0 0 0 22px rgba(0,255,65,0)}100%{box-shadow:0 0 0 0 rgba(0,255,65,0)}}
+.pulse{animation:pulse-ring 1.8s ease-out infinite}
+@keyframes glitch{0%,92%,100%{transform:translate(0)}93%{transform:translate(-1px,1px)}94%{transform:translate(1px,-1px)}95%{transform:translate(-1px,-1px)}}
+.glitch{animation:glitch 4s infinite}
+
+/* Chart row */
+.chart-bars{display:flex;align-items:flex-end;gap:12px;height:110px;margin-top:18px}
+.chart-bars .bar{flex:1;background:linear-gradient(180deg,#00ff41,#007a1f);border-radius:3px 3px 0 0;position:relative;transform-origin:bottom;animation:grow 1s ease-out both}
+.chart-bars .bar span{position:absolute;top:-18px;left:50%;transform:translateX(-50%);color:#00ff41;font-family:'Courier New',monospace;font-size:11px;font-weight:700}
+.chart-bars .bar em{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);color:#b0ffc0;font-family:'Courier New',monospace;font-size:10px;font-style:normal;letter-spacing:.5px}
+@keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+
+.big-stat{font-family:'Arial Black',sans-serif;font-size:clamp(60px,9vw,128px);line-height:1;color:#00ff41;text-shadow:0 0 28px rgba(0,255,65,.4);letter-spacing:-3px}
+.big-stat sup{font-size:.38em;color:#b0ffc0;vertical-align:super;letter-spacing:0}
+
+.why-block{background:rgba(0,255,65,.07);border:1px dashed rgba(0,255,65,.4);padding:12px 16px;border-radius:6px;margin-top:14px;font-family:'Courier New',monospace;font-size:13px;color:#b0ffc0}
+.why-block strong{color:#00ff41}
+
+.grid-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px}
+@media(max-width:800px){.grid-cards{grid-template-columns:1fr}}
+
+.meta{background:#1a1a1a;border:1px solid #404040;padding:12px 16px;border-radius:6px;color:#b0b0b0;font-size:12px;margin-top:10px}
+.meta code{background:#0d1117;color:#00ff41;padding:2px 6px;border-radius:3px;font-family:'Courier New',monospace}
+
+.confirm-box{background:#0a0a0a;border:2px solid #00ff41;padding:22px;border-radius:10px;margin:30px 0;color:#b0ffc0}
+.confirm-box h3{color:#00ff41;margin-top:0}
+.confirm-box ul{margin:6px 0;padding-left:18px;line-height:1.9}
+
+footer{margin-top:40px;padding-top:20px;border-top:1px solid #404040;color:#808080;font-size:13px}
+a{color:#00ff41;text-decoration:none}a:hover{color:#b0ffc0;text-decoration:underline}
+</style>
+</head>
+<body>
+<article>
+<header>
+<h1>Bold Visual Hook Cards</h1>
+<p class="sub">Replacing the Manim lineup. Green-on-black (email theme), Lulu-magazine hierarchy (eyebrow → killer hook → subhead → value pills → CTA strip), animated type &amp; counters. Self-contained HTML/CSS — export as PNG/MP4 via Playwright.</p>
+<div class="intro"><strong>Design principle:</strong> every card carries <strong>3 hooks</strong> (eyebrow tag, big headline, subhead) + <strong>why-it-matters</strong> stat + <strong>value pills</strong> + <strong>CTA strip</strong>. Animation is tasteful — typewriter for headlines, rise-up for bullets, ticker for context, count-up for stats.</p>
+</header>
+
+<!-- =========================================================
+     CARD 1 — HERO (LinkedIn / blog hero) — 1200×627
+     Trend peg: Drift $280M + 12 protocols in 2 weeks
+========================================================= -->
+<h2>Card 1 · HERO · LinkedIn &amp; blog · 1200×627</h2>
+<h3>&gt; trend peg: the agent-exploit wave</h3>
+<div class="card card-xl" id="card1">
+  <div class="glow"></div><div class="scanline"></div>
+  <span class="corner-tag">BLINDORACLE · OWASP ASI</span>
+
+  <div class="eyebrow rise-1">THE AGENT-EXPLOIT WAVE / APRIL 2026</div>
+
+  <div class="hook-1 rise-2">
+    12 protocols.<br>
+    14 days.<br>
+    <span class="accent">One pattern.</span>
+  </div>
+
+  <div class="hook-2 rise-3">
+    Since Drift's $280M, autonomous agents have been hunting DeFi at
+    <span class="typing">$1.22 per contract scan.</span>
+  </div>
+
+  <div class="value-row rise-4">
+    <div class="value-pill">OWASP ASI01-10 AUDIT</div>
+    <div class="value-pill">24-HR TURNAROUND</div>
+    <div class="value-pill">FIRST SCAN FREE</div>
+    <div class="value-pill">MASSAT-SIGNED REPORT</div>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>DRIFT $280M · APR 1</span>
+      <span>GRIFFIN AI $2.5M · SEPT</span>
+      <span>LLM ROUTERS $500K · APR 13</span>
+      <span>MYTHOS 0-DAY · APR 8</span>
+      <span>+11 MORE · APR 2–18</span>
+      <span>DRIFT $280M · APR 1</span>
+      <span>GRIFFIN AI $2.5M · SEPT</span>
+      <span>LLM ROUTERS $500K · APR 13</span>
+      <span>MYTHOS 0-DAY · APR 8</span>
+      <span>+11 MORE · APR 2–18</span>
+    </div>
+  </div>
+
+  <div class="cta-strip">
+    <span>SCAN BEFORE YOU GET SCANNED</span>
+    <span class="url">craigmbrown.com/blindoracle →</span>
+  </div>
+</div>
+
+<div class="why-block"><strong>WHY IT MATTERS:</strong> Anthropic's Mythos now catalogs 0-days at machine speed for ~$1 per contract. Defenders running human audits can't match the scan frequency. BlindOracle runs agents vs. agents — same speed, same economics, your side.</div>
+<div class="meta"><strong>Export:</strong> <code>npx playwright screenshot --selector=".card-xl" --viewport-size=1200,627 output.png</code> · <strong>Channels:</strong> LinkedIn hero, blog open-graph, email banner.</div>
+
+
+<!-- =========================================================
+     CARD 2 — X SQUARE · 1080×1080
+     Trend peg: ERC-8004 + x402 adoption gap
+========================================================= -->
+<h2>Card 2 · X SQUARE · 1080×1080</h2>
+<h3>&gt; trend peg: the $28K-a-day standard</h3>
+<div class="card card-sq" id="card2">
+  <div class="glow"></div><div class="scanline"></div>
+  <span class="corner-tag">BO · AGENT STACK</span>
+
+  <div class="eyebrow rise-1">ERC-8004 + X402 · THE REAL NUMBER</div>
+
+  <div class="big-stat count-up">$28<sup>K</sup>/day</div>
+  <div class="hook-2 rise-3" style="margin-top:4px">
+    Ethereum's celebrated agent-payment stack ships<br>
+    <strong style="color:#00ff41">half of that in wash traffic.</strong>
+  </div>
+
+  <div class="chart-bars rise-4">
+    <div class="bar" style="height:22%;animation-delay:.2s"><span>$28K</span><em>x402 today</em></div>
+    <div class="bar" style="height:8%;animation-delay:.4s"><span>$9K</span><em>real</em></div>
+    <div class="bar" style="height:62%;animation-delay:.6s"><span>$84K</span><em>BO target</em></div>
+    <div class="bar" style="height:100%;animation-delay:.8s;background:linear-gradient(180deg,#b0ffc0,#00ff41)"><span>$400K</span><em>run-rate '27</em></div>
+  </div>
+
+  <div class="why-block" style="margin-top:28px"><strong>WHY IT MATTERS:</strong> the narrative is 6-12 months ahead of the on-chain number. The win goes to whoever ships the first paid integration — not the first whitepaper.</div>
+
+  <div class="cta-strip">
+    <span>SHIP, DON'T HYPE.</span>
+    <span class="url">pip install blindoracle-client</span>
+  </div>
+</div>
+<div class="meta"><strong>Channels:</strong> X thread card-1, Telegram announcement, Discord pin. <strong>Reply-bait:</strong> leaves the "half is wash" contrarian number unargued — primes QTs.</div>
+
+
+<!-- =========================================================
+     CARD 3 — ALERT / URGENCY SQUARE
+     Trend peg: LLM routers $500K drain
+========================================================= -->
+<h2>Card 3 · ALERT CARD · 1080×1080 · cold-email inline</h2>
+<h3>&gt; trend peg: 26 LLM routers, $500K drained</h3>
+<div class="card card-sq" id="card3">
+  <div class="glow"></div><div class="scanline"></div>
+  <span class="corner-tag pulse" style="background:rgba(255,50,50,.1);border-color:#ff5050;color:#ff5050">● LIVE INCIDENT</span>
+
+  <div class="eyebrow rise-1" style="color:#ff8080">SECURITY ADVISORY · 2026-04-13</div>
+
+  <div class="hook-1 rise-2" style="font-size:clamp(34px,5.2vw,66px)">
+    26 routers.<br>
+    1 wallet.<br>
+    <span class="accent glitch">$500,000 gone.</span>
+  </div>
+
+  <div class="hook-2 rise-3">
+    Malicious tool-call injection inside the LLM routing layer.<br>
+    If your agent fleet calls any public router — you're the target.
+  </div>
+
+  <div class="value-row rise-4">
+    <div class="value-pill">ASI06 · TOOL POISONING</div>
+    <div class="value-pill">ASI08 · DATA EXFIL</div>
+    <div class="value-pill">BO · BLOCKS BOTH</div>
+  </div>
+
+  <div class="why-block"><strong>WHY IT MATTERS:</strong> this is the <em>second</em> agent-layer exploit class in 2 weeks. Your infra team treats routers as plumbing. Attackers treat them as the front door.</div>
+
+  <div class="cta-strip" style="background:#ff5050;color:#000">
+    <span>AUDIT YOUR ROUTERS — 24 HR</span>
+    <span class="url">craigmbrown.com/blindoracle/scan</span>
+  </div>
+</div>
+<div class="meta"><strong>Channels:</strong> cold-email inline chart, X reply to breaking-news accounts, Telegram alert channel. The red accent overrides theme intentionally — urgency signal.</div>
+
+
+<!-- =========================================================
+     CARD 4 — VALUE-STACK SQUARE
+     Offer-forward "why buy"
+========================================================= -->
+<h2>Card 4 · VALUE STACK · 1080×1080 · top-of-funnel</h2>
+<h3>&gt; no news peg — evergreen offer card</h3>
+<div class="card card-sq" id="card4">
+  <div class="glow"></div><div class="scanline"></div>
+  <span class="corner-tag">BLINDORACLE · FREE TIER</span>
+
+  <div class="eyebrow rise-1">AGENT INFRASTRUCTURE · SHIPPED</div>
+  <div class="hook-1 rise-2">Every agent.<br>One <span class="accent">passport.</span></div>
+  <div class="hook-2 rise-3">ERC-8004 identity · x402 payments · Fedimint eCash · ZK proofs of delegation. <strong>Free Explorer tier. First 1,000 settlements on us.</strong></div>
+
+  <div class="value-row rise-4" style="flex-direction:column;gap:10px">
+    <div class="value-pill" style="text-align:left;width:100%;box-sizing:border-box">→ ERC-8004 PASSPORT · ISSUED IN 90 SEC</div>
+    <div class="value-pill" style="text-align:left;width:100%;box-sizing:border-box">→ X402 PAY-PER-REQUEST · &lt;30 SEC SETTLEMENT</div>
+    <div class="value-pill" style="text-align:left;width:100%;box-sizing:border-box">→ FEDIMINT ECASH · PRIVATE, UNLINKABLE</div>
+    <div class="value-pill" style="text-align:left;width:100%;box-sizing:border-box">→ ZK DELEGATION · AUDIT-GRADE PROOF</div>
+  </div>
+
+  <div class="why-block"><strong>WHY IT MATTERS:</strong> you can stop welding your own identity/payment/proof plumbing. Four standards, one <code>pip install</code>, production-signed.</div>
+
+  <div class="cta-strip">
+    <span>FREE TIER · NO CREDIT CARD</span>
+    <span class="url">craigmbrown.com/blindoracle/onboarding</span>
+  </div>
+</div>
+
+
+<!-- =========================================================
+     CARD 5 — MULTI-HOOK EMAIL HERO
+     Lulu magazine-stack layout
+========================================================= -->
+<h2>Card 5 · EMAIL HERO · 1200×627 · multi-hook stack</h2>
+<h3>&gt; Lulu magazine-stack: 3 parallel hooks, reader picks</h3>
+<div class="card card-xl" id="card5">
+  <div class="glow"></div><div class="scanline"></div>
+  <span class="corner-tag">BLINDORACLE · APR '26</span>
+
+  <div class="eyebrow rise-1">THREE THINGS YOU CAN DO TODAY</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;margin-top:14px">
+    <div class="rise-2">
+      <div style="font-family:'Arial Black',sans-serif;font-size:44px;color:#00ff41;line-height:.95">01</div>
+      <div style="font-family:'Arial Black',sans-serif;font-size:18px;color:#00ff41;margin-top:8px;letter-spacing:-.3px">Audit your agent fleet.</div>
+      <div style="font-family:'Courier New',monospace;font-size:12px;color:#b0ffc0;margin-top:6px">OWASP ASI 01-10<br>24-hr turnaround.<br><strong>Free first scan.</strong></div>
+    </div>
+    <div class="rise-3">
+      <div style="font-family:'Arial Black',sans-serif;font-size:44px;color:#00ff41;line-height:.95">02</div>
+      <div style="font-family:'Arial Black',sans-serif;font-size:18px;color:#00ff41;margin-top:8px;letter-spacing:-.3px">Passport your agents.</div>
+      <div style="font-family:'Courier New',monospace;font-size:12px;color:#b0ffc0;margin-top:6px">ERC-8004 + ZK proof.<br>90-sec issuance.<br><strong>Explorer tier = free.</strong></div>
+    </div>
+    <div class="rise-4">
+      <div style="font-family:'Arial Black',sans-serif;font-size:44px;color:#00ff41;line-height:.95">03</div>
+      <div style="font-family:'Arial Black',sans-serif;font-size:18px;color:#00ff41;margin-top:8px;letter-spacing:-.3px">Wire x402 + eCash.</div>
+      <div style="font-family:'Courier New',monospace;font-size:12px;color:#b0ffc0;margin-top:6px">Pay-per-request.<br>Fedimint privacy.<br><strong>First 1,000 settlements free.</strong></div>
+    </div>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>BLP 60/60 · PRODUCTION VALIDATED</span>
+      <span>MASSAT AUDITED · ASI01-10</span>
+      <span>79-83% LLM COST REDUCTION</span>
+      <span>~$0.003 PER 3-MODEL CONSENSUS</span>
+      <span>OPEN SOURCE · MIT</span>
+      <span>BLP 60/60 · PRODUCTION VALIDATED</span>
+      <span>MASSAT AUDITED · ASI01-10</span>
+      <span>79-83% LLM COST REDUCTION</span>
+    </div>
+  </div>
+
+  <div class="cta-strip">
+    <span>PICK ONE. SHIP TODAY.</span>
+    <span class="url">craigmbrown.com/blindoracle</span>
+  </div>
+</div>
+
+
+<!-- =========================================================
+     Quick bank: 4 small cards for tweet-attach / reply cards
+========================================================= -->
+<h2>Card 6 · BANK · four reusable reply cards</h2>
+<p class="sub">Small 540×540 cards for sub-tweets, Telegram stickers, and email signatures.</p>
+<div class="grid-cards" id="card6">
+
+  <div class="card" style="aspect-ratio:1/1;padding:28px">
+    <div class="glow"></div><div class="scanline"></div>
+    <div class="eyebrow">STAT · DEFI 2026 YTD</div>
+    <div class="big-stat count-up" style="font-size:72px">$3.4<sup>B</sup></div>
+    <div class="hook-2" style="font-size:14px;max-width:100%">stolen in crypto hacks · 2025<br><strong style="color:#00ff41">2026 Q1 already at $168M</strong></div>
+    <div class="why-block" style="margin-top:12px;font-size:12px"><strong>WHY:</strong> attackers have AI. Defenders need it too.</div>
+  </div>
+
+  <div class="card" style="aspect-ratio:1/1;padding:28px">
+    <div class="glow"></div><div class="scanline"></div>
+    <div class="eyebrow">PRICING</div>
+    <div style="display:flex;align-items:baseline;gap:8px;margin-top:12px">
+      <div class="big-stat count-up" style="font-size:72px">$0</div>
+      <div style="font-family:'Courier New',monospace;color:#b0ffc0">free tier</div>
+    </div>
+    <div class="value-row" style="flex-direction:column;gap:6px;margin-top:8px">
+      <div class="value-pill" style="text-align:left;font-size:11px">FIRST AUDIT FREE</div>
+      <div class="value-pill" style="text-align:left;font-size:11px">1,000 SETTLEMENTS FREE</div>
+      <div class="value-pill" style="text-align:left;font-size:11px">PASSPORT FREE</div>
+    </div>
+    <div class="why-block" style="margin-top:12px;font-size:12px"><strong>WHY:</strong> prove value. Pay when it clicks.</div>
+  </div>
+
+  <div class="card" style="aspect-ratio:1/1;padding:28px">
+    <div class="glow"></div><div class="scanline"></div>
+    <div class="eyebrow">SPEED</div>
+    <div class="big-stat count-up" style="font-size:72px">24<sup>hr</sup></div>
+    <div class="hook-2" style="font-size:14px;max-width:100%">from <code style="background:#0a0a0a;color:#00ff41">pip install</code> to signed OWASP ASI audit in your inbox.</div>
+    <div class="why-block" style="margin-top:12px;font-size:12px"><strong>WHY:</strong> attackers don't book calendar slots.</div>
+  </div>
+
+  <div class="card" style="aspect-ratio:1/1;padding:28px">
+    <div class="glow"></div><div class="scanline"></div>
+    <div class="eyebrow">STACK · 4 STANDARDS</div>
+    <div style="font-family:'Arial Black',sans-serif;font-size:20px;line-height:1.2;margin-top:12px">
+      <div class="rise-1" style="color:#00ff41">+ ERC-8004</div>
+      <div class="rise-2" style="color:#00ff41">+ x402</div>
+      <div class="rise-3" style="color:#00ff41">+ Fedimint</div>
+      <div class="rise-4" style="color:#00ff41">+ ZK delegation</div>
+    </div>
+    <div class="why-block" style="margin-top:12px;font-size:12px"><strong>WHY:</strong> one SDK = four production standards.</div>
+  </div>
+
+</div>
+
+<!-- =========================================================
+     Confirm block
+========================================================= -->
+<div class="confirm-box">
+  <h3>&gt; pick what to ship</h3>
+  <p>All 6 cards are self-contained HTML. I can export each as:</p>
+  <ul>
+    <li><strong>PNG</strong> (1080×1080 or 1200×627) via Playwright screenshot — posts to X/LinkedIn/email inline</li>
+    <li><strong>MP4 / GIF</strong> (6s loop) via Playwright record — X auto-plays MP4 &lt;2min, LinkedIn autoplay 10s</li>
+    <li><strong>Animated email HTML</strong> — inline CSS animations render in Gmail/iOS Mail (static fallback in Outlook)</li>
+  </ul>
+  <p>Reply with any combination:</p>
+  <ul>
+    <li><strong>1</strong> — ship Card 1 (HERO, agent-exploit wave)</li>
+    <li><strong>2</strong> — ship Card 2 (X square, $28K/day contrarian)</li>
+    <li><strong>3</strong> — ship Card 3 (ALERT, router exploit) — email + X</li>
+    <li><strong>4</strong> — ship Card 4 (value stack, evergreen)</li>
+    <li><strong>5</strong> — ship Card 5 (3-hook email hero)</li>
+    <li><strong>6</strong> — ship Card 6 bank (4 small reply cards)</li>
+    <li><strong>all</strong> — render the full set as PNG + GIF + email-ready HTML, then queue to channels</li>
+    <li><strong>tweak: [notes]</strong> — change color, hook copy, pills, etc.</li>
+  </ul>
+  <p style="color:#00ff41"><strong>Defaults I'll apply unless you say otherwise:</strong> green #00ff41 on black #0a0a0a, Arial Black + Courier New, 6s loop animation, export to <code>html-output/cards/</code> then to <code>content/gtm/visuals/</code>.</p>
+</div>
+
+<footer>
+Generated 2026-04-18 · Green-on-black theme (per user pref) · Lulu-magazine hierarchy · Animated inline CSS<br>
+File: <code>/home/craigmbrown/Project/html-output/20260418-bo-bold-visual-hook-cards.html</code><br>
+Related: <a href="20260418-bo-gtm-audit-results.html">BO GTM audit</a> · <a href="20260418-bo-content-trend-aware-examples.html">Trend-aware content plan</a>
+</footer>
+</article>
+</body>
+</html>
