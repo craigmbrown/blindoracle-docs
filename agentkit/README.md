@@ -80,8 +80,8 @@ Every claim this README makes can be verified by hitting one of those endpoints.
 ## Roadmap
 
 - [ ] PR to `coinbase/agentkit` ecosystem docs adding BlindOracle as a partner (manual, this week)
-- [ ] Unit tests with `requests-mock` for each action
-- [ ] Live smoke test marked `@pytest.mark.slow` against craigmbrown.com/api
+- [x] Unit tests with `requests-mock` for each action (16 tests in `tests/test_actions.py`)
+- [x] Live smoke test marked `@pytest.mark.slow` against craigmbrown.com/api (`tests/test_live_smoke.py`)
 - [ ] X demo gist + thread referencing https://x.com/craigmbrown/status/2054379422753411523
 
 ## License
