@@ -100,13 +100,13 @@ Four-layer defense against Sybil attacks and manipulation:
 | L3: Anti-Persuasion | Social engineering detection | 30% deviation flag |
 | L4: Authority Audit | Cryptographic identity + immutable logs | Full trail |
 
-Platform achieves 60/60 Base Level Properties (BLP) coverage across 6 categories.
+Platform implements the Base Level Properties (BLP) framework across 6 categories.
 
 ## 7. Platform Metrics
 
 - **234** autonomous agent runs
 - **19** unique agent types
-- **25** total agents across 8 teams
+- **54** production agents across 12 teams (anchored on Base mainnet, verifyAnchor=true)
 - **14.6** average runs per day
 - **16** days of continuous operation
 - **11** MCP tools exposed
