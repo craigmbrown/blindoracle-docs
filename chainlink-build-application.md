@@ -193,8 +193,8 @@ Settlement: Agent reveals (secret, position, amount)
 ## 7. Team
 
 **Craig M. Brown** -- Solo builder
-- Multi-agent system architect operating 42+ specialized AI agents with 79-83% cost reduction
-- Built: Limitless Lifelog Manager, TheBaby_Agents (19 SFAs), Orchestrator-Agent (13 coordination agents), WhatsApp-Manager-Agent, BlindOracle (25 agents)
+- Multi-agent system architect operating 42+ specialized AI agents with multi-provider LLM cost routing
+- Built: Limitless Lifelog Manager, TheBaby_Agents (19 SFAs), Orchestrator-Agent (13 coordination agents), WhatsApp-Manager-Agent, BlindOracle (54 agents)
 - Infrastructure: GCP VM (c3-standard-4), 10+ MCP servers, Claude Code hooks observability
 - Familiar with Chainlink ecosystem since CRE launch (Nov 2025)
 
@@ -224,7 +224,7 @@ Free trial: First 1,000 settlements free for new agents. Volume discounts at 10K
 |---|---|---|---|
 | Privacy Tech | FHE (lattice crypto) | FHE + DePIN | Chaumian blind signatures (1982) + CRE consensus |
 | Chainlink Integration | CCIP, Functions | Functions | **CRE (10 workflows), CCIP, Data Streams, Functions** |
-| AI Component | Confidential AI systems | AI agents + data provenance | **25 autonomous agents, multi-AI verification** |
+| AI Component | Confidential AI systems | AI agents + data provenance | **54 autonomous agents, multi-AI verification** |
 | Security | Standard | Standard | **CaMel 4-layer, MASSAT 87 tests, 93% pass** |
 | Smart Contract | Not specified on Base | Not specified | **Base mainnet deployed + IReceiver** |
 | Micropayments | No | No | **x402 protocol (USDC on Base)** |

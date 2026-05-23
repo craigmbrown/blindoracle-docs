@@ -96,4 +96,4 @@ Full MASSAT results are published separately in [massat-results](../security/mas
 
 ---
 
-*BlindOracle uses CaMel across all 25 agents and 8 teams. For MASSAT assessment results, see [massat-results](../security/massat-results.md).*
+*BlindOracle uses CaMel across all 54 agents and 12 teams. For MASSAT assessment results, see [massat-results](../security/massat-results.md).*
