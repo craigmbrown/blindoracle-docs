@@ -21,7 +21,7 @@ Pricing is x402-paywalled (per-call ecash micro-payments). The free tier covers 
 The Cryptorefills repo's AgentKit example README puts it plainly: *"Agent identity is the next unsolved layer."* BlindOracle solves it:
 
 - **Identity** — Every action call carries an ERC-8004 passport hash
-- **Delegation chain** — `ProofOfDelegation` (kind 30014) HMAC-signed, every spawn traces to operator
+- **Delegation chain** — `ProofOfDelegation` (kind 30014), HMAC-signed and hash-chained; when delegation proofs are enabled, each agent spawn emits one tracing back to the operator, independently verifiable via `verify_delegation_chain` (kind-filtered, so a shared ProofDB stays verifiable)
 - **Reliability** — 60-second ACK rail, ship-or-no-credit deliverable validator, public live fleet-stats
 - **Compliance** — pairs with [blindoracle-compliance](https://github.com/craigmbrown/ETAC-System/tree/main/sdk/python) (MiCA/SEC/OFAC presets)
 
