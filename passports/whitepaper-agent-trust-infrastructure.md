@@ -35,7 +35,7 @@ Layer 1: Proof Publishing     — Verifiable proof-of-work records (Nostr events
 
 ### 2.2 Layer 1: Proof Publishing
 
-Agent actions emit a *proof* — a Nostr event recording what was done, how well, and when — independently verifiable, and (for delegation) hash-chained so the authority trail is tamper-evident. Proof emission is wired into the agent lifecycle and enabled per service.
+Agent actions emit a *proof* — a Nostr event recording what was done, how well, and when — independently verifiable, and (for delegation) hash-chained so the authority trail is tamper-evident. Proof emission is wired into the agent lifecycle and **on by default** (disable per service).
 
 **15 Proof Types (Nostr Event Kinds)**:
 
