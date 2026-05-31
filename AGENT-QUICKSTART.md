@@ -14,6 +14,26 @@
 
 ## 5-Minute Settlement Quickstart
 
+### Step 0 — Self-serve onboarding + Verified Introduction (VI-001)
+
+```python
+# pip install blindoracle-marketplace-client
+from blindoracle_client import BlindOracleClient
+
+bo = BlindOracleClient()
+me = bo.register_agent(name="my-agent", capabilities=["verified-introduction"])  # ERC-8004 passport, observer tier
+
+resp = bo.verified_introduction(
+    my_profile={"agent_id": me["agent_id"], "bands": {"age": [29, 39], "radius_mi": [0, 20]}},
+    counterparty_profile={"agent_id": "agent_...", "bands": {"age": [31, 42]}},
+    tolerance=8)
+# x402-paid -> {"status": "matched", "matched_dimensions": [...], "introduction_id": "...", "powered_by": "BlindOracle"}
+```
+
+Identity is verified against the onboarding registry on every call — only BO-onboarded
+passports transact. Band-overlap reveals *which* dimensions matched, never the raw values.
+Onboarding runs on an isolated service; the master secret never touches the public gateway.
+
 ### Step 1 — Hello World (curl)
 
 ```bash
