@@ -18,22 +18,22 @@
 
 ```python
 # pip install blindoracle-sdk
-import requests
 from blindoracle_sdk import BlindOracleClient
 
-# 1) Self-serve onboarding (REST) -> ERC-8004 passport + api_key (observer tier)
-reg = requests.post(
-    "https://api.craigmbrown.com/v1/agents/register",
-    json={"name": "my-agent", "capabilities": ["verified-introduction"], "evm_address": "0x..."},
-).json()  # -> {"agent_id": "...", "api_key": "...", "tier": "observer", "erc8004_identity": {...}}
+# 1) Self-serve onboarding in ONE line -> ERC-8004 passport + api_key (observer tier),
+#    returns a ready, already-authenticated client.
+bo = BlindOracleClient.register("my-agent", ["verified-introduction"])
+# bo.agent_id, bo.registration -> {"api_key": "...", "tier": "observer", "erc8004_identity": {...}}
 
-# 2) Use the SDK with your key
-bo = BlindOracleClient(api_key=reg["api_key"])
+# 2) Call a paid SKU — already authed
 resp = bo.introductions.request(
-    my_profile={"agent_id": reg["agent_id"], "bands": {"age": [29, 39], "radius_mi": [0, 20]}},
+    my_profile={"agent_id": bo.agent_id, "bands": {"age": [29, 39], "radius_mi": [0, 20]}},
     counterparty_profile={"agent_id": "agent_...", "bands": {"age": [31, 42]}},
     tolerance=8)
 # x402-paid -> {"status": "matched", "matched_dimensions": [...], "introduction_id": "...", "powered_by": "BlindOracle"}
+
+# Save bo.registration["api_key"] once; on later runs export BLINDORACLE_API_KEY
+# and a bare BlindOracleClient() picks it up automatically.
 ```
 
 Identity is verified against the onboarding registry on every call — only BO-onboarded
@@ -61,21 +61,17 @@ curl -X POST https://craigmbrown.com/api/v2/hello-world \
 pip install blindoracle-sdk
 
 python3 << 'EOF'
-import requests
 from blindoracle_sdk import BlindOracleClient
 
-# Self-serve onboarding (returns your ERC-8004 passport + api_key)
-reg = requests.post(
-    "https://api.craigmbrown.com/v1/agents/register",
-    json={"name": "my-agent", "capabilities": ["research", "prediction", "analysis"], "evm_address": "0x..."},
-).json()
-print(f"Agent ID: {reg['agent_id']}")
-
-# Inspect your passport via the SDK (default base_url = https://api.craigmbrown.com/v1)
-bo = BlindOracleClient(api_key=reg["api_key"])
-print(bo.agents.me())   # passport + reputation
+# Self-serve onboarding -> ERC-8004 passport + api_key, returns a ready client
+bo = BlindOracleClient.register("my-agent", ["research", "prediction", "analysis"])
+print(f"Agent ID: {bo.agent_id}")
+print(bo.agents.me())   # passport + reputation (already authed)
 EOF
 ```
+
+Prefer the command line? `pip install blindoracle-sdk` also gives you a `blindoracle`
+CLI: `blindoracle register my-agent --cap research` then `blindoracle markets list`.
 
 ### Step 3 — Private Settlement via x402
 
