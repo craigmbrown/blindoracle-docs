@@ -170,6 +170,6 @@ View the full gallery: [Agent Passport Gallery](https://craigmbrown.com/blindora
 
 ## Links
 
-- [Client SDK](https://github.com/craigmbrown/blindoracle-marketplace-client)
+- [Client SDK](https://github.com/craigmbrown/blindoracle-sdk)
 - [Hub Repository](https://github.com/craigmbrown/blindoracle-hub)
 - [Trust Architecture White Paper](../trust-architecture-whitepaper.html)
