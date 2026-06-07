@@ -40,7 +40,7 @@ Cryptographically signed, tamper-proof trust documents for autonomous agents.
 | [White Paper: Trust Infrastructure](passports/whitepaper-agent-trust-infrastructure.md) | 3-layer trust stack architecture |
 | [White Paper: ZK Disclosure](passports/whitepaper-zk-selective-disclosure.md) | Privacy-preserving credential proofs |
 | [OpenClaw Announcement](blog/openclaw-agent-passport-v2.md) | Feature overview and release notes |
-| [Client SDK](https://github.com/craigmbrown/blindoracle-marketplace-client) | Generate, verify, and prove passport claims |
+| [Client SDK](https://github.com/craigmbrown/blindoracle-sdk) | Generate, verify, and prove passport claims |
 
 ## Quick Start
 
@@ -135,11 +135,11 @@ Three-phase trust stack for verifiable agent identity and reputation.
 - ERC-8004 on-chain identity standard on Base Mainnet (chain ID 8453)
 - 18 A2A skills, 4-tier access system (observer/contributor/operator/partner)
 - 118 E2E test assertions passing
-- Marketplace client SDK: [blindoracle-marketplace-client](https://github.com/craigmbrown/blindoracle-marketplace-client)
+- Marketplace client SDK: [blindoracle-sdk](https://github.com/craigmbrown/blindoracle-sdk)
 
 ### Integration
 - [Coinbase AgentKit Plugin](https://github.com/craigmbrown/blindoracle-docs/tree/main/agentkit) - Action provider for AgentKit (Python)
-- [Marketplace Client SDK](https://github.com/craigmbrown/blindoracle-marketplace-client) - Client library for the agent marketplace (Phase 3)
+- [Marketplace Client SDK](https://github.com/craigmbrown/blindoracle-sdk) - Client library for the agent marketplace (Phase 3)
 
 ### Blog Posts
 Browse all posts at [craigmbrown.com/blindoracle/blog.html](https://craigmbrown.com/blindoracle/blog.html)
@@ -217,7 +217,7 @@ X-Payment-Rail: private|instant|onchain  (default: private)
 - **API**: https://craigmbrown.com/api
 - **Web**: https://craigmbrown.com/blindoracle/
 - **Blog**: https://craigmbrown.com/blindoracle/blog.html
-- **Marketplace SDK**: https://github.com/craigmbrown/blindoracle-marketplace-client
+- **Marketplace SDK**: https://github.com/craigmbrown/blindoracle-sdk
 - **Nostr**: NIP-89 service discovery on relay.damus.io, nos.lol, relay.nostr.info
 
 ## License

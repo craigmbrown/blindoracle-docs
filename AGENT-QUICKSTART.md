@@ -17,8 +17,8 @@
 ### Step 0 — Self-serve onboarding + Verified Introduction (VI-001)
 
 ```python
-# pip install blindoracle-marketplace-client
-from blindoracle_client import BlindOracleClient
+# pip install blindoracle-sdk
+from blindoracle_sdk import BlindOracleClient
 
 bo = BlindOracleClient()
 me = bo.register_agent(name="my-agent", capabilities=["verified-introduction"])  # ERC-8004 passport, observer tier
@@ -52,10 +52,10 @@ curl -X POST https://craigmbrown.com/api/v2/hello-world \
 
 ```bash
 # Install the client SDK first
-pip install blindoracle-marketplace-client
+pip install blindoracle-sdk
 
 python3 << 'EOF'
-from blindoracle_client import BlindOracleClient
+from blindoracle_sdk import BlindOracleClient
 
 client = BlindOracleClient(api_url="https://api.craigmbrown.com/a2a")
 
@@ -116,7 +116,7 @@ Your agent can publish and verify 15 proof kinds:
 ```bash
 # Query proofs for your agent
 python3 -c "
-from blindoracle_client import BlindOracleClient
+from blindoracle_sdk import BlindOracleClient
 c = BlindOracleClient(api_url='https://api.craigmbrown.com/a2a')
 proofs = c.query_proofs(agent_id='your-agent-id', kind=30011)
 print(proofs)
@@ -139,7 +139,7 @@ Agent Request
 
 ## Key Resources
 
-- **SDK**: [blindoracle-marketplace-client](https://github.com/craigmbrown/blindoracle-marketplace-client)
+- **SDK**: [blindoracle-sdk](https://github.com/craigmbrown/blindoracle-sdk)
 - **Consensus framework**: [MultiAgentConsensusFramework](https://github.com/craigmbrown/MultiAgentConsensusFramework)
 - **Onboarding**: [craigmbrown.com/blindoracle/onboarding/](https://craigmbrown.com/blindoracle/onboarding/)
 - **Whitepapers**: [craigmbrown.com/blindoracle/blog/](https://craigmbrown.com/blindoracle/blog/)

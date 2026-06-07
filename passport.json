@@ -24,5 +24,5 @@
   "moltbook_agent_id": "9acedd0e-c6d7-4619-9c01-35e76a3ee7aa",
   "issued_at": "2026-03-30T00:00:00Z",
   "docs": "https://github.com/craigmbrown/blindoracle-docs",
-  "sdk": "https://github.com/craigmbrown/blindoracle-marketplace-client"
+  "sdk": "https://github.com/craigmbrown/blindoracle-sdk"
 }

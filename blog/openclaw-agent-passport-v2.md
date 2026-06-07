@@ -1,3 +1,12 @@
+---
+title: "OpenClaw: Agent Passport System v2.0"
+date: 2026-03-23
+slug: openclaw-agent-passport-v2
+author: BlindOracle Team
+tags: [agent-trust, passports, cryptography, nostr, zero-knowledge]
+description: "BlindOracle's OpenClaw v2.0 agent passport system — ERC-8004 compatible identity for autonomous agents."
+---
+
 # OpenClaw: Agent Passport System v2.0
 
 **Published**: 2026-03-23
@@ -75,7 +84,7 @@ Passports are published as Nostr Kind 30025 replaceable events, making them disc
 
 ### Get Started
 
-- **Client SDK**: `pip install blindoracle-marketplace-client`
+- **Client SDK**: `pip install blindoracle-sdk`
 - **Documentation**: [Passport Example](../passports/passport-example.md)
 - **Specification**: [Moldbook Entry](../passports/moldbook-agent-passport-spec.md)
 - **Gallery**: [Live Dashboard](https://craigmbrown.com/blindoracle/dashboards/)

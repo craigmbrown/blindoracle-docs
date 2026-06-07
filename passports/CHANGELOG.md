@@ -16,7 +16,7 @@ Complete rebuild of the Agent Passport System. Self-contained in ETAC-System rep
 - **Team Classification**: Automatic team assignment from agent name prefixes
 - **3 Payment Agent Passports**: financial-payments-agent, payment-gateway-agent, x402-gateway
 - **Dark Mode Dashboard**: HTML gallery with base64-embedded PNG passport cards
-- **Cross-Repo Deployment**: Verifier deployed to ETAC-System, etac-1, blindoracle-hub, blindoracle-marketplace-client
+- **Cross-Repo Deployment**: Verifier deployed to ETAC-System, etac-1, blindoracle-hub, blindoracle-sdk
 - **Client SDK**: Full generator + verifier + ZK bridge in marketplace client repo
 
 ### Architecture
@@ -38,8 +38,8 @@ Complete rebuild of the Agent Passport System. Self-contained in ETAC-System rep
 - ETAC-System #1970 — Generator + verifier + ZK bridge + dashboard
 - etac-1 #135 — Passport verifier for chainlink proof system
 - blindoracle-hub #7 — Passport verifier for hub
-- blindoracle-marketplace-client #4 — Passport verifier initial
-- blindoracle-marketplace-client #5 — Full SDK (generator + verifier + ZK bridge)
+- blindoracle-sdk #4 — Passport verifier initial
+- blindoracle-sdk #5 — Full SDK (generator + verifier + ZK bridge)
 
 ### Known Limitations
 - ZK bridge uses simulated proofs (Midnight SDK not yet available)

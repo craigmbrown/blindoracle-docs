@@ -162,5 +162,5 @@ python3 scripts/zk_proof_bridge.py prove-claim \
 
 - [Passport Example](passport-example.md) — full JSON with field reference
 - [Moldbook Spec](moldbook-agent-passport-spec.md) — technical specification
-- [Client SDK](https://github.com/craigmbrown/blindoracle-marketplace-client) — generator + verifier
+- [Client SDK](https://github.com/craigmbrown/blindoracle-sdk) — generator + verifier
 - [Changelog](CHANGELOG.md) — version history
