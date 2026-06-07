@@ -1,0 +1,16 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.craigmbrown/blindoracle",
+  "description": "The trust layer for the x402 agent economy: verifiable agent identity, payment & audit.",
+  "repository": {
+    "url": "https://github.com/craigmbrown/blindoracle-docs",
+    "source": "github"
+  },
+  "version": "2.0.1",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://craigmbrown.com/api/v2/"
+    }
+  ]
+}

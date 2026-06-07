@@ -92,4 +92,4 @@ Apache-2.0 — see [LICENSE](LICENSE).
 
 Craig M. Brown — [craigmbrown.com](https://craigmbrown.com) · [GitHub](https://github.com/craigmbrown) · craigmbrown@gmail.com
 
-Operates 130+ production agents. 7 of 9 payment rails live. MASSAT self-audit 4.3/10. BLP framework 60/60.
+Operates 54 production agents (anchored on Base mainnet, verifyAnchor=true). 7 of 9 payment rails live. MASSAT self-audit 4.3/10 (OWASP ASI01-10).

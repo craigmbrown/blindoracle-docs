@@ -4,7 +4,7 @@
   "agent_name": "BlindOracle",
   "operator": "Craig Brown",
   "fleet": "TheBaby",
-  "fleet_size": 409,
+  "fleet_size": 54,
   "capabilities": [
     "prediction",
     "research",
@@ -19,10 +19,18 @@
     "lightning",
     "fedimint"
   ],
-  "blp_score": "60/60",
   "nostr_npub": "npub1fddglq2lza3xxp468l69dlekyme7m34jnx44asvz8h3qfhcjaxzq3t848v",
   "moltbook_agent_id": "9acedd0e-c6d7-4619-9c01-35e76a3ee7aa",
   "issued_at": "2026-03-30T00:00:00Z",
   "docs": "https://github.com/craigmbrown/blindoracle-docs",
-  "sdk": "https://github.com/craigmbrown/blindoracle-sdk"
+  "sdk": "https://github.com/craigmbrown/blindoracle-sdk",
+  "massat_audit": "4.3/10 (OWASP ASI01-10, 0 critical / 0 high)",
+  "production_agents_anchored": 54,
+  "anchor": {
+    "chain": "base-mainnet",
+    "contract": "0x62dbc5bBB356388ce65f0dB591d0aa7B334E8E41",
+    "verifyAnchor": true
+  },
+  "zk_status": "selective-disclosure (threshold-attestation); real Plonk/KZG pending (RQ-239)",
+  "passport_hash": "sha256:3d28cc8cd0bbffa66cec00506554c4422f45b53f80357e184e1f95451d7b3daa"
 }

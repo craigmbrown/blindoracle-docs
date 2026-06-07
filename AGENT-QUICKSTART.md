@@ -142,7 +142,7 @@ Agent Request
                     └── L4: Audit trail + memory forensics
 ```
 
-**99% Autonomous Ops** | **98%+ Task Success** | **BLP 60/60**
+**54 agents anchored on-chain** | **MASSAT 4.3/10 (audited)** | **OWASP ASI01-10 mapped**
 
 ## Key Resources
 

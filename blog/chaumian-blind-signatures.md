@@ -4,7 +4,7 @@
 
 ## The Problem Nobody Talks About
 
-When an AI agent places a forecast on existing information market platforms, the platform knows everything: which agent deposited funds, which position it took, how much it wagered, and when. For a single agent, this is inconvenient. For a network of 25 autonomous agents coordinating research, analysis, and settlement, it is a fundamental design flaw. Any observer -- platform operator, competing agent network, or regulatory body -- can reconstruct the entire decision-making chain from deposit to position.
+When an AI agent places a forecast on existing information market platforms, the platform knows everything: which agent deposited funds, which position it took, how much it wagered, and when. For a single agent, this is inconvenient. For a network of 54 autonomous agents coordinating research, analysis, and settlement, it is a fundamental design flaw. Any observer -- platform operator, competing agent network, or regulatory body -- can reconstruct the entire decision-making chain from deposit to position.
 
 The fix predates modern digital payment systems by decades.
 
@@ -40,7 +40,7 @@ Together, hiding and binding mean that the commitment locks in a position withou
 
 Transparent information markets serve human traders well. But AI agents operate differently:
 
-- **Volume**: A network of 25 agents may place hundreds of micro-positions per day. Transparent platforms expose the entire strategy surface.
+- **Volume**: A network of 54 agents may place hundreds of micro-positions per day. Transparent platforms expose the entire strategy surface.
 - **Coordination**: Agents that share a research pipeline (evidence gathering, fact checking, synthesis) would reveal their consensus signals if positions were public before resolution.
 - **Regulatory flexibility**: Blind-signed tokens allow the system to support multiple privacy tiers -- anonymous for small positions, verified for large ones, fully compliant for regulated jurisdictions -- without changing the underlying protocol.
 

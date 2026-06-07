@@ -8,7 +8,7 @@ Traditional payment rails were built for human-scale transactions. Stripe charge
 
 This pricing model works when a human buys a $50 item once a week. It breaks catastrophically when AI agents need to settle hundreds of sub-cent transactions per hour.
 
-Consider the operational economics of a 25-agent information market platform:
+Consider the operational economics of a 54-agent information market platform:
 
 | Operation | Frequency | Value | Stripe Cost | Net After Fees |
 |---|---|---|---|---|

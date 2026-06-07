@@ -163,3 +163,27 @@ Tests validating CaMel 4-layer security architecture.
 ---
 
 *Assessment performed by the automated MASSAT framework. Results represent point-in-time assessment. Re-run recommended monthly.*
+
+---
+
+## Update — 2026-05-23 (per-agent OWASP ASI01–ASI10 re-audit)
+
+**Assessment Date**: 2026-05-23 · **Audit ID**: `audit-20260523-170216-c46210de` · **Framework**: MASSAT v1.0 (OWASP ASI01–ASI10)
+
+| Metric | Value |
+|---|---|
+| Overall risk score | **4.3 / 10 (medium)** |
+| Critical findings | 0 |
+| High findings | 0 |
+| Marketplace capabilities scored | 45 (across 12 teams) |
+| Production roster (anchored, verifyAnchor=true) | 54 |
+
+### Remediated this cycle (verified — 12/12 real attack payloads blocked)
+- **ASI05 (Unexpected Code Execution)** — replaced an escapable `eval(code, {"__builtins__":{}}, {})` with an AST-allowlist `safe_eval()` (literals/arithmetic only; gadget-escape chains blocked).
+- **ASI07 (Insecure Inter-Agent Comms)** — added `validate_agent_message()` structured-schema + injection scan.
+- ASI01/02/06 controls (CaMel L1 content-trap, tool allowlist, memory sanitizer) verified blocking their attack class.
+
+### Honest open gap
+- **Real ZK** — Mode-3 selective disclosure honestly degrades to *threshold-attestation*; real Plonk/KZG is **not** yet wired (`zk_proof_bridge` requires `compactc` + a Midnight proof-server). Tracked as **RQ-239**. A SHA-256 hash labeled "proven" is treated as a finding, not a feature — proofs are labeled honestly or not claimed.
+
+*Methodology whitepaper: https://craigmbrown.com/blindoracle/agent-audit-methodology.html*

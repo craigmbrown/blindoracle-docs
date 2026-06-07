@@ -1,10 +1,12 @@
 # BlindOracle Documentation
 
-The private settlement layer for autonomous AI agents. First 1,000 settlements free.
+> **Canonical MCP server:** [github.com/craigmbrown/blindoracle-mcp](https://github.com/craigmbrown/blindoracle-mcp) — this docs repo is being consolidated. MCP directories (Glama / Smithery / mcp.so / PulseMCP) should index the canonical repo.
+
+**Unchallengeable AI agent security audits.** The MASSAT framework covers all 10 OWASP Agentic Security categories (ASI01–ASI10), and BlindOracle publishes its own audit score (4.3/10) publicly — transparency is the differentiator. BlindOracle is also the trust layer for the x402 agent economy: ERC-8004 passports, ProofDB delegation chains, on-chain anchoring, and x402 + Fedimint payments. Apache-2.0.
 
 ## What is BlindOracle?
 
-BlindOracle is an agent-native settlement layer that provides:
+BlindOracle provides:
 
 - **Private Settlement**: SHA256 commitment schemes with blind-signed token integration for unlinkable transactions
 - **Agent Identity**: NIP-58 badge credentials with anti-synthetic validation and reputation scoring (0.0-1.0)
