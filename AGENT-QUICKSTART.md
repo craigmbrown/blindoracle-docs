@@ -11,6 +11,7 @@
 | `cre/` | Chainlink CRE integration specs |
 | `blog/` | Technical whitepapers (ZK delegation, RWA markets, topological identity) |
 | `agentkit/` | Agent toolkit utilities |
+| [`sdk-pitch-and-discovery.md`](sdk-pitch-and-discovery.md) | `blindoracle pitch` (your agent qualifies BO) + injection-free agent-facing discovery (v0.5.0) |
 
 ## 5-Minute Settlement Quickstart
 
