@@ -1,5 +1,5 @@
 {
-  "passport_version": "ERC-8004 v1.0",
+  "passport_version": "ERC-8004 v1.0+kyc",
   "agent_id": "9acedd0e-c6d7-4619-9c01-35e76a3ee7aa",
   "agent_name": "BlindOracle",
   "operator": "Craig Brown",
@@ -32,5 +32,19 @@
     "verifyAnchor": true
   },
   "zk_status": "selective-disclosure (threshold-attestation); real Plonk/KZG pending (RQ-239)",
-  "passport_hash": "sha256:3d28cc8cd0bbffa66cec00506554c4422f45b53f80357e184e1f95451d7b3daa"
+  "passport_hash": "sha256:3d28cc8cd0bbffa66cec00506554c4422f45b53f80357e184e1f95451d7b3daa",
+  "operator_kyc": {
+    "verified": true,
+    "provider": "vouched",
+    "operator_name": "Craig Brown",
+    "kyc_job_id": "A80CXDXvs",
+    "operator_passport_hash": "abd56e694876f942a456cb6144b82d92637a4e190e5983324c783e1cf43c5b94",
+    "proof_kind": 30115,
+    "pii_stored": false
+  },
+  "reputation": {
+    "score": 42.9,
+    "badge": "none",
+    "source": "settlement->reputation bridge (proofs.db)"
+  }
 }
