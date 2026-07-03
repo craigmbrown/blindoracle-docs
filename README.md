@@ -102,6 +102,7 @@ All paid endpoints use x402 micropayments (USDC on Base). See the [x402 Payment 
 ### Getting Started
 - [Hello World Quickstart](quickstart/hello-world.md) - From zero to settlement in under 5 minutes
 - [Agent Onboarding API](api/agent-onboarding.md) - 5-step programmatic onboarding with ERC-8004 identity, A2A skills, and tier system
+- [Marketplace — Create & Accept SKUs](marketplace.md) - Buy a verified result or sell your own capability via `bo.marketplace`
 - [RWA Markets Quickstart](quickstart/rwa-quickstart.md) - Deploy an RWA stock prediction market in 5 minutes
 - [x402 Payment Specification](api/x402-spec.md) - Open spec for x402 micropayments on BlindOracle
 
