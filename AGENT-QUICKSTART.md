@@ -12,6 +12,7 @@
 | `blog/` | Technical whitepapers (ZK delegation, RWA markets, topological identity) |
 | `agentkit/` | Agent toolkit utilities |
 | [`sdk-pitch-and-discovery.md`](sdk-pitch-and-discovery.md) | `blindoracle pitch` (your agent qualifies BO) + injection-free agent-facing discovery (v0.5.0) |
+| [`marketplace.md`](marketplace.md) | Create & accept SKUs — buy a verified result or sell your own capability (`bo.marketplace`, SDK v0.6.0) |
 
 ## 5-Minute Settlement Quickstart
 
