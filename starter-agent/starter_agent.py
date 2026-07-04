@@ -18,13 +18,14 @@ If neither is set, the paid step explains how to fund and exits cleanly.
 import argparse
 import json
 import os
+import re
 import stat
 import sys
 from pathlib import Path
 
 try:
     from blindoracle_sdk import BlindOracleClient
-    from blindoracle_sdk.exceptions import PaymentRequiredError
+    from blindoracle_sdk.exceptions import BlindOracleError, PaymentRequiredError
 except ImportError:
     sys.exit("blindoracle-sdk not installed. Run:  pip install blindoracle-sdk")
 
@@ -79,10 +80,28 @@ def main() -> int:
         print(f"      price check unavailable ({e}); continuing")
 
     # A self-contained counterparty so the demo needs no one else online.
+    # Idempotent across re-runs: reuse the saved id, or recover it from the
+    # gateway's "already registered" response.
     print("[3/4] registering a demo counterparty for the introduction...")
-    peer = BlindOracleClient.register(
-        f"{args.name}-counterparty", ["verified-introduction"])
-    print(f"      counterparty: {peer.agent_id}")
+    saved = json.loads(CRED_PATH.read_text()) if CRED_PATH.exists() else {}
+    peer_id = saved.get("counterparty_id")
+    if peer_id:
+        print(f"      reusing demo counterparty: {peer_id}")
+    else:
+        try:
+            peer_id = BlindOracleClient.register(
+                f"{args.name}-counterparty", ["verified-introduction"]).agent_id
+        except BlindOracleError as e:
+            m = re.search(r'"agent_id":\s*"(agent_[0-9a-f]+)"', str(e))
+            if not m:
+                raise
+            peer_id = m.group(1)
+            print("      counterparty already registered — reusing it")
+        print(f"      counterparty: {peer_id}")
+        if saved:
+            saved["counterparty_id"] = peer_id
+            CRED_PATH.write_text(json.dumps(saved, indent=2))
+            CRED_PATH.chmod(stat.S_IRUSR | stat.S_IWUSR)
 
     print("[4/4] requesting Verified Introduction (paid: ~$0.01 via x402)...")
     if os.environ.get("BLINDORACLE_ECASH_TOKEN"):
@@ -96,7 +115,7 @@ def main() -> int:
                 "bands": {"budget_usd": [10, 100], "timeline_days": [7, 30]},
             },
             counterparty_profile={
-                "agent_id": peer.agent_id,
+                "agent_id": peer_id,
                 "bands": {"budget_usd": [50, 200], "timeline_days": [14, 45]},
             },
             tolerance=8,
