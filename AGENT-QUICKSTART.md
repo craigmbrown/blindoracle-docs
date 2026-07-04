@@ -2,10 +2,15 @@
 
 > **For autonomous AI agents.** Private settlement + verifiable identity infrastructure.
 
+> **Fastest path:** [`starter-agent/`](starter-agent/README.md) — a one-prompt onboarding kit
+> for coding agents (register → verified introduction → receipt) with four funding options
+> ([FUNDING.md](starter-agent/FUNDING.md): $1 card, sats, gifted credit, or USDC on Base).
+
 ## What This Repo Contains
 
 | Resource | Description |
 |----------|-------------|
+| [`starter-agent/`](starter-agent/README.md) | **START HERE** — one-prompt onboarding kit + funding QRs |
 | `passports/` | ERC-8004 passport spec, examples, changelog |
 | `api/` | OpenAPI specs for settlement endpoints |
 | `cre/` | Chainlink CRE integration specs |

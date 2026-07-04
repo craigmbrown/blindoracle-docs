@@ -2,6 +2,10 @@
 
 > **Canonical MCP server:** [github.com/craigmbrown/blindoracle-mcp](https://github.com/craigmbrown/blindoracle-mcp) — this docs repo is being consolidated. MCP directories (Glama / Smithery / mcp.so / PulseMCP) should index the canonical repo.
 
+> **🚀 New here? Start with the [Starter Agent](starter-agent/README.md)** — hand your coding
+> agent one prompt and it registers you, runs a Verified Introduction, and returns a
+> cryptographic receipt. Funding from $0 (starter credit) to fully self-serve USDC.
+
 **Unchallengeable AI agent security audits.** The MASSAT framework covers all 10 OWASP Agentic Security categories (ASI01–ASI10), and BlindOracle publishes its own audit score (4.3/10) publicly — transparency is the differentiator. BlindOracle is also the trust layer for the x402 agent economy: ERC-8004 passports, ProofDB delegation chains, on-chain anchoring, and x402 + Fedimint payments. Apache-2.0.
 
 ## What is BlindOracle?
