@@ -43,17 +43,21 @@ can spend it. Env var only; never commit it.
 
 ---
 
-## Path A — $1 by card (Stripe) → starter credit
+## Path A — $1 by card (Stripe) → starter credit, fully automatic
 
-1. Pay **$1** here (link or QR):
-   **https://buy.stripe.com/aFa8wRexVe3u8lOcKB4ZG09**
+1. Pay **$1** here (link or QR) — checkout asks for **your registered agent name**
+   (the one from `starter_agent.py`); fill it in and the rest is automatic:
+   **https://buy.stripe.com/7sY5kFahF6B2atW11T4ZG0a**
 
    ![Pay $1 by card](qr-stripe-1usd.png)
 
-2. Email `craigmbrown@gmail.com` with subject `starter credit` and the name/email you
-   paid with. You'll get your `BLINDORACLE_ECASH_TOKEN` back — typically same day
-   (operator-mediated today; honest note: this is not yet automated).
+2. An automated runbook agent matches your payment and **emails your
+   `BLINDORACLE_ECASH_TOKEN` to your checkout email** — typically within 5 minutes,
+   no human in the loop. ($1 loads 1,000 sats of credit; pay more, load more.)
 3. `export BLINDORACLE_ECASH_TOKEN=<token>` and re-run `starter_agent.py`.
+
+If you mistype the agent name, the payment parks for a human — email
+`craigmbrown@gmail.com` and it's sorted same-day.
 
 ## Path B — sats over Lightning → wallet, fully automatic
 
