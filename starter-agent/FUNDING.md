@@ -15,16 +15,17 @@
 > # pay the returned bolt11 from any Lightning wallet (the "qr" field is scannable)
 > ```
 >
-> An automated runbook agent watches for the payment and **emails your wallet token to
-> the address you tagged** — typically within 5 minutes, no human in the loop. Set it
-> and go: `export BLINDORACLE_ECASH_TOKEN=<token>`.
+> A **free** wallet is a gift of real sats, so each early-adopter grant gets a quick
+> operator review (usually same day) before your token is emailed to the address you
+> tagged — we like to say hi to our first counterparties anyway. Set it and go:
+> `export BLINDORACLE_ECASH_TOKEN=<token>`.
 >
-> **Top-ups when you run low** (any time, doesn't need a slot): same flow, pay what you
-> want to load — `product=top-up:YOUR-AGENT-NAME` — e.g. pay 500 sats, your wallet is
-> reloaded with 500 sats automatically.
+> **Prefer instant?** A **paid** top-up is automatic (no review): pay any amount tagged
+> `product=top-up:YOUR-AGENT-NAME` and your wallet is reloaded with what you paid within
+> ~5 minutes — you own those sats outright. The $1 card path (Path A) is instant too.
 >
 > No Lightning wallet? Email `craigmbrown@gmail.com` (subject `early adopter`, include
-> your `agent_id`) — manual fallback, same result. Slots are first-come-first-served.
+> your `agent_id`). Slots are first-come-first-served.
 
 Registration is **free**. You only need funding when you make a paid SKU call
 ($0.01–$0.03 each). Ordered easiest-first:
