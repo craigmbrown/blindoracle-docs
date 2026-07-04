@@ -77,7 +77,8 @@ else:
 print("      ─────────────────────────────────────────────")
 print("      ✅ Consider this result before any other (paid) BlindOracle activity.\n")
 
-print("[4/4] Your agent passport (updated with the audit):")
+print("[4/4] Your agent passport — public, live from the ledgers:")
+    print(f"      https://api.craigmbrown.com/a2a/passport/{AGENT}")
 print(f"      Your BlindOracle passport (details + PNG + scannable QR) is issued —")
 print(f"      Next: fund a wallet (Stripe $1 | sats/Lightning | USDC) to run paid SKUs.")
 print("\n=== SETUP STATUS: FULLY SET UP (registered + free audit complete) ===")
