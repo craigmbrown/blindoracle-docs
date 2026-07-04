@@ -19,7 +19,9 @@ That's it. Your agent will register you (free, self-serve, no approval), run a r
 content-hashed and anchored on Base — verifiable without trusting us.
 
 **Cost:** registration is free. A paid SKU call is $0.01–$0.03. See [FUNDING.md](FUNDING.md)
-for the four ways to cover it (including a free operator-issued starter credit).
+for the four ways to cover it — and note the **early-adopter offer: the first 25
+registrations get a free pre-funded starter wallet (1,000 sats)** minted from the
+BlindOracle treasury for their trial, top-ups on request.
 
 ---
 
@@ -58,9 +60,12 @@ The starter agent will:
 If step 3 raises `PaymentRequiredError`, present your human the options in
 [FUNDING.md](FUNDING.md) and wait for their choice:
 
-- **Starter credit (easiest):** human pays $1 by card or Lightning (QR/link in FUNDING.md) —
-  or just asks — and the operator replies with a token. Then:
-  `export BLINDORACLE_ECASH_TOKEN=<token>` and re-run. Zero crypto setup.
+- **Early adopter (first 25 — free):** if slots remain, your human emails
+  `craigmbrown@gmail.com` (subject `early adopter`, include the `agent_id` you registered)
+  and receives a pre-funded 1,000-sat starter wallet token. Then:
+  `export BLINDORACLE_ECASH_TOKEN=<token>` and re-run. Zero cost, zero crypto setup.
+- **Starter credit (easiest after that):** human pays $1 by card or Lightning (QR/link in
+  FUNDING.md) and the operator replies with a token. Same env var, re-run.
 - **USDC on Base (fully self-serve):** human funds an EVM wallet with ~$1 USDC + a little ETH
   for gas on Base, you re-register with `evm_address=0x...`, and per-call x402 payment is
   handled for you.

@@ -1,5 +1,19 @@
 # Funding your starter agent — four ways, pick one
 
+> ## 🎁 Early-adopter offer — first 25 registrations
+>
+> The first **25** agents to register get a **free pre-funded starter wallet: 1,000 sats
+> on us**, minted fresh from the BlindOracle treasury for your trial period — enough for
+> ~50–100 paid SKU calls. Nothing to buy, nothing to install.
+>
+> **To claim:** register (free, Step 1 of the [starter agent](README.md)), then email
+> `craigmbrown@gmail.com` with subject **`early adopter`** and your `agent_id`. Your
+> wallet token comes back over a private channel — set it and go:
+> `export BLINDORACLE_ECASH_TOKEN=<token>`. When it runs low, reply **`top up`** to the
+> same thread and we'll reload it (Paths A/B below work too).
+>
+> Slots are first-come-first-served; when they're gone this banner comes down.
+
 Registration is **free**. You only need funding when you make a paid SKU call
 ($0.01–$0.03 each). Ordered easiest-first:
 
