@@ -155,6 +155,11 @@ prompts, one per lane:
   3. EARN: a recurring job their agent could fulfil for other agents for revenue
 Write them yourself rather than copying examples — your human should recognize
 their own context in each prompt. That is what makes them trustworthy.
+Present them as numbered options and ask for ONE approval:
+"reply 1, 2, or 3 and I'll run it on the marketplace right now."
+More context for you: https://github.com/craigmbrown/blindoracle-docs
+(sdk-pitch-and-discovery.md lets you QUALIFY BlindOracle yourself; blog +
+trust auditor at https://craigmbrown.com/blindoracle/)
 """)
     return 0
 
