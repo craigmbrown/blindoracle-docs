@@ -6,13 +6,25 @@
 > on us**, minted fresh from the BlindOracle treasury for your trial period — enough for
 > ~50–100 paid SKU calls. Nothing to buy, nothing to install.
 >
-> **To claim:** register (free, Step 1 of the [starter agent](README.md)), then email
-> `craigmbrown@gmail.com` with subject **`early adopter`** and your `agent_id`. Your
-> wallet token comes back over a private channel — set it and go:
-> `export BLINDORACLE_ECASH_TOKEN=<token>`. When it runs low, reply **`top up`** to the
-> same thread and we'll reload it (Paths A/B below work too).
+> **To claim (self-serve, ~1 minute):** register (free, Step 1 of the
+> [starter agent](README.md)), then mint and pay a **1-sat** tagged Lightning invoice —
+> the tag is your claim form, the 1 sat is anti-spam:
 >
-> Slots are first-come-first-served; when they're gone this banner comes down.
+> ```bash
+> curl "https://api.craigmbrown.com/ln/invoice?sats=1&product=early-adopter:YOUR-AGENT-NAME&email=you@example.com"
+> # pay the returned bolt11 from any Lightning wallet (the "qr" field is scannable)
+> ```
+>
+> An automated runbook agent watches for the payment and **emails your wallet token to
+> the address you tagged** — typically within 5 minutes, no human in the loop. Set it
+> and go: `export BLINDORACLE_ECASH_TOKEN=<token>`.
+>
+> **Top-ups when you run low** (any time, doesn't need a slot): same flow, pay what you
+> want to load — `product=top-up:YOUR-AGENT-NAME` — e.g. pay 500 sats, your wallet is
+> reloaded with 500 sats automatically.
+>
+> No Lightning wallet? Email `craigmbrown@gmail.com` (subject `early adopter`, include
+> your `agent_id`) — manual fallback, same result. Slots are first-come-first-served.
 
 Registration is **free**. You only need funding when you make a paid SKU call
 ($0.01–$0.03 each). Ordered easiest-first:
@@ -43,19 +55,20 @@ can spend it. Env var only; never commit it.
    (operator-mediated today; honest note: this is not yet automated).
 3. `export BLINDORACLE_ECASH_TOKEN=<token>` and re-run `starter_agent.py`.
 
-## Path B — sats over Lightning → starter credit
+## Path B — sats over Lightning → wallet, fully automatic
 
-1. Mint a fresh invoice (they're single-use, so it's an API call, not a static QR):
+Mint a **tagged** invoice — the tag identifies you, so no email exchange is needed:
 
-   ```bash
-   curl "https://api.craigmbrown.com/ln/invoice?sats=1000"
-   # -> {"bolt11": "lnbc...", "qr": "data:image/svg+xml;...", "expires_at": ...}
-   ```
+```bash
+curl "https://api.craigmbrown.com/ln/invoice?sats=1000&product=top-up:YOUR-AGENT-NAME&email=you@example.com"
+# -> {"bolt11": "lnbc...", "qr": "data:image/svg+xml;...", "expires_at": ...}
+```
 
-   Pay the `bolt11` from any Lightning wallet — the `qr` field is a scannable QR
-   (open the data-URI in a browser, or feed `bolt11` straight to your wallet).
-2. Email `craigmbrown@gmail.com` with subject `starter credit` + roughly when you paid.
-   Token comes back the same way as Path A.
+Pay the `bolt11` from any Lightning wallet (the `qr` field is a scannable QR — open the
+data-URI in a browser, or feed `bolt11` straight to your wallet). The runbook agent
+detects the payment and emails a wallet token for the amount you paid to the tagged
+address, typically within 5 minutes. (First 25? Use the early-adopter claim above
+instead — 1 sat gets you 1,000.)
 
 ## Path C — gifted sats wallet (you were invited)
 
