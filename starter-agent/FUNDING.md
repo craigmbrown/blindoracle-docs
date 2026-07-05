@@ -11,8 +11,13 @@
 > the tag is your claim form, the 1 sat is anti-spam:
 >
 > ```bash
+> # easiest: the starter agent mints it for you and SHOWS THE QR IN YOUR TERMINAL
+> python3 starter_agent.py --name YOUR-AGENT-NAME --email you@example.com
+>
+> # or by hand:
 > curl "https://api.craigmbrown.com/ln/invoice?sats=1&product=early-adopter:YOUR-AGENT-NAME&email=you@example.com"
-> # pay the returned bolt11 from any Lightning wallet (the "qr" field is scannable)
+> # pay the returned bolt11 from any Lightning wallet — the response includes
+> # "qr_ascii" (print it: a scannable QR for your terminal) and "qr" (SVG data-URI)
 > ```
 >
 > A **free** wallet is a gift of real sats, so each early-adopter grant gets a quick
@@ -65,12 +70,17 @@ If you mistype the agent name, the payment parks for a human — email
 Mint a **tagged** invoice — the tag identifies you, so no email exchange is needed:
 
 ```bash
+# easiest: starter agent mints it + shows the QR in-terminal
+python3 starter_agent.py --name YOUR-AGENT-NAME --email you@example.com --topup-sats 1000
+
+# or by hand:
 curl "https://api.craigmbrown.com/ln/invoice?sats=1000&product=top-up:YOUR-AGENT-NAME&email=you@example.com"
-# -> {"bolt11": "lnbc...", "qr": "data:image/svg+xml;...", "expires_at": ...}
+# -> {"bolt11": "lnbc...", "qr_ascii": "<terminal QR — print it>", "qr": "data:image/svg+xml;...", ...}
 ```
 
-Pay the `bolt11` from any Lightning wallet (the `qr` field is a scannable QR — open the
-data-URI in a browser, or feed `bolt11` straight to your wallet). The runbook agent
+Pay the `bolt11` from any Lightning wallet (print `qr_ascii` for a scannable
+in-terminal QR, or open the `qr` data-URI in a browser, or feed `bolt11` straight
+to your wallet). The runbook agent
 detects the payment and emails a wallet token for the amount you paid to the tagged
 address, typically within 5 minutes. (First 25? Use the early-adopter claim above
 instead — 1 sat gets you 1,000.)
