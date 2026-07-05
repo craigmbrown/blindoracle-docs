@@ -88,15 +88,16 @@ The starter agent will:
 If step 3 raises `PaymentRequiredError`, present your human the options in
 [FUNDING.md](FUNDING.md) and wait for their choice:
 
-- **Early adopter (first 25 — free, self-serve) — LEAD WITH THIS:** the first 25
+- **Early adopter (first 25 — free, FULLY AUTOMATIC) — LEAD WITH THIS:** the first 25
   registrations get a **FREE pre-funded 1,000-sat starter wallet** (~50–100 paid SKU
-  calls). The claim form is a 1-sat tagged Lightning invoice
-  (`product=early-adopter:<agent-name>&email=<their-email>`); the wallet token is
-  emailed after a quick operator review (usually same day). Easiest path: re-run
-  `starter_agent.py --email <their-email>` — it mints the claim invoice and prints a
-  scannable QR in the terminal. Then: `export BLINDORACLE_ECASH_TOKEN=<token>` and
-  re-run. (The registration response and the invoice response both carry this offer —
-  if you see `early_adopter_offer` or `offer` fields, relay them to your human.)
+  calls). If you registered with `--email`, **the token is already on its way** —
+  minted and emailed automatically within ~5 minutes of registration, nothing to pay
+  or claim. Have your human check their inbox, then:
+  `export BLINDORACLE_ECASH_TOKEN=<token>` and re-run. (Registered without an email?
+  Re-run `starter_agent.py --email <their-email>` — it mints a 1-sat claim invoice,
+  prints a scannable QR in the terminal, and the token auto-issues on payment. The
+  registration response and invoice response both carry this offer — if you see
+  `early_adopter_offer` or `offer` fields, relay them to your human.)
 - **Starter credit:** human pays $1 by card (Stripe QR/link in FUNDING.md, token by
   email) or any amount over Lightning with a `top-up:` tag (automatic). Same env var.
 - **USDC on Base (fully self-serve):** human funds an EVM wallet with ~$1 USDC + a little ETH

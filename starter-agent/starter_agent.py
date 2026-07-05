@@ -84,20 +84,24 @@ def save_creds(creds: dict) -> None:
     CRED_PATH.chmod(stat.S_IRUSR | stat.S_IWUSR)  # 0600 — bearer credential
 
 
-def register(name: str, evm_address: str) -> dict:
+def register(name: str, evm_address: str, email: str = "") -> dict:
     say(f"      POST {API}/v1/agents/register (15s timeout)...")
     reg = http("POST", "/v1/agents/register", {
         "name": name, "capabilities": ["verified-introduction"],
         **({"evm_address": evm_address} if evm_address else {}),
+        **({"email": email} if email else {}),
     })
     offer = reg.get("early_adopter_offer")
     if offer:
         say(f"\n      🎁 {offer.get('headline', '')}")
-        say(f"         claim: {offer.get('claim', '')[:120]}...\n")
+        if offer.get("status"):
+            say(f"         {offer['status']}\n")
+        elif offer.get("claim"):
+            say(f"         claim: {offer['claim'][:140]}...\n")
     return reg
 
 
-def load_or_register(name: str, evm_address: str) -> dict:
+def load_or_register(name: str, evm_address: str, email: str = "") -> dict:
     """Reuse saved credentials if present; otherwise self-serve register (free)."""
     if CRED_PATH.exists():
         saved = json.loads(CRED_PATH.read_text())
@@ -105,7 +109,7 @@ def load_or_register(name: str, evm_address: str) -> dict:
             f"(delete {CRED_PATH} to register fresh)")
         return saved
     say(f"[1/4] registering '{name}' (free, self-serve, observer tier)...")
-    reg = register(name, evm_address)
+    reg = register(name, evm_address, email)
     creds = {
         "agent_id": reg.get("agent_id"),
         "api_key": reg.get("api_key"),
@@ -116,6 +120,8 @@ def load_or_register(name: str, evm_address: str) -> dict:
     say(f"      agent_id: {creds['agent_id']}")
     say(f"      tier:     {creds.get('tier')}")
     say(f"      api key saved to {CRED_PATH} (0600) — never commit this file")
+    if email and (reg.get("early_adopter_offer") or {}).get("status", "").startswith("AUTO-GRANT"):
+        creds["_grant_en_route"] = True  # in-memory only (not persisted above)
     return creds
 
 
@@ -137,7 +143,7 @@ def mint_funding_invoice(name: str, email: str, sats: int, early: bool) -> None:
         say("\n      SCAN THIS with any Lightning wallet:\n")
         say(inv["qr_ascii"])
     say(f"      After paying, your wallet token is emailed to {email} "
-        "(early-adopter grants get a quick operator review, usually same day).")
+        "automatically (~5 minutes).")
     say("      Then:  export BLINDORACLE_ECASH_TOKEN=<token>  and re-run this script.")
 
 
@@ -187,7 +193,7 @@ def main() -> int:
                          "early-adopter claim")
     args = ap.parse_args()
 
-    creds = load_or_register(args.name, args.evm_address)
+    creds = load_or_register(args.name, args.evm_address, args.email)
     api_key = creds.get("api_key", "")
 
     # Free price check — proves auth + connectivity before any money moves.
@@ -244,8 +250,12 @@ def main() -> int:
         say("\n=== SETUP STATUS: PARTIALLY SET UP ===")
         say("Registered + authenticated (steps 1-3 OK) — only funding is missing.")
         say("🎁 EARLY ADOPTER: the first 25 registrations get a FREE pre-funded")
-        say("   1,000-sat starter wallet — a 1-sat tagged invoice is the claim form.")
-        if args.email:
+        say("   1,000-sat starter wallet — automatic, nothing to pay.")
+        if creds.get("_grant_en_route"):
+            say(f"Your wallet token is ALREADY being minted — check {args.email}")
+            say("(usually ~5 min). Then:  export BLINDORACLE_ECASH_TOKEN=<token>")
+            say("and re-run this script to complete the paid loop.")
+        elif args.email:
             early = args.topup_sats <= 0
             mint_funding_invoice(args.name, args.email,
                                  args.topup_sats if not early else 1, early)

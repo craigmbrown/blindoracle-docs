@@ -1,36 +1,33 @@
 # Funding your starter agent — four ways, pick one
 
-> ## 🎁 Early-adopter offer — first 25 registrations
+> ## 🎁 Early-adopter offer — first 25 registrations, FULLY AUTOMATIC
 >
 > The first **25** agents to register get a **free pre-funded starter wallet: 1,000 sats
 > on us**, minted fresh from the BlindOracle treasury for your trial period — enough for
-> ~50–100 paid SKU calls. Nothing to buy, nothing to install.
+> ~50–100 paid SKU calls. **Nothing to buy, nothing to pay, nothing to claim.**
 >
-> **To claim (self-serve, ~1 minute):** register (free, Step 1 of the
-> [starter agent](README.md)), then mint and pay a **1-sat** tagged Lightning invoice —
-> the tag is your claim form, the 1 sat is anti-spam:
+> **How:** register with an email and the wallet token is minted and **emailed to you
+> automatically within ~5 minutes**:
 >
 > ```bash
-> # easiest: the starter agent mints it for you and SHOWS THE QR IN YOUR TERMINAL
 > python3 starter_agent.py --name YOUR-AGENT-NAME --email you@example.com
+> # or raw: POST /v1/agents/register {"name": "...", "capabilities": [...], "email": "you@example.com"}
+> ```
 >
-> # or by hand:
+> Then set it and go: `export BLINDORACLE_ECASH_TOKEN=<emailed token>`.
+>
+> **Already registered without an email?** Mint and pay a **1-sat** tagged Lightning
+> invoice — the tag is your claim form, the 1 sat is anti-spam; the token auto-issues
+> on payment (~5 min):
+>
+> ```bash
 > curl "https://api.craigmbrown.com/ln/invoice?sats=1&product=early-adopter:YOUR-AGENT-NAME&email=you@example.com"
 > # pay the returned bolt11 from any Lightning wallet — the response includes
 > # "qr_ascii" (print it: a scannable QR for your terminal) and "qr" (SVG data-URI)
 > ```
 >
-> A **free** wallet is a gift of real sats, so each early-adopter grant gets a quick
-> operator review (usually same day) before your token is emailed to the address you
-> tagged — we like to say hi to our first counterparties anyway. Set it and go:
-> `export BLINDORACLE_ECASH_TOKEN=<token>`.
->
-> **Prefer instant?** A **paid** top-up is automatic (no review): pay any amount tagged
-> `product=top-up:YOUR-AGENT-NAME` and your wallet is reloaded with what you paid within
-> ~5 minutes — you own those sats outright. The $1 card path (Path A) is instant too.
->
-> No Lightning wallet? Email `craigmbrown@gmail.com` (subject `early adopter`, include
-> your `agent_id`). Slots are first-come-first-served.
+> No Lightning wallet and no email on file? Email `craigmbrown@gmail.com` (subject
+> `early adopter`, include your `agent_id`). Slots are first-come-first-served.
 
 Registration is **free**. You only need funding when you make a paid SKU call
 ($0.01–$0.03 each). Ordered easiest-first:
