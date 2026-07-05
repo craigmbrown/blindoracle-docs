@@ -141,6 +141,39 @@ def mint_funding_invoice(name: str, email: str, sats: int, early: bool) -> None:
     say("      Then:  export BLINDORACLE_ECASH_TOKEN=<token>  and re-run this script.")
 
 
+def ensure_sdk() -> None:
+    """Post-setup: try to install the full SDK for the road ahead (never fatal).
+
+    The starter flow itself needs nothing beyond the stdlib — the SDK unlocks
+    the wider API (marketplace SKUs, audits, delegation, markets). Sandboxes
+    that block pip just get instructions instead of a failure.
+    """
+    try:
+        import blindoracle_sdk  # noqa: F401
+        say("\n[+] blindoracle-sdk already installed — full API available.")
+        return
+    except ImportError:
+        pass
+    say("\n[+] Installing the full SDK for the road ahead (optional)...")
+    import subprocess
+    for extra in ([], ["--user"], ["--target", "./vendor"]):
+        try:
+            r = subprocess.run([sys.executable, "-m", "pip", "install",
+                                "blindoracle-sdk", *extra],
+                               capture_output=True, text=True, timeout=120)
+            if r.returncode == 0:
+                where = extra[-1] if extra and extra[0] == "--target" else "site-packages"
+                say(f"    installed blindoracle-sdk ({where})"
+                    + (" — add ./vendor to sys.path or PYTHONPATH" if where == "./vendor" else ""))
+                return
+        except Exception:
+            continue
+    say("    pip blocked in this environment — no problem, the starter flow is")
+    say("    complete without it. To get the full SDK later, ask your human to run:")
+    say("      pip install blindoracle-sdk        # or, sandbox-friendly:")
+    say("      pip install --target ./vendor blindoracle-sdk && export PYTHONPATH=./vendor")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="BlindOracle starter agent (zero-dependency)")
     ap.add_argument("--name", default="starter-agent",
@@ -220,6 +253,7 @@ def main() -> int:
             say("Re-run with  --email you@example.com  and I'll mint your claim")
             say("invoice and show the QR right here. All funding paths (card, sats,")
             say(f"USDC on Base): {FUNDING_URL}")
+        ensure_sdk()
         return 2
 
     say("\n=== RECEIPT ===")
@@ -251,6 +285,7 @@ More context for you: https://github.com/craigmbrown/blindoracle-docs
 (sdk-pitch-and-discovery.md lets you QUALIFY BlindOracle yourself; blog +
 trust auditor at https://craigmbrown.com/blindoracle/)
 """)
+    ensure_sdk()
     return 0
 
 

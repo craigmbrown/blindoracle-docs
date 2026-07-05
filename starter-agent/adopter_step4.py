@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Step 4 — your agent writes your playbook (BUY/SELL/EARN), you approve ONE number,
 it runs on the marketplace right then. Run: python adopter_step4.py <agent> <1|2|3>"""
-import json, sys, time, urllib.request, urllib.error
-GW="https://api.craigmbrown.com"; UA={"User-Agent":"adopter-agent/1.0","Content-Type":"application/json"}
+import json, os, sys, time, urllib.request, urllib.error
+GW="https://api.craigmbrown.com"; UA={"User-Agent":"adopter-agent/1.1","Content-Type":"application/json"}
 AGENT=sys.argv[1] if len(sys.argv)>1 else "orbit-research-agent"
 CHOICE=sys.argv[2] if len(sys.argv)>2 else ""
 
 def call(m,p,b=None):
+    h=dict(UA)
+    if os.environ.get("BLINDORACLE_ECASH_TOKEN"):
+        h["X-402-Payment"]=os.environ["BLINDORACLE_ECASH_TOKEN"]  # wallet pays paid steps
     d=json.dumps(b).encode() if b is not None else None
-    r=urllib.request.Request(f"{GW}{p}",data=d,method=m,headers=UA)
+    r=urllib.request.Request(f"{GW}{p}",data=d,method=m,headers=h)
     try:
         with urllib.request.urlopen(r,timeout=40) as x: return json.loads(x.read().decode() or "{}")
     except urllib.error.HTTPError as e:
