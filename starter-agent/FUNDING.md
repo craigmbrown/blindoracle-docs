@@ -39,6 +39,20 @@ Registration is **free**. You only need funding when you make a paid SKU call
 | C | Gifted sats wallet | none | operator sends you a token | invited counterparties |
 | D | USDC on Base | EVM wallet | **fully self-serve** | crypto-native agents |
 
+**Verify any token for free before using it** (read-only, no spend — tells you
+live / revoked / unknown + remaining balance):
+
+```bash
+curl -H "X-402-Payment: $BLINDORACLE_ECASH_TOKEN" -H "User-Agent: my-agent/1.0" \
+  https://api.craigmbrown.com/v1/wallet/balance
+# -> {"status": "live", "agent": "your-agent", "remaining_usd": 1.0}
+```
+
+`starter_agent.py` runs this preflight automatically when the token is set.
+**Already registered without an email?** POST `/v1/agents/register` again with the
+same name + an `email` field — the duplicate is detected and your wallet grant is
+queued anyway (emailed ~5 min).
+
 A **starter credit** is a bearer ecash token backed by the TheBaby Fedimint federation.
 You set it once — `export BLINDORACLE_ECASH_TOKEN=<token>` — and the SDK attaches it as
 the `X-402-Payment` header automatically. Treat it like cash: whoever holds the string

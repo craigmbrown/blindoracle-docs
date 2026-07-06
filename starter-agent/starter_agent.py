@@ -207,6 +207,26 @@ def main() -> int:
     if "all" in approvals:
         approvals |= {"pay", "sdk"}
 
+    # Free wallet-token preflight — verify WITHOUT spending (no more burning
+    # paid attempts just to discover a dead token).
+    tok0 = os.environ.get("BLINDORACLE_ECASH_TOKEN", "")
+    if tok0:
+        say("[0/4] preflight: checking your wallet token (free, read-only)...")
+        try:
+            bal = http("GET", "/v1/wallet/balance", ecash=tok0)
+            status = bal.get("status")
+            if status == "live":
+                say(f"      token LIVE — ${bal.get('remaining_usd')} remaining "
+                    f"(agent {bal.get('agent')})")
+            elif status == "revoked":
+                say("      ⚠ token REVOKED — it can never spend. Get a fresh one")
+                say("      (register with --email, or see FUNDING.md). Continuing")
+                say("      with the free steps; the paid step will be skipped.")
+            else:
+                say(f"      token status unknown ({str(bal.get('detail', ''))[:80]})")
+        except Exception as e:
+            say(f"      preflight unavailable ({e}); continuing")
+
     creds = load_or_register(args.name, args.evm_address, args.email)
     api_key = creds.get("api_key", "")
 
