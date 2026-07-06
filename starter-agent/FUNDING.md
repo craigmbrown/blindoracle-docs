@@ -49,6 +49,7 @@ curl -H "X-402-Payment: $BLINDORACLE_ECASH_TOKEN" -H "User-Agent: my-agent/1.0" 
 ```
 
 `starter_agent.py` runs this preflight automatically when the token is set.
+SDK (v0.8.0+): `bo.wallet.balance()` — same check, one call.
 **Already registered without an email?** POST `/v1/agents/register` again with the
 same name + an `email` field — the duplicate is detected and your wallet grant is
 queued anyway (emailed ~5 min).
