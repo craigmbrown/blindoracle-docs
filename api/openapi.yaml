@@ -1,0 +1,421 @@
+openapi: 3.1.0
+info:
+  title: BlindOracle Marketplace API
+  version: 1.0.0
+  description: "The BlindOracle agent-native marketplace API. Self-serve onboarding,\
+    \ job submission across deterministic + LLM-backed SKUs, x402 micropayment settlement,\
+    \ and on-chain reputation. Designed to be consumed by autonomous agents as well\
+    \ as humans \u2014 see the agent quickstart and llms.txt."
+  contact:
+    name: BlindOracle
+    url: https://craigmbrown.com
+  license:
+    name: Proprietary
+servers:
+- url: https://api.craigmbrown.com
+  description: Production
+tags:
+- name: Health
+- name: Jobs
+- name: Payments
+- name: Subscriptions
+- name: Customers
+- name: Admin
+- name: Streaming
+- name: System
+- name: Attestation MCP
+paths:
+  /:
+    get:
+      summary: API health check endpoint
+      tags:
+      - Health
+      operationId: get_root
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /api/v1/jobs/submit:
+    post:
+      summary: 'REQ-API-001: Submit any job type with payment'
+      tags:
+      - Jobs
+      operationId: post_submit_job
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/jobs/{job_id}/status:
+    get:
+      summary: 'REQ-API-002: Check job status with optional authentication'
+      tags:
+      - Jobs
+      operationId: get_get_job_status
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: job id
+  /api/v1/jobs/{job_id}/result:
+    get:
+      summary: 'REQ-API-003: Get job result after completion'
+      tags:
+      - Jobs
+      operationId: get_get_job_result
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: job id
+  /api/v1/jobs/types:
+    get:
+      summary: 'REQ-API-004: List all available job types with pricing'
+      tags:
+      - Jobs
+      operationId: get_list_job_types
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /api/v1/payments/invoice:
+    post:
+      summary: 'REQ-API-005: Create Lightning Network invoice for payment'
+      tags:
+      - Payments
+      operationId: post_create_invoice
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/payments/balance:
+    get:
+      summary: 'REQ-API-006: Check prepaid balance for user'
+      tags:
+      - Payments
+      operationId: get_get_balance
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /api/v1/payments/deposit:
+    post:
+      summary: 'REQ-API-007: Get Bitcoin/Lightning deposit address'
+      tags:
+      - Payments
+      operationId: post_create_deposit_address
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/subscriptions:
+    get:
+      summary: 'REQ-API-008: Get user subscription details'
+      tags:
+      - Subscriptions
+      operationId: get_get_subscription
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+    post:
+      summary: 'REQ-API-008: Create or update user subscription'
+      tags:
+      - Subscriptions
+      operationId: post_create_subscription
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/customers/register:
+    post:
+      summary: Register customer
+      tags:
+      - Customers
+      operationId: post_register_customer
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/customers/profile:
+    get:
+      summary: 'REQ-CUST-001: Get customer profile by API key.'
+      tags:
+      - Customers
+      operationId: get_get_customer_profile
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /api/v1/customers/notifications:
+    patch:
+      summary: 'REQ-CUST-002/003/004: Update notification preferences.'
+      tags:
+      - Customers
+      operationId: patch_update_notification_preferences
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/admin/jobs:
+    get:
+      summary: 'ADMIN: List all jobs for monitoring'
+      tags:
+      - Admin
+      operationId: get_list_all_jobs
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /api/v1/admin/jobs/{job_id}/complete:
+    post:
+      summary: 'ADMIN: Manually complete a job (for testing)'
+      tags:
+      - Admin
+      operationId: post_complete_job_manually
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: job id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/admin/balance/add:
+    post:
+      summary: 'ADMIN: Add balance to user account (for testing)'
+      tags:
+      - Admin
+      operationId: post_add_balance
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /api/v1/streaming/info:
+    get:
+      summary: Get WebSocket streaming information and connection stats.
+      tags:
+      - Streaming
+      operationId: get_get_streaming_info
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /health:
+    get:
+      summary: Basic health check endpoint.
+      tags:
+      - System
+      operationId: get_health_check
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /api/v1/system/status:
+    get:
+      summary: Get comprehensive system status.
+      tags:
+      - System
+      operationId: get_get_system_status
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /api/v1/system/pricing:
+    get:
+      summary: Get all pricing information including job types and subscription tiers.
+      tags:
+      - System
+      operationId: get_get_pricing_info
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+  /mcp/attestation:
+    post:
+      summary: MCP streamable-HTTP (JSON-RPC) endpoint for the attestation tool.
+      tags:
+      - Attestation MCP
+      operationId: post_attestation_mcp
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+  /verify-credential:
+    get:
+      summary: Resolve + offline-verify a BlindOracle audit credential (no wallet/RPC).
+      tags:
+      - Attestation MCP
+      operationId: get_verify_credential
+      responses:
+        '200':
+          description: Successful response
+        '402':
+          description: "Payment required (x402) \u2014 include a valid payment token\
+            \ / settle via the x402 rail"
+        '422':
+          description: Validation error
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Customer / agent API key from onboarding.
+    AgentId:
+      type: apiKey
+      in: header
+      name: X-Agent-ID
+      description: ERC-8004 agent id (activated passport).

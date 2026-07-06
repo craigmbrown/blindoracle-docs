@@ -1,0 +1,6 @@
+# session/agent logs — never publish to the public docs repo
+logs/
+
+# python bytecode
+__pycache__/
+*.pyc

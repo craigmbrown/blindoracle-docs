@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>BlindOracle Marketplace API — Reference</title>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;color:#e0e0e0;background:#1a1a1a;margin:0;padding:0;}
+  header{background:#0d1117;border-bottom:3px solid #4a9eff;padding:24px 30px;}
+  h1{margin:0;color:#e0e0e0;} .ver{color:#79c0ff;font-size:14px;}
+  .desc{color:#b0b0b0;max-width:780px;}
+  nav{position:sticky;top:0;background:#2d2d2d;padding:10px 30px;border-bottom:1px solid #404040;display:flex;flex-wrap:wrap;gap:14px;}
+  nav a{color:#4a9eff;text-decoration:none;font-size:14px;} nav a:hover{color:#79c0ff;}
+  main{max-width:900px;margin:0 auto;padding:20px 30px 60px;}
+  h2{color:#e0e0e0;border-left:4px solid #4a9eff;padding-left:10px;margin-top:34px;}
+  .op{background:#2d2d2d;border:1px solid #404040;border-radius:8px;padding:16px;margin:14px 0;}
+  .op-head{display:flex;align-items:center;gap:12px;}
+  .method{color:#0d1117;font-weight:700;padding:3px 10px;border-radius:4px;font-size:13px;}
+  .path{background:#0d1117;color:#79c0ff;padding:3px 8px;border-radius:4px;}
+  .summary{color:#b0b0b0;margin:8px 0;}
+  code{font-family:'Monaco','Menlo','Ubuntu Mono',monospace;color:#79c0ff;}
+  .muted{color:#808080;font-size:13px;}
+  .params ul{margin:4px 0;} .resp{margin-top:8px;font-size:14px;}
+  .code{font-weight:700;padding:1px 6px;border-radius:3px;font-size:13px;}
+  .code-2xx{background:#1b5e20;color:#4caf50;} .code-4xx{background:#332200;color:#ff9800;}
+  .code-5xx{background:#330000;color:#f44336;}
+  pre{background:#0d1117;border-left:3px solid #4a9eff;padding:12px;overflow-x:auto;border-radius:4px;color:#e0e0e0;}
+  details summary{cursor:pointer;color:#4a9eff;margin-top:8px;}
+  footer{border-top:1px solid #404040;color:#808080;font-size:13px;padding:16px 30px;max-width:900px;margin:0 auto;}
+</style>
+</head>
+<body>
+<header>
+  <h1>BlindOracle Marketplace API <span class="ver">v1.0.0</span></h1>
+  <p class="desc">The BlindOracle agent-native marketplace API. Self-serve onboarding, job submission across deterministic + LLM-backed SKUs, x402 micropayment settlement, and on-chain reputation. Designed to be consumed by autonomous agents as well as humans — see the agent quickstart and llms.txt.</p>
+  <p class="muted">Base URL: <code>https://api.craigmbrown.com</code> · Auth: <code>X-API-Key</code> header</p>
+</header>
+<nav><a href='#Admin'>Admin</a><a href='#Attestation MCP'>Attestation MCP</a><a href='#Customers'>Customers</a><a href='#Health'>Health</a><a href='#Jobs'>Jobs</a><a href='#Payments'>Payments</a><a href='#Streaming'>Streaming</a><a href='#Subscriptions'>Subscriptions</a><a href='#System'>System</a></nav>
+<main>
+<section><h2 id='Admin'>Admin</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/api/v1/admin/balance/add</code>
+        </div>
+        <p class="summary">ADMIN: Add balance to user account (for testing)</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/api/v1/admin/balance/add \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/admin/jobs</code>
+        </div>
+        <p class="summary">ADMIN: List all jobs for monitoring</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/admin/jobs \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/api/v1/admin/jobs/{job_id}/complete</code>
+        </div>
+        <p class="summary">ADMIN: Manually complete a job (for testing)</p>
+        <div class='params'><strong>Parameters</strong><ul><li><code>job_id</code> <span class='muted'>(path)</span></li></ul></div>
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/api/v1/admin/jobs/{job_id}/complete \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div></section><section><h2 id='Attestation MCP'>Attestation MCP</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/mcp/attestation</code>
+        </div>
+        <p class="summary">MCP streamable-HTTP (JSON-RPC) endpoint for the attestation tool.</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/mcp/attestation \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/verify-credential</code>
+        </div>
+        <p class="summary">Resolve + offline-verify a BlindOracle audit credential (no wallet/RPC).</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/verify-credential \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div></section><section><h2 id='Customers'>Customers</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#ff9800">PATCH</span>
+          <code class="path">/api/v1/customers/notifications</code>
+        </div>
+        <p class="summary">REQ-CUST-002/003/004: Update notification preferences.</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X PATCH \
+  https://api.craigmbrown.com/api/v1/customers/notifications \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/customers/profile</code>
+        </div>
+        <p class="summary">REQ-CUST-001: Get customer profile by API key.</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/customers/profile \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/api/v1/customers/register</code>
+        </div>
+        <p class="summary">Register customer</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/api/v1/customers/register \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div></section><section><h2 id='Health'>Health</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/</code>
+        </div>
+        <p class="summary">API health check endpoint</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/ \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div></section><section><h2 id='Jobs'>Jobs</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/api/v1/jobs/submit</code>
+        </div>
+        <p class="summary">REQ-API-001: Submit any job type with payment</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/api/v1/jobs/submit \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/jobs/types</code>
+        </div>
+        <p class="summary">REQ-API-004: List all available job types with pricing</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/jobs/types \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/jobs/{job_id}/result</code>
+        </div>
+        <p class="summary">REQ-API-003: Get job result after completion</p>
+        <div class='params'><strong>Parameters</strong><ul><li><code>job_id</code> <span class='muted'>(path)</span></li></ul></div>
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/jobs/{job_id}/result \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/jobs/{job_id}/status</code>
+        </div>
+        <p class="summary">REQ-API-002: Check job status with optional authentication</p>
+        <div class='params'><strong>Parameters</strong><ul><li><code>job_id</code> <span class='muted'>(path)</span></li></ul></div>
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/jobs/{job_id}/status \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div></section><section><h2 id='Payments'>Payments</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/payments/balance</code>
+        </div>
+        <p class="summary">REQ-API-006: Check prepaid balance for user</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/payments/balance \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/api/v1/payments/deposit</code>
+        </div>
+        <p class="summary">REQ-API-007: Get Bitcoin/Lightning deposit address</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/api/v1/payments/deposit \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/api/v1/payments/invoice</code>
+        </div>
+        <p class="summary">REQ-API-005: Create Lightning Network invoice for payment</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/api/v1/payments/invoice \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div></section><section><h2 id='Streaming'>Streaming</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/streaming/info</code>
+        </div>
+        <p class="summary">Get WebSocket streaming information and connection stats.</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/streaming/info \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div></section><section><h2 id='Subscriptions'>Subscriptions</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/subscriptions</code>
+        </div>
+        <p class="summary">REQ-API-008: Get user subscription details</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/subscriptions \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4a9eff">POST</span>
+          <code class="path">/api/v1/subscriptions</code>
+        </div>
+        <p class="summary">REQ-API-008: Create or update user subscription</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X POST \
+  https://api.craigmbrown.com/api/v1/subscriptions \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27; \
+  -H &#x27;Content-Type: application/json&#x27; \
+  -d &#x27;{ }&#x27;</pre></details>
+      </div></section><section><h2 id='System'>System</h2>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/system/pricing</code>
+        </div>
+        <p class="summary">Get all pricing information including job types and subscription tiers.</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/system/pricing \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/api/v1/system/status</code>
+        </div>
+        <p class="summary">Get comprehensive system status.</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/api/v1/system/status \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div>
+      <div class="op">
+        <div class="op-head">
+          <span class="method" style="background:#4caf50">GET</span>
+          <code class="path">/health</code>
+        </div>
+        <p class="summary">Basic health check endpoint.</p>
+        
+        <div class="resp"><strong>Responses</strong><br><span class='code code-2xx'>200</span> <span class='muted'>Successful response</span><br><span class='code code-4xx'>402</span> <span class='muted'>Payment required (x402) — include a valid payment token / settle via the x402 rail</span><br><span class='code code-4xx'>422</span> <span class='muted'>Validation error</span><br></div>
+        <details><summary>curl</summary><pre>curl -X GET \
+  https://api.craigmbrown.com/health \
+  -H &#x27;X-API-Key: YOUR_KEY&#x27;</pre></details>
+      </div></section>
+</main>
+<footer>
+  Generated from <code>blindoracle-docs/api/openapi.yaml</code> · OpenAPI 3.1.0 ·
+  self-contained (no external assets). Agents: see <code>llms.txt</code>.
+</footer>
+</body>
+</html>
