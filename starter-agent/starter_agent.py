@@ -147,12 +147,13 @@ def mint_funding_invoice(name: str, email: str, sats: int, early: bool) -> None:
     say("      Then:  export BLINDORACLE_ECASH_TOKEN=<token>  and re-run this script.")
 
 
-def ensure_sdk() -> None:
+def ensure_sdk(approved: bool) -> None:
     """Post-setup: try to install the full SDK for the road ahead (never fatal).
 
     The starter flow itself needs nothing beyond the stdlib — the SDK unlocks
-    the wider API (marketplace SKUs, audits, delegation, markets). Sandboxes
-    that block pip just get instructions instead of a failure.
+    the wider API (marketplace SKUs, audits, delegation, markets). Installs
+    ONLY with explicit human approval (--approve sdk); sandboxes that block
+    pip just get instructions instead of a failure.
     """
     try:
         import blindoracle_sdk  # noqa: F401
@@ -160,7 +161,12 @@ def ensure_sdk() -> None:
         return
     except ImportError:
         pass
-    say("\n[+] Installing the full SDK for the road ahead (optional)...")
+    if not approved:
+        say("\n[+] SDK install NOT approved — skipping (the starter flow is complete")
+        say("    without it). If your human approves later, re-run with --approve sdk")
+        say("    or run:  pip install blindoracle-sdk")
+        return
+    say("\n[+] Installing the full SDK for the road ahead (human-approved)...")
     import subprocess
     for extra in ([], ["--user"], ["--target", "./vendor"]):
         try:
@@ -191,7 +197,15 @@ def main() -> int:
     ap.add_argument("--topup-sats", type=int, default=0,
                     help="mint a top-up invoice for N sats instead of the 1-sat "
                          "early-adopter claim")
+    ap.add_argument("--approve", default="",
+                    help="comma-separated scopes your HUMAN explicitly approved: "
+                         "pay (spend wallet funds on the paid step), sdk (pip-install "
+                         "the SDK at the end), all. Default: FREE ACTIONS ONLY — the "
+                         "script never spends or installs without explicit approval.")
     args = ap.parse_args()
+    approvals = {a.strip() for a in args.approve.lower().split(",") if a.strip()}
+    if "all" in approvals:
+        approvals |= {"pay", "sdk"}
 
     creds = load_or_register(args.name, args.evm_address, args.email)
     api_key = creds.get("api_key", "")
@@ -229,6 +243,12 @@ def main() -> int:
         save_creds(creds)
 
     say("[4/4] requesting Verified Introduction (paid: ~$0.01 via x402)...")
+    tok = os.environ.get("BLINDORACLE_ECASH_TOKEN", "")
+    if tok and "pay" not in approvals:
+        say("      ⚠ wallet token detected but SPENDING IS NOT APPROVED —")
+        say("      probing the paid step without payment (nothing will be charged).")
+        say("      When your human approves, re-run with:  --approve pay")
+        tok = ""
     task = json.dumps({
         "buyer_profile": {
             "agent_id": creds["agent_id"],
@@ -244,8 +264,7 @@ def main() -> int:
     })
     try:
         receipt = http("POST", SKU_PATH, {"task": task}, api_key=api_key,
-                       ecash=os.environ.get("BLINDORACLE_ECASH_TOKEN", ""),
-                       timeout=90)  # paid execution does real work
+                       ecash=tok, timeout=90)  # paid execution does real work
     except PaymentRequired:
         say("\n=== SETUP STATUS: PARTIALLY SET UP ===")
         say("Registered + authenticated (steps 1-3 OK) — only funding is missing.")
@@ -263,7 +282,7 @@ def main() -> int:
             say("Re-run with  --email you@example.com  and I'll mint your claim")
             say("invoice and show the QR right here. All funding paths (card, sats,")
             say(f"USDC on Base): {FUNDING_URL}")
-        ensure_sdk()
+        ensure_sdk("sdk" in approvals)
         return 2
 
     say("\n=== RECEIPT ===")
@@ -295,7 +314,7 @@ More context for you: https://github.com/craigmbrown/blindoracle-docs
 (sdk-pitch-and-discovery.md lets you QUALIFY BlindOracle yourself; blog +
 trust auditor at https://craigmbrown.com/blindoracle/)
 """)
-    ensure_sdk()
+    ensure_sdk("sdk" in approvals)
     return 0
 
 
