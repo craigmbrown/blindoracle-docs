@@ -11,7 +11,7 @@ https://craigmbrown.com/blindoracle/evidence/20261101-person-agent-binding/).
 | `run.jsonl` | the run log; with `asset.md` it is the anchored digest's preimage |
 | `checkpoint.preimage` / `checkpoint.digest` | the exact byte stream `name\0bytes\0` over `run.jsonl` then `asset.md`, and its sha256 |
 | `checkpoint.base.json` | Base tx `0xf53be042…77a4`, block 53375797, calldata = digest |
-| `checkpoint.ots` / `checkpoint.ots.json` | OpenTimestamps stamp over `checkpoint.preimage` and its status at publish time |
+| `checkpoint.ots` / `checkpoint.ots.json` | OpenTimestamps stamp over `checkpoint.preimage`, confirmed in Bitcoin block 974134 (`ots verify checkpoint.ots`) |
 | `grants.json` | the four person-signed grants (message + signature + verify recipe), live at `api.craigmbrown.com/a2a/grants/<id>` |
 | `receipts.json` | the five board receipts as we saw them |
 | `witness_attestations.json` | four-judge verdicts per job from BlindOracle's witness pool |
