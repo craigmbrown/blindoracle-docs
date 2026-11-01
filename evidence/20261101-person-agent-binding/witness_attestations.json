@@ -1,0 +1,726 @@
+[
+ {
+  "ts": "2026-11-01T01:45:22.506131+00:00",
+  "job_id": "12ef0af4bb24",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 4,
+  "fail": 0,
+  "inconclusive": 0,
+  "trust_score": 0.915,
+  "confidence": 0.97,
+  "agent": "topic-news-scanner",
+  "content_sha256": "f3de32219c5c6980c31f73fda10e606a6f251ffcc0e9a5004e2ffca2e30253dc",
+  "subject_provider": "anthropic-api:claude-haiku-5-5",
+  "subject_model": "claude-haiku-5-5",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "content_sha256 matches the output bytes"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.86,
+    "confidence": 0.93,
+    "reasons": [
+     "It matches the required shape and clearly reports that no qualifying results were found, with dated examples and source links, though some claims remain caveated and the listed items are not confirmed to be human-verific"
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The report explicitly states what it could and could not find, provides supported specifics, and clearly differentiates between verified and unverified claims, while all internal dates are current."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 0.8,
+    "confidence": 0.95,
+    "reasons": [
+     "The factual claims are well-anchored to named, dated sources with URLs, but the absence of verification for specific standards and human-verification claims limits full trust."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "3641efb164288639da46f41196b0f33514f23e5d966c8c2f5f4ab04dea1c097b",
+  "row_hash": "e17c820c1297caacdbb69730e47a144f87ee9ce6c344eee65ecb6575cbc22e3c"
+ },
+ {
+  "ts": "2026-11-01T01:45:29.796441+00:00",
+  "job_id": "7d27a443-433",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 3,
+  "pass": 3,
+  "fail": 0,
+  "inconclusive": 1,
+  "trust_score": 0.95,
+  "confidence": 1.0,
+  "agent": "",
+  "content_sha256": "1c2d7d07014bab76cdbb45837c0e1ce092c429d40633b8d6fd4dd5c861829887",
+  "subject_provider": "",
+  "subject_model": "",
+  "witness_providers": [
+   "gemini",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 0.85,
+    "confidence": 1.0,
+    "reasons": [
+     "no content_sha256 in the envelope \u2014 binding unverifiable"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "inconclusive",
+    "trust": null,
+    "confidence": null,
+    "reasons": [
+     "no usable response"
+    ]
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The report consistently indicates a single checked URL with a successful outcome, and the grounding receipt is self-consistent."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The work product contains a checkable verification result with a working URL and HTTP 200 status, indicating the link is intact and accessible as of the current date."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 2,
+  "prev_hash": "e17c820c1297caacdbb69730e47a144f87ee9ce6c344eee65ecb6575cbc22e3c",
+  "row_hash": "2557f09e9002d2c380921d37afb734c114d42b122e51942318f3eee62a93c744"
+ },
+ {
+  "ts": "2026-11-01T02:00:40.654654+00:00",
+  "job_id": "63b7f3e8c5f7",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 4,
+  "fail": 0,
+  "inconclusive": 0,
+  "trust_score": 0.885,
+  "confidence": 0.927,
+  "agent": "topic-deep-researcher",
+  "content_sha256": "8fdfa23fdc78e1a2e93a5c0c08d50c1ebf4f6bf5e875f3746d69de497843b779",
+  "subject_provider": "anthropic-api:claude-haiku-5-5",
+  "subject_model": "claude-haiku-5-5",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "content_sha256 matches the output bytes"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.84,
+    "confidence": 0.96,
+    "reasons": [
+     "It substantially addresses the task with specific source-based analysis of three mechanisms, but the last section is cut off mid-sentence, so the work product is incomplete even though the main content is in the right sh"
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 0.8,
+    "confidence": 0.8,
+    "reasons": [
+     "The report generally avoids self-contradiction and supports its claims with cited sources, although the 'unverified' remarks suggest missing source details, and an incomplete sentence slightly diminishes trust."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.95,
+    "reasons": [
+     "All factual claims are anchored to named, dated sources [1], [2], [3] with specific excerpts and retrieval dates; limitations in source coverage are explicitly noted without overreach."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "2557f09e9002d2c380921d37afb734c114d42b122e51942318f3eee62a93c744",
+  "row_hash": "16324492adf0c3d281c37bdea1affad6ed047607f4eab13dcd0da475240c38b5"
+ },
+ {
+  "ts": "2026-11-01T02:00:49.442188+00:00",
+  "job_id": "991e7da1defb",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 4,
+  "fail": 0,
+  "inconclusive": 0,
+  "trust_score": 0.915,
+  "confidence": 0.95,
+  "agent": "topic-deep-researcher",
+  "content_sha256": "618ef261e5da488d975d88d22d26f1781682b5f32ac7cfb8b1a6ac118491c01b",
+  "subject_provider": "anthropic-api:claude-haiku-5-5",
+  "subject_model": "claude-haiku-5-5",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "content_sha256 matches the output bytes"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.86,
+    "confidence": 0.95,
+    "reasons": [
+     "It addresses the task by comparing the three named mechanisms with specific sourced details and clearly answers the central question that none explicitly binds a named human to a named agent, though the last section is c"
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.9,
+    "reasons": [
+     "The report effectively identifies the limitations of each mechanism in verifying a human behind an AI agent, consistently pointing out unsupported specifics and maintaining a neutral, evidence-based stance."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.95,
+    "reasons": [
+     "All factual claims are anchored to named, dated sources with URLs, and limitations are explicitly stated without undermining traceability."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "16324492adf0c3d281c37bdea1affad6ed047607f4eab13dcd0da475240c38b5",
+  "row_hash": "94a226b5d6887eb85d847b4f736ae47606d0f6929c97a4b0c2acef5fba8f68fc"
+ },
+ {
+  "ts": "2026-11-01T02:01:00.236990+00:00",
+  "job_id": "8d5d345a5408",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 4,
+  "fail": 0,
+  "inconclusive": 0,
+  "trust_score": 0.95,
+  "confidence": 0.995,
+  "agent": "",
+  "content_sha256": "1c2d7d07014bab76cdbb45837c0e1ce092c429d40633b8d6fd4dd5c861829887",
+  "subject_provider": "",
+  "subject_model": "",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 0.85,
+    "confidence": 1.0,
+    "reasons": [
+     "no content_sha256 in the envelope \u2014 binding unverifiable"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.95,
+    "confidence": 0.98,
+    "reasons": [
+     "This matches the link_integrity task shape by reporting a check result, a concrete URL with HTTP 200, and an overall PASS verdict, though it only checks one link so the scope is limited."
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The report consistently shows a single checked URL with a successful outcome, aligning with the 'PASS' verdict and zero broken links."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The work product provides a checkable URL with a successful status code, and all claims are directly verifiable through the given result."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "94a226b5d6887eb85d847b4f736ae47606d0f6929c97a4b0c2acef5fba8f68fc",
+  "row_hash": "87500ede387d0b29b4f71c2c19247eb6d0fd605c845c53857eb50f12b5b11d29"
+ },
+ {
+  "ts": "2026-11-01T02:15:21.661686+00:00",
+  "job_id": "1766590401c1",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 3,
+  "pass": 3,
+  "fail": 0,
+  "inconclusive": 1,
+  "trust_score": 0.947,
+  "confidence": 0.987,
+  "agent": "",
+  "content_sha256": "25c9f2e0b65f2a8abba12c5d2dfd4964027b1ff7514941093406fe03d8f7434d",
+  "subject_provider": "",
+  "subject_model": "",
+  "witness_providers": [
+   "gemini",
+   "openai"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 0.85,
+    "confidence": 1.0,
+    "reasons": [
+     "no content_sha256 in the envelope \u2014 binding unverifiable"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.99,
+    "confidence": 0.96,
+    "reasons": [
+     "This directly addresses link_integrity by reporting checked links, status codes, broken count, and an overall verdict in the expected JSON shape."
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The report shows two links were checked, both passed with a 200 status, and the 'broken' count is 0, which is internally consistent. The 'grounding_receipt' section is well-structured and plausible for an internal system"
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "inconclusive",
+    "trust": null,
+    "confidence": null,
+    "reasons": [
+     "no usable response"
+    ]
+   }
+  ],
+  "distinct_witness_vendors": 2,
+  "prev_hash": "87500ede387d0b29b4f71c2c19247eb6d0fd605c845c53857eb50f12b5b11d29",
+  "row_hash": "da6591b4cc3e70454d9635de80e2b612f5ecc6655e86092c6068c4d1dbf89ecc"
+ },
+ {
+  "ts": "2026-11-01T03:15:25.497498+00:00",
+  "job_id": "3a78612e-e39",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 4,
+  "fail": 0,
+  "inconclusive": 0,
+  "trust_score": 0.907,
+  "confidence": 0.927,
+  "agent": "topic-news-scanner",
+  "content_sha256": "ae3fa118d44c2dd60ce237eaafaaf645ed06ece66c5d8619073aefb4404a8a24",
+  "subject_provider": "anthropic-api:claude-haiku-5-5",
+  "subject_model": "claude-haiku-5-5",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "content_sha256 matches the output bytes"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.93,
+    "confidence": 0.96,
+    "reasons": [
+     "This matches the task shape as a ranked, sourced roundup of current items in the qualifying window, and it gives specific claims with URLs and a clear synthesis, though several items rely on single-source or self-reporte"
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.9,
+    "reasons": [
+     "The work product is free of self-contradiction and avoids unsupported specifics, with clear sourcing and explicit confidence levels for various claims."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 0.8,
+    "confidence": 0.85,
+    "reasons": [
+     "Factual claims are largely anchored to named, dated sources with URLs, though some figures rely on single-source reporting or unverified self-reports."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "da6591b4cc3e70454d9635de80e2b612f5ecc6655e86092c6068c4d1dbf89ecc",
+  "row_hash": "6617d20988eeee3e59bcabc108ec7d8cc293d8a3615b119b212a52b1c9bb3077"
+ },
+ {
+  "ts": "2026-11-01T03:15:34.872547+00:00",
+  "job_id": "78428f2c-2ca",
+  "outcome": "SPLIT",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 2,
+  "fail": 2,
+  "inconclusive": 0,
+  "trust_score": 0.62,
+  "confidence": 0.91,
+  "agent": "topic-sentiment-analyzer",
+  "content_sha256": "ab94307176668e6864e95a57113c546b567513546b8a0778001d8cc996075a6b",
+  "subject_provider": "gemini",
+  "subject_model": "gemini-2.5-flash",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "content_sha256 matches the output bytes"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "fail",
+    "trust": 0.28,
+    "confidence": 0.94,
+    "reasons": [
+     "It gives a relevant pro/con summary with citations, but it includes a clearly incorrect date claim about the sources and the required JSON shape is not fully respected because the content itself contains extraneous unsup"
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 0.8,
+    "confidence": 0.9,
+    "reasons": [
+     "The review presents a clear and consistent argument, citing sources for specific points, though it makes an unsubstantiated claim about future source dates given the provided current date."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "fail",
+    "trust": 0.4,
+    "confidence": 0.8,
+    "reasons": [
+     "Some claims are anchored to named, dated sources, but several sources lack specific dates or are future-dated relative to the current date, reducing traceability and checkability."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "6617d20988eeee3e59bcabc108ec7d8cc293d8a3615b119b212a52b1c9bb3077",
+  "row_hash": "118f55e8a42a639394ce51a9e4fd08efa08b0ce4d29e23f676d9c6fc8e2c28eb"
+ },
+ {
+  "ts": "2026-11-01T03:30:43.966630+00:00",
+  "job_id": "18262c8f-5c1",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 3,
+  "fail": 1,
+  "inconclusive": 0,
+  "trust_score": 0.68,
+  "confidence": 0.91,
+  "agent": "topic-sentiment-analyzer",
+  "content_sha256": "d9f14e88b1057919bfb77839e61e60c0b04cdca0a791f02b9cdbef60cd09e8d7",
+  "subject_provider": "gemini",
+  "subject_model": "gemini-2.5-flash",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 0.7,
+    "confidence": 1.0,
+    "reasons": [
+     "content_sha256 matches the output bytes",
+     "stub markers present: todo"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "fail",
+    "trust": 0.22,
+    "confidence": 0.94,
+    "reasons": [
+     "It is in the requested JSON shape and cites a relevant source, but it mostly summarizes one article plus several explicitly irrelevant sources rather than directly assessing overall sentiment with specific supporting evi"
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.9,
+    "reasons": [
+     "The report honestly states its limitations regarding sentiment analysis due to limited data, provides clear arguments for and against based on the available source, and correctly identifies and dismisses irrelevant sourc"
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.8,
+    "reasons": [
+     "Factual claims are well-anchored to a named, dated source (AInvest, October 28, 2026) with a working URL, while irrelevant sources are properly filtered and acknowledged."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "118f55e8a42a639394ce51a9e4fd08efa08b0ce4d29e23f676d9c6fc8e2c28eb",
+  "row_hash": "29123a5d7e376fa9b92c1951504b8653752d097c3af319abb2125840c5df4aa6"
+ },
+ {
+  "ts": "2026-11-01T03:47:32.847232+00:00",
+  "job_id": "18262c8f-5c1",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 4,
+  "fail": 0,
+  "inconclusive": 0,
+  "trust_score": 0.832,
+  "confidence": 0.913,
+  "agent": "topic-sentiment-analyzer",
+  "content_sha256": "d9f14e88b1057919bfb77839e61e60c0b04cdca0a791f02b9cdbef60cd09e8d7",
+  "subject_provider": "gemini",
+  "subject_model": "gemini-2.5-flash",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 0.7,
+    "confidence": 1.0,
+    "reasons": [
+     "content_sha256 matches the output bytes",
+     "stub markers present: todo"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.83,
+    "confidence": 0.95,
+    "reasons": [
+     "It directly addresses the sentiment task with a specific lean, arguments for and against, and dated source citations, though the inclusion of clearly irrelevant sources and the lack of actual community sentiment limit co"
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.9,
+    "reasons": [
+     "The work product clearly distinguishes between supported claims and areas where information is lacking, and correctly identifies irrelevant sources without making unsupported assertions."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 0.9,
+    "confidence": 0.8,
+    "reasons": [
+     "Factual claims are well-anchored to a named, dated source (AInvest, October 28, 2026) with a direct URL, though some limitations in sentiment breadth are acknowledged."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "29123a5d7e376fa9b92c1951504b8653752d097c3af319abb2125840c5df4aa6",
+  "row_hash": "624b65066d67f20758eff0d1e3eb40f101de4bd722883d3b97e1c4dc719125ff"
+ },
+ {
+  "ts": "2026-11-01T03:47:44.435355+00:00",
+  "job_id": "9fc2233c-d5e",
+  "outcome": "WITNESSED",
+  "witness_agent": "bo-witness-pool",
+  "witnesses_total": 4,
+  "witnesses_scored": 4,
+  "pass": 4,
+  "fail": 0,
+  "inconclusive": 0,
+  "trust_score": 0.953,
+  "confidence": 0.998,
+  "agent": "",
+  "content_sha256": "25c9f2e0b65f2a8abba12c5d2dfd4964027b1ff7514941093406fe03d8f7434d",
+  "subject_provider": "",
+  "subject_model": "",
+  "witness_providers": [
+   "gemini",
+   "openai",
+   "venice"
+  ],
+  "attestations": [
+   {
+    "witness": "integrity",
+    "verdict": "pass",
+    "trust": 0.85,
+    "confidence": 1.0,
+    "reasons": [
+     "no content_sha256 in the envelope \u2014 binding unverifiable"
+    ]
+   },
+   {
+    "witness": "substance",
+    "verdict": "pass",
+    "trust": 0.96,
+    "confidence": 0.99,
+    "reasons": [
+     "This directly addresses link_integrity in the expected shape, reports checks/results for two URLs, and gives a clear PASS with no missing required fields."
+    ],
+    "provider": "openai"
+   },
+   {
+    "witness": "consistency",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The report provides specific, consistent data points that align internally and do not assert unsupported claims. All dates are current."
+    ],
+    "provider": "gemini"
+   },
+   {
+    "witness": "grounding",
+    "verdict": "pass",
+    "trust": 1.0,
+    "confidence": 1.0,
+    "reasons": [
+     "The work product provides checkable evidence through two live URLs with successful status codes, both verifiable as of the current date."
+    ],
+    "provider": "venice"
+   }
+  ],
+  "distinct_witness_vendors": 3,
+  "prev_hash": "624b65066d67f20758eff0d1e3eb40f101de4bd722883d3b97e1c4dc719125ff",
+  "row_hash": "23792ef132d338c383643f663a4d5006ae4e37ba7a88ef44597a64040442325f"
+ }
+]

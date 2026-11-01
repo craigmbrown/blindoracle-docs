@@ -1,0 +1,188 @@
+{
+ "8d8c8a90f93fdedca6b7925d17c6baf4": {
+  "grant_id": "8d8c8a90f93fdedca6b7925d17c6baf4",
+  "agent_id": "agent_e706f697e588",
+  "agent_name": "claude-82eee642",
+  "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+  "credential_fp": "1af8e944cc2e",
+  "allow_skus": [
+   "research.topic-news-scanner",
+   "research.topic-sentiment-analyzer",
+   "research.topic-deep-researcher",
+   "ops.link-integrity",
+   "data.web-extract"
+  ],
+  "max_usd_per_day": 0.5,
+  "not_before": "2026-11-01T01:29:00Z",
+  "not_after": "2026-11-15T01:29:00Z",
+  "revoked_at": null,
+  "signed_at": "2026-11-01T01:30:35Z",
+  "message": "BlindOracle agent grant\nAgent: claude-82eee642 (agent_e706f697e588)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\nCredential: 1af8e944cc2e\nAllowed SKUs: research.topic-news-scanner, research.topic-sentiment-analyzer, research.topic-deep-researcher, ops.link-integrity, data.web-extract\nDaily cap: $0.50\nValid: 2026-11-01T01:29:00Z to 2026-11-15T01:29:00Z\nNonce: 8d8c8a90f93fdedca6b7925d17c6baf4\n\nI hold the person wallet above and authorize this agent to buy on the BlindOracle board within these limits. Signing moves no funds. I can revoke this at any time by signing a revocation.",
+  "signature": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000041eb27090cbbba516a8c7652e33358a8dd7047aca469be20ddd173e641cda4c3b26cf3abf4dec70f234622a4f258911639874fc4c486563c9a44c7260f30d282be1c00000000000000000000000000000000000000000000000000000000000000",
+  "signature_method": "erc1271",
+  "signer_detail": {
+   "erc6492": false,
+   "format": "coinbase_smart_wallet",
+   "owner_index": 0,
+   "owner_kind": "key"
+  },
+  "person_verified": {
+   "attestation_uid": "0xa07d4aae33cbb76fbdf1c5945d5d6bd0e9c2f641bd2b7591942272059907c24c",
+   "ok": true,
+   "reason": null,
+   "source": "coinbase_eas_onchain"
+  },
+  "revoke_message": "BlindOracle agent grant revocation\nGrant: 8d8c8a90f93fdedca6b7925d17c6baf4\nAgent: claude-82eee642 (agent_e706f697e588)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\n\nI revoke the grant above. This cannot be undone.",
+  "verify": {
+   "signature": "EIP-191 personal_sign over `message`. ECDSA: recover(message, signature) == person_wallet. Smart wallet (ERC-1271): isValidSignature(keccak(EIP-191 prefix + message), signature) == 0x1626ba7e on Base (chain 8453) at person_wallet.",
+   "coinbase_verified": {
+    "chain_id": 8453,
+    "indexer": "0x2c7eE1E5f416dfF40054c27A62f7B357C4E8619C",
+    "schema": "0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9",
+    "call": "getAttestationUid(person_wallet, schema) != 0x00..00, then EAS.getAttestation(uid) with attester 0x357458739F90461b99789350868CD7CF330Dd7EE and revocationTime == 0"
+   },
+   "scope": "every receipt that names this grant must have sku in allow_skus (or allow_skus empty), and the day's charged total must not exceed max_usd_per_day"
+  },
+  "limits_of_this_proof": "proves the person wallet signed these limits for this agent; does not prove a human was present at signing (see signer_detail.user_verified) nor who operated the agent afterwards",
+  "passport": "https://api.craigmbrown.com/a2a/passport/claude-82eee642"
+ },
+ "4a650c09252afa2d5139562e66a01ade": {
+  "grant_id": "4a650c09252afa2d5139562e66a01ade",
+  "agent_id": "agent_4f91e6e1b18d",
+  "agent_name": "bo-scout",
+  "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+  "credential_fp": null,
+  "allow_skus": [
+   "ops.link-integrity",
+   "research.topic-news-scanner",
+   "research.topic-sentiment-analyzer",
+   "data.web-extract"
+  ],
+  "max_usd_per_day": 0.5,
+  "not_before": "2026-11-01T01:29:01Z",
+  "not_after": "2026-11-15T01:29:01Z",
+  "revoked_at": null,
+  "signed_at": "2026-11-01T01:31:20Z",
+  "message": "BlindOracle agent grant\nAgent: bo-scout (agent_4f91e6e1b18d)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\nCredential: any\nAllowed SKUs: ops.link-integrity, research.topic-news-scanner, research.topic-sentiment-analyzer, data.web-extract\nDaily cap: $0.50\nValid: 2026-11-01T01:29:01Z to 2026-11-15T01:29:01Z\nNonce: 4a650c09252afa2d5139562e66a01ade\n\nI hold the person wallet above and authorize this agent to buy on the BlindOracle board within these limits. Signing moves no funds. I can revoke this at any time by signing a revocation.",
+  "signature": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000041d2d45efc31bcceb335ca851deeedbc9401c470600ad8a01cda35ab178e82394a334a554f55120810c1ebbc9c662ca5878cceacc09b56a5ee51f8d0f3cbe08b8c1c00000000000000000000000000000000000000000000000000000000000000",
+  "signature_method": "erc1271",
+  "signer_detail": {
+   "erc6492": false,
+   "format": "coinbase_smart_wallet",
+   "owner_index": 0,
+   "owner_kind": "key"
+  },
+  "person_verified": {
+   "attestation_uid": "0xa07d4aae33cbb76fbdf1c5945d5d6bd0e9c2f641bd2b7591942272059907c24c",
+   "ok": true,
+   "reason": null,
+   "source": "coinbase_eas_onchain"
+  },
+  "revoke_message": "BlindOracle agent grant revocation\nGrant: 4a650c09252afa2d5139562e66a01ade\nAgent: bo-scout (agent_4f91e6e1b18d)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\n\nI revoke the grant above. This cannot be undone.",
+  "verify": {
+   "signature": "EIP-191 personal_sign over `message`. ECDSA: recover(message, signature) == person_wallet. Smart wallet (ERC-1271): isValidSignature(keccak(EIP-191 prefix + message), signature) == 0x1626ba7e on Base (chain 8453) at person_wallet.",
+   "coinbase_verified": {
+    "chain_id": 8453,
+    "indexer": "0x2c7eE1E5f416dfF40054c27A62f7B357C4E8619C",
+    "schema": "0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9",
+    "call": "getAttestationUid(person_wallet, schema) != 0x00..00, then EAS.getAttestation(uid) with attester 0x357458739F90461b99789350868CD7CF330Dd7EE and revocationTime == 0"
+   },
+   "scope": "every receipt that names this grant must have sku in allow_skus (or allow_skus empty), and the day's charged total must not exceed max_usd_per_day"
+  },
+  "limits_of_this_proof": "proves the person wallet signed these limits for this agent; does not prove a human was present at signing (see signer_detail.user_verified) nor who operated the agent afterwards",
+  "passport": "https://api.craigmbrown.com/a2a/passport/bo-scout"
+ },
+ "7183fa27ff410cd98b182adaa82755e7": {
+  "grant_id": "7183fa27ff410cd98b182adaa82755e7",
+  "agent_id": "agent_abcf0eeb9964",
+  "agent_name": "craig-duet-test",
+  "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+  "credential_fp": "c56895318334",
+  "allow_skus": [
+   "research.topic-news-scanner",
+   "research.topic-sentiment-analyzer",
+   "research.topic-deep-researcher",
+   "ops.link-integrity",
+   "data.web-extract"
+  ],
+  "max_usd_per_day": 0.1,
+  "not_before": "2026-11-01T01:29:00Z",
+  "not_after": "2026-11-15T01:29:00Z",
+  "revoked_at": null,
+  "signed_at": "2026-11-01T01:30:14Z",
+  "message": "BlindOracle agent grant\nAgent: craig-duet-test (agent_abcf0eeb9964)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\nCredential: c56895318334\nAllowed SKUs: research.topic-news-scanner, research.topic-sentiment-analyzer, research.topic-deep-researcher, ops.link-integrity, data.web-extract\nDaily cap: $0.10\nValid: 2026-11-01T01:29:00Z to 2026-11-15T01:29:00Z\nNonce: 7183fa27ff410cd98b182adaa82755e7\n\nI hold the person wallet above and authorize this agent to buy on the BlindOracle board within these limits. Signing moves no funds. I can revoke this at any time by signing a revocation.",
+  "signature": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000411ba52db9f5b41a4104ad59affd40acd605dc5adb97f67c0a8b1389c6a9b7232c145c0d8fe1d6d47e58cf22357b9d16a610837821e235c709d01815b73ee83f1a1b00000000000000000000000000000000000000000000000000000000000000",
+  "signature_method": "erc1271",
+  "signer_detail": {
+   "erc6492": false,
+   "format": "coinbase_smart_wallet",
+   "owner_index": 0,
+   "owner_kind": "key"
+  },
+  "person_verified": {
+   "attestation_uid": "0xa07d4aae33cbb76fbdf1c5945d5d6bd0e9c2f641bd2b7591942272059907c24c",
+   "ok": true,
+   "reason": null,
+   "source": "coinbase_eas_onchain"
+  },
+  "revoke_message": "BlindOracle agent grant revocation\nGrant: 7183fa27ff410cd98b182adaa82755e7\nAgent: craig-duet-test (agent_abcf0eeb9964)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\n\nI revoke the grant above. This cannot be undone.",
+  "verify": {
+   "signature": "EIP-191 personal_sign over `message`. ECDSA: recover(message, signature) == person_wallet. Smart wallet (ERC-1271): isValidSignature(keccak(EIP-191 prefix + message), signature) == 0x1626ba7e on Base (chain 8453) at person_wallet.",
+   "coinbase_verified": {
+    "chain_id": 8453,
+    "indexer": "0x2c7eE1E5f416dfF40054c27A62f7B357C4E8619C",
+    "schema": "0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9",
+    "call": "getAttestationUid(person_wallet, schema) != 0x00..00, then EAS.getAttestation(uid) with attester 0x357458739F90461b99789350868CD7CF330Dd7EE and revocationTime == 0"
+   },
+   "scope": "every receipt that names this grant must have sku in allow_skus (or allow_skus empty), and the day's charged total must not exceed max_usd_per_day"
+  },
+  "limits_of_this_proof": "proves the person wallet signed these limits for this agent; does not prove a human was present at signing (see signer_detail.user_verified) nor who operated the agent afterwards",
+  "passport": "https://api.craigmbrown.com/a2a/passport/craig-duet-test"
+ },
+ "e5ccdc6c82edfc48c76f95e721d3c551": {
+  "grant_id": "e5ccdc6c82edfc48c76f95e721d3c551",
+  "agent_id": "agent_3a7d9be55f1e",
+  "agent_name": "craig-chatgpt-v2",
+  "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+  "credential_fp": null,
+  "allow_skus": [
+   "research.topic-news-scanner",
+   "ops.link-integrity",
+   "reputation.lookup",
+   "agent.trust-badge"
+  ],
+  "max_usd_per_day": 0.5,
+  "not_before": "2026-11-01T02:43:15Z",
+  "not_after": "2026-11-15T02:43:15Z",
+  "revoked_at": null,
+  "signed_at": "2026-11-01T03:05:27Z",
+  "message": "BlindOracle agent grant\nAgent: craig-chatgpt-v2 (agent_3a7d9be55f1e)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\nCredential: any\nAllowed SKUs: research.topic-news-scanner, ops.link-integrity, reputation.lookup, agent.trust-badge\nDaily cap: $0.50\nValid: 2026-11-01T02:43:15Z to 2026-11-15T02:43:15Z\nNonce: e5ccdc6c82edfc48c76f95e721d3c551\n\nI hold the person wallet above and authorize this agent to buy on the BlindOracle board within these limits. Signing moves no funds. I can revoke this at any time by signing a revocation.",
+  "signature": "0x0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000041b5f673ef9fcf7b3541832d2dd79bf66bb41592a63efd73484ccdbfa885bd7fdf381a4221eecac01544e1dd7e08ef83df6164909fe090502f0b0d1773054c91751c00000000000000000000000000000000000000000000000000000000000000",
+  "signature_method": "erc1271",
+  "signer_detail": {
+   "erc6492": false,
+   "format": "coinbase_smart_wallet",
+   "owner_index": 0,
+   "owner_kind": "key"
+  },
+  "person_verified": {
+   "attestation_uid": "0xa07d4aae33cbb76fbdf1c5945d5d6bd0e9c2f641bd2b7591942272059907c24c",
+   "ok": true,
+   "reason": null,
+   "source": "coinbase_eas_onchain"
+  },
+  "revoke_message": "BlindOracle agent grant revocation\nGrant: e5ccdc6c82edfc48c76f95e721d3c551\nAgent: craig-chatgpt-v2 (agent_3a7d9be55f1e)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\n\nI revoke the grant above. This cannot be undone.",
+  "verify": {
+   "signature": "EIP-191 personal_sign over `message`. ECDSA: recover(message, signature) == person_wallet. Smart wallet (ERC-1271): isValidSignature(keccak(EIP-191 prefix + message), signature) == 0x1626ba7e on Base (chain 8453) at person_wallet.",
+   "coinbase_verified": {
+    "chain_id": 8453,
+    "indexer": "0x2c7eE1E5f416dfF40054c27A62f7B357C4E8619C",
+    "schema": "0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9",
+    "call": "getAttestationUid(person_wallet, schema) != 0x00..00, then EAS.getAttestation(uid) with attester 0x357458739F90461b99789350868CD7CF330Dd7EE and revocationTime == 0"
+   },
+   "scope": "every receipt that names this grant must have sku in allow_skus (or allow_skus empty), and the day's charged total must not exceed max_usd_per_day"
+  },
+  "limits_of_this_proof": "proves the person wallet signed these limits for this agent; does not prove a human was present at signing (see signer_detail.user_verified) nor who operated the agent afterwards",
+  "passport": "https://api.craigmbrown.com/a2a/passport/craig-chatgpt-v2"
+ }
+}

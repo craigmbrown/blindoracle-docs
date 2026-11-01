@@ -1,0 +1,8 @@
+{
+  "status": "sent",
+  "tx_hash": "0xf53be042c54310ac10fed3b90b36fdd069e60fb6f508be5c91a10108774577a4",
+  "block": 53375797,
+  "ok": true,
+  "anchored_by": "0x42A09A72eC47647FE9BE1f450Ab8F835D0FF556a",
+  "explorer": "https://basescan.org/tx/0xf53be042c54310ac10fed3b90b36fdd069e60fb6f508be5c91a10108774577a4"
+}

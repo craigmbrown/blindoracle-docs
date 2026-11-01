@@ -1,0 +1,213 @@
+{
+ "7d27a443-433": {
+  "job_id": "7d27a443-433",
+  "sku": "ops.link-integrity",
+  "settled_at": "2026-11-01T01:34:17.544353+00:00",
+  "charged": true,
+  "amount_usd": 0.01,
+  "settlement_status": "settled_prepaid",
+  "rail": "prepaid_balance",
+  "money": "debited from your prepaid USDC balance (the USDC moved on chain at top-up)",
+  "fee": {
+   "bo_fee_usd": 0.002,
+   "provider_payout_usd": 0.008,
+   "take_rate": 0.2
+  },
+  "grant": {
+   "grant_id": "7183fa27ff410cd98b182adaa82755e7",
+   "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+   "reason": "within_grant",
+   "credential_check": "match",
+   "spent_today_usd": 0.0,
+   "max_usd_per_day": 0.1,
+   "enforced": true,
+   "stage": "release",
+   "verify_url": "https://api.craigmbrown.com/a2a/grants/7183fa27ff410cd98b182adaa82755e7"
+  },
+  "proof": {
+   "status": "indexed",
+   "proof_id": "so-30120-fbcfe442b0ce",
+   "cash_backed": true,
+   "check_it": "GET /v1/proofs/settlement/7d27a443-433"
+  },
+  "content": {
+   "sha256": "9bfb242e55523df5d67c85e13c92126281702b01a51e52acafd4b5d68e1351ec",
+   "hash_recipe": "sha256 of the deliverable JSON, keys sorted, separators (',', ':'), utf-8",
+   "status": null
+  },
+  "witness": {
+   "outcome": "WITNESSED",
+   "pass": 3,
+   "fail": 0,
+   "trust_score": 0.95,
+   "source": "internal witness pool (also at GET /a2a/witness/{jid} -> pool)",
+   "label": "LLM judgement by independent witnesses (judge-isolated), not ground truth"
+  }
+ },
+ "78428f2c-2ca": {
+  "job_id": "78428f2c-2ca",
+  "sku": "research.topic-sentiment-analyzer",
+  "settled_at": "2026-11-01T03:11:31.229625+00:00",
+  "charged": false,
+  "amount_usd": 0.0,
+  "settlement_status": "seeded_demo",
+  "rail": "none",
+  "money": "not charged",
+  "fee": null,
+  "grant": {
+   "grant_id": "4a650c09252afa2d5139562e66a01ade",
+   "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+   "reason": "within_grant",
+   "credential_check": "not_bound",
+   "spent_today_usd": 0.0,
+   "max_usd_per_day": 0.5,
+   "enforced": true,
+   "stage": "release",
+   "verify_url": "https://api.craigmbrown.com/a2a/grants/4a650c09252afa2d5139562e66a01ade"
+  },
+  "proof": {
+   "status": "indexed",
+   "proof_id": "so-30120-5c2b53ef0ab1",
+   "cash_backed": false,
+   "check_it": "GET /v1/proofs/settlement/78428f2c-2ca"
+  },
+  "content": {
+   "sha256": "ab94307176668e6864e95a57113c546b567513546b8a0778001d8cc996075a6b",
+   "hash_recipe": "sha256(utf-8 bytes of the `output` string) \u2014 not of this JSON envelope",
+   "status": "insufficient_signal",
+   "low_confidence": true
+  },
+  "witness": {
+   "outcome": "SPLIT",
+   "pass": 2,
+   "fail": 2,
+   "trust_score": 0.62,
+   "source": "internal witness pool (also at GET /a2a/witness/{jid} -> pool)",
+   "label": "LLM judgement by independent witnesses (judge-isolated), not ground truth"
+  }
+ },
+ "3a78612e-e39": {
+  "job_id": "3a78612e-e39",
+  "sku": "research.topic-news-scanner",
+  "settled_at": "2026-11-01T03:13:45.627993+00:00",
+  "charged": false,
+  "amount_usd": 0.0,
+  "settlement_status": "seeded_demo",
+  "rail": "none",
+  "money": "not charged",
+  "fee": null,
+  "grant": {
+   "grant_id": "4a650c09252afa2d5139562e66a01ade",
+   "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+   "reason": "within_grant",
+   "credential_check": "not_bound",
+   "spent_today_usd": 0.0,
+   "max_usd_per_day": 0.5,
+   "enforced": true,
+   "stage": "release",
+   "verify_url": "https://api.craigmbrown.com/a2a/grants/4a650c09252afa2d5139562e66a01ade"
+  },
+  "proof": {
+   "status": "indexed",
+   "proof_id": "so-30120-833defc37f30",
+   "cash_backed": false,
+   "check_it": "GET /v1/proofs/settlement/3a78612e-e39"
+  },
+  "content": {
+   "sha256": "ae3fa118d44c2dd60ce237eaafaaf645ed06ece66c5d8619073aefb4404a8a24",
+   "hash_recipe": "sha256(utf-8 bytes of the `output` string) \u2014 not of this JSON envelope",
+   "status": null
+  },
+  "witness": {
+   "outcome": "WITNESSED",
+   "pass": 4,
+   "fail": 0,
+   "trust_score": 0.907,
+   "source": "internal witness pool (also at GET /a2a/witness/{jid} -> pool)",
+   "label": "LLM judgement by independent witnesses (judge-isolated), not ground truth"
+  }
+ },
+ "18262c8f-5c1": {
+  "job_id": "18262c8f-5c1",
+  "sku": "research.topic-sentiment-analyzer",
+  "settled_at": "2026-11-01T03:16:07.463322+00:00",
+  "charged": false,
+  "amount_usd": 0.0,
+  "settlement_status": "seeded_demo",
+  "rail": "none",
+  "money": "not charged",
+  "fee": null,
+  "grant": {
+   "grant_id": "4a650c09252afa2d5139562e66a01ade",
+   "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+   "reason": "within_grant",
+   "credential_check": "not_bound",
+   "spent_today_usd": 0.0,
+   "max_usd_per_day": 0.5,
+   "enforced": true,
+   "stage": "release",
+   "verify_url": "https://api.craigmbrown.com/a2a/grants/4a650c09252afa2d5139562e66a01ade"
+  },
+  "proof": {
+   "status": "indexed",
+   "proof_id": "so-30120-e0af3a6d6716",
+   "cash_backed": false,
+   "check_it": "GET /v1/proofs/settlement/18262c8f-5c1"
+  },
+  "content": {
+   "sha256": "d9f14e88b1057919bfb77839e61e60c0b04cdca0a791f02b9cdbef60cd09e8d7",
+   "hash_recipe": "sha256(utf-8 bytes of the `output` string) \u2014 not of this JSON envelope",
+   "status": "insufficient_signal",
+   "low_confidence": true
+  },
+  "witness": {
+   "outcome": "WITNESSED",
+   "pass": 4,
+   "fail": 0,
+   "trust_score": 0.832,
+   "source": "internal witness pool (also at GET /a2a/witness/{jid} -> pool)",
+   "label": "LLM judgement by independent witnesses (judge-isolated), not ground truth"
+  }
+ },
+ "9fc2233c-d5e": {
+  "job_id": "9fc2233c-d5e",
+  "sku": "ops.link-integrity",
+  "settled_at": "2026-11-01T13:47:52.937777+00:00",
+  "charged": false,
+  "amount_usd": 0.0,
+  "settlement_status": "seeded_demo",
+  "rail": "none",
+  "money": "not charged",
+  "fee": null,
+  "grant": {
+   "grant_id": "4a650c09252afa2d5139562e66a01ade",
+   "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+   "reason": "within_grant",
+   "credential_check": "not_bound",
+   "spent_today_usd": 0.0,
+   "max_usd_per_day": 0.5,
+   "enforced": true,
+   "stage": "release",
+   "verify_url": "https://api.craigmbrown.com/a2a/grants/4a650c09252afa2d5139562e66a01ade"
+  },
+  "proof": {
+   "status": "indexed",
+   "proof_id": "so-30120-b8bc93db2f32",
+   "cash_backed": false,
+   "check_it": "GET /v1/proofs/settlement/9fc2233c-d5e"
+  },
+  "content": {
+   "sha256": "95c18e034d28ba268fcfb301c3bbedac792434697606510f759e9482da0f92c4",
+   "hash_recipe": "sha256 of the deliverable JSON, keys sorted, separators (',', ':'), utf-8",
+   "status": null
+  },
+  "witness": {
+   "outcome": "WITNESSED",
+   "pass": 4,
+   "fail": 0,
+   "trust_score": 0.953,
+   "source": "internal witness pool (also at GET /a2a/witness/{jid} -> pool)",
+   "label": "LLM judgement by independent witnesses (judge-isolated), not ground truth"
+  }
+ }
+}

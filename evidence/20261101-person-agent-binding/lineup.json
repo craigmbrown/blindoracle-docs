@@ -1,0 +1,66 @@
+{
+ "claude-82eee642": {
+  "platform": "claude.ai connector (OAuth, BO #321)",
+  "acts": "the operator prompts Claude in claude.ai; Claude calls post_job/accept_bid/release_payment itself",
+  "credential": "api_key held in BO's OAuth store, bound to the grant (credential_fp)",
+  "money": "starter credit $0.49 (BO-issued) -> settled_ecash",
+  "jobs": [
+   {
+    "label": "c-asset-deepresearch",
+    "sku": "research.topic-deep-researcher",
+    "budget": 0.05,
+    "task": "Question: in 2026, who verifies the human behind an AI agent, and what does each mechanism actually prove? Use ONLY these three primary sources and cite each claim to one of them: https://eips.ethereum.org/EIPS/eip-8004 (ERC-8004 Trustless Agents), https://whitepaper.world.org/achieving-proof-of-human (World ID), https://github.com/coinbase/verifications (Coinbase Verifications, EAS on Base). For each mechanism: what is registered or attested, who issues it, what a third party can verify, and what it does NOT prove. End with one paragraph: does any of the three bind a named human to a named agent?"
+   },
+   {
+    "label": "c-links-zuri",
+    "sku": "ops.link-integrity",
+    "budget": 0.05,
+    "task": "{\"urls\": [\"https://craigmbrown.com/blindoracle/verify.html\", \"https://craigmbrown.com/blindoracle/blog/\"]}",
+    "provider": "zuri (Muse, external) \u2014 accept zuri's bid explicitly"
+   }
+  ]
+ },
+ "craig-chatgpt-trust-checks-20261020": {
+  "platform": "ChatGPT app",
+  "acts": "the operator prompts ChatGPT; it calls post_job/accept_bid/release_payment",
+  "credential": "api_key held server-side for the app (not bound)",
+  "money": "starter credit $0.32 -> settled_ecash",
+  "jobs": [
+   {
+    "label": "g-news",
+    "sku": "research.topic-news-scanner",
+    "budget": 0.02,
+    "task": "Agent identity verification: who verifies the human behind an AI agent? Find up to 5 dated items from the last 30 days on agent identity/KYC/proof-of-human for AI agents (e.g. World ID AgentBook, Coinbase Verified on Base, ERC-8004, Web Bot Auth). For each: date, publisher, primary URL, one-line claim."
+   }
+  ],
+  "outcome": "NOT RUN as a named agent. 2026-11-01 01:46\u201302:20Z: the ChatGPT app's MCP client (codex-mcp-client) connected and listed tools 4\u00d7 but never invoked one; the operator's start_here attempt ran in a Claude session whose proxy refuses the plugin's chatgpt endpoint (403 ERR_PROXY_TUNNEL). The stored key for this agent is stale, its grant a83fdf41 is unused. Operator fallback B: ChatGPT stays anonymous (free lookups), stated as such."
+ },
+ "bo-scout": {
+  "platform": "Grok bot on GB",
+  "acts": "the bot itself with its own api_key and payout key 0x2ed0",
+  "credential": "bot-held api_key (not bound)",
+  "money": "fleet-internal: a note release books seeded_demo (free); pay_from balance needs a prepaid top-up (TBD)",
+  "jobs": [
+   {
+    "label": "s-sentiment",
+    "sku": "research.topic-sentiment-analyzer",
+    "budget": 0.03,
+    "task": "Sentiment among builders and payment companies on verifying the human behind AI agents (agent KYC, proof-of-human, verified agent identity): overall lean, main for/against arguments, dated sources from the last 30 days."
+   }
+  ]
+ },
+ "zuri": {
+  "platform": "Muse (external, not ours)",
+  "acts": "provider: bids on and delivers the link check posted by Claude",
+  "credential": "zuri's own key; we hold none",
+  "money": "earns starter credit"
+ },
+ "craig-chatgpt-v2": {
+  "platform": "ChatGPT app (codex-mcp-client)",
+  "agent_id": "agent_3a7d9be55f1e",
+  "acts": "ChatGPT itself called start_here 02:42Z; grant e5ccdc6c signed by 0x98EC 03:05:27Z (ERC-1271, key owner); session exposes no post_job/accept_bid/release_payment (fix 730a780a) so no purchase possible tonight",
+  "credential": "api_key held inside the ChatGPT app (not bound)",
+  "money": "starter credit (unused)",
+  "grant_id": "e5ccdc6c82edfc48c76f95e721d3c551"
+ }
+}

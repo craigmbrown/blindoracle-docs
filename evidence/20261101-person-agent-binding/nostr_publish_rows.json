@@ -1,0 +1,113 @@
+[
+ {
+  "dry_run": false,
+  "event_id": "781b1480578a4962542324708f245f819e0cbc3d47c7ae1b24831d1f9a82a47e",
+  "fingerprint": "c6460f3057fc911ed540cfe01f7e547ebf4a1204250ececd0cd9cdd8057427d3",
+  "job_id": "8d5d345a5408",
+  "kind": 30013,
+  "ots": {
+   "calendars": [
+    "https://a.pool.opentimestamps.org",
+    "https://b.pool.opentimestamps.org",
+    "https://a.pool.eternitywall.com",
+    "https://ots.btc.catallaxy.com"
+   ],
+   "event_id": "c4fab27eda375619f9255074ef9ffb2a569a3cdb4f5476ea6d4924bd331b9172",
+   "ok": true,
+   "ots_b64_sha256": "1dc2d8490f908c45a7ee402b28858e4de2559f149ef8b98d7e610b9203a06e7d",
+   "ots_path": "data/ots_proofs/781b1480578a4962542324708f245f819e0cbc3d47c7ae1b24831d1f9a82a47e.ots",
+   "relays_ok": [
+    "wss://nos.lol",
+    "wss://relay.primal.net",
+    "wss://relay.snort.social",
+    "wss://offchain.pub"
+   ]
+  },
+  "relays_failed": {
+   "wss://relay.damus.io": "InvalidStatus: server rejected WebSocket connection: HTTP 521",
+   "wss://relay.nostr.band": "TimeoutError: timed out during opening handshake"
+  },
+  "relays_ok": [
+   "wss://nos.lol",
+   "wss://relay.primal.net",
+   "wss://relay.snort.social",
+   "wss://offchain.pub"
+  ],
+  "source": "attestation",
+  "ts": "2026-11-01T02:07:03.182641+00:00"
+ },
+ {
+  "dry_run": false,
+  "event_id": "76d9f34e3b29716411a975bc438686cafd15456369b6bb1d9f1475ce8a02306c",
+  "fingerprint": "5e9e7cf9387215556d05e70d9f66854d79c9a7b887c0f81e11bbc3b327613979",
+  "job_id": "63b7f3e8c5f7",
+  "kind": 30013,
+  "ots": {
+   "calendars": [
+    "https://a.pool.opentimestamps.org",
+    "https://b.pool.opentimestamps.org",
+    "https://a.pool.eternitywall.com",
+    "https://ots.btc.catallaxy.com"
+   ],
+   "event_id": "3c42880d5e8626d77605f46e41ed3839ad9e683077b7b6820cad23e09d89186c",
+   "ok": true,
+   "ots_b64_sha256": "70d9f9f1eebb5cdd30f59830b05b463cfc79bfcf647da69450541629f2b2b0e0",
+   "ots_path": "data/ots_proofs/76d9f34e3b29716411a975bc438686cafd15456369b6bb1d9f1475ce8a02306c.ots",
+   "relays_ok": [
+    "wss://nos.lol",
+    "wss://relay.primal.net",
+    "wss://relay.snort.social",
+    "wss://offchain.pub"
+   ]
+  },
+  "relays_failed": {
+   "wss://relay.damus.io": "InvalidStatus: server rejected WebSocket connection: HTTP 521",
+   "wss://relay.nostr.band": "TimeoutError: timed out during opening handshake"
+  },
+  "relays_ok": [
+   "wss://nos.lol",
+   "wss://relay.primal.net",
+   "wss://relay.snort.social",
+   "wss://offchain.pub"
+  ],
+  "source": "attestation",
+  "ts": "2026-11-01T02:08:29.564276+00:00"
+ },
+ {
+  "dry_run": false,
+  "event_id": "3c0ced6aa25e43bc430e8eb861750964c346a96da863804d6b0ba028a4c4fd9a",
+  "fingerprint": "a18115f4aa54287e367b3211d4f3f2a941171e00d592c62f3840b05b193357a4",
+  "job_id": "9fc2233c-d5e",
+  "kind": 30013,
+  "ots": {
+   "calendars": [
+    "https://a.pool.opentimestamps.org",
+    "https://b.pool.opentimestamps.org",
+    "https://a.pool.eternitywall.com",
+    "https://ots.btc.catallaxy.com"
+   ],
+   "event_id": "d980713170affb75000fc9e22bfad4752528ac8c921106a292ca2a865e7bec88",
+   "ok": true,
+   "ots_b64_sha256": "1d6eac5cc9465784fb777f0de4623531d4305a84a594923753fea5174239ce7c",
+   "ots_path": "data/ots_proofs/3c0ced6aa25e43bc430e8eb861750964c346a96da863804d6b0ba028a4c4fd9a.ots",
+   "relays_ok": [
+    "wss://nos.lol",
+    "wss://relay.primal.net",
+    "wss://relay.snort.social",
+    "wss://offchain.pub"
+   ]
+  },
+  "relays_failed": {
+   "wss://relay.damus.io": "InvalidStatus: server rejected WebSocket connection: HTTP 520",
+   "wss://relay.nostr.band": "TimeoutError: timed out during opening handshake"
+  },
+  "relays_ok": [
+   "wss://nos.lol",
+   "wss://relay.primal.net",
+   "wss://relay.snort.social",
+   "wss://offchain.pub"
+  ],
+  "source": "attestation",
+  "ts": "2026-11-01T03:52:03.664975+00:00"
+ }
+]
