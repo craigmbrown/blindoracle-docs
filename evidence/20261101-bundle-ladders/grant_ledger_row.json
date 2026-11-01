@@ -1,0 +1,33 @@
+[
+ {
+  "agent_id": "agent_e706f697e588",
+  "agent_name": "claude-82eee642",
+  "allow_skus": [
+   "bundle.reputation-badge",
+   "bundle.prehire-ladder",
+   "bundle.trust-paperwork",
+   "bundle.due-diligence"
+  ],
+  "credential_fp": "1af8e944cc2e",
+  "id": "6edb75385722dd3288cdfb99c48b8da5",
+  "kind": "grant",
+  "max_usd_per_day": 5.0,
+  "message": "BlindOracle agent grant\nAgent: claude-82eee642 (agent_e706f697e588)\nPerson wallet: 0x98EC9cAff3D6C555b462957d2390D274aec8a25B\nCredential: 1af8e944cc2e\nAllowed SKUs: bundle.reputation-badge, bundle.prehire-ladder, bundle.trust-paperwork, bundle.due-diligence\nDaily cap: $5.00\nValid: 2026-11-01T18:03:51Z to 2026-11-15T18:03:51Z\nNonce: 6edb75385722dd3288cdfb99c48b8da5\n\nI hold the person wallet above and authorize this agent to buy on the BlindOracle board within these limits. Signing moves no funds. I can revoke this at any time by signing a revocation.",
+  "not_after": 1794765831,
+  "not_before": 1793556231,
+  "person_verified": {
+   "ok": true,
+   "source": "kyc_wallet_control",
+   "verified_at": "2026-10-30T23:13:17+00:00"
+  },
+  "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+  "signature_method": "erc1271",
+  "signer_detail": {
+   "erc6492": false,
+   "format": "coinbase_smart_wallet",
+   "owner_index": 0,
+   "owner_kind": "key"
+  },
+  "ts": "2026-11-01T18:05:00Z"
+ }
+]

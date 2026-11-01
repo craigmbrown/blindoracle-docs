@@ -1,0 +1,18 @@
+{
+ "challenge_id": "6edb75385722dd3288cdfb99c48b8da5",
+ "person_wallet": "0x98EC9cAff3D6C555b462957d2390D274aec8a25B",
+ "challenge_expires_at": "2026-11-02T18:03:51Z",
+ "sign_url": "https://api.craigmbrown.com/a2a/grants/sign/6edb75385722dd3288cdfb99c48b8da5",
+ "delivered": {
+  "ok": true,
+  "queued": true,
+  "to": "c***@gmail.com",
+  "eta": "sent within about a minute"
+ },
+ "short_url": "https://api.craigmbrown.com/a2a/s/cvjnmeq4js",
+ "open_in": {
+  "coinbase_wallet": "https://go.cb-w.com/dapp?cb_url=https%3A%2F%2Fapi.craigmbrown.com%2Fa2a%2Fgrants%2Fsign%2F6edb75385722dd3288cdfb99c48b8da5",
+  "metamask": "https://metamask.app.link/dapp/api.craigmbrown.com/a2a/grants/sign/6edb75385722dd3288cdfb99c48b8da5"
+ },
+ "qr_png": "https://api.craigmbrown.com/a2a/s/cvjnmeq4js.png"
+}

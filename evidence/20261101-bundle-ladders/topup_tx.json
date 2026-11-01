@@ -1,0 +1,10 @@
+{
+ "ok": true,
+ "tx_hash": "66a324c8d6755b08183a03375ad3bd89dfcc17cbe7f2ea41de36ea6a1ebb1ab8",
+ "block": 53383938,
+ "from": "0x8D15DB4936A7100c35B2d66BA17C241bd53bfb4C",
+ "to": "0x5E709929A4AB69eC3a8811d03417869059BC4EB9",
+ "amount_usdc": 4.8,
+ "token": "USDC",
+ "explorer": "https://basescan.org/tx/0x66a324c8d6755b08183a03375ad3bd89dfcc17cbe7f2ea41de36ea6a1ebb1ab8"
+}

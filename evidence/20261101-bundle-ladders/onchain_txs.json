@@ -1,0 +1,18 @@
+[
+ {
+  "step": "treasury -> fleet wallet 0x8d15 (4.80 USDC)",
+  "tx": "0x8f43f890dc8440408c4ca2b30e9d7c5f47ca731a232fe0749f64b16573ae2983"
+ },
+ {
+  "step": "fleet wallet 0x8d15 -> BO treasury deposit (4.80 USDC) = the connector's prepaid top-up",
+  "tx": "0x66a324c8d6755b08183a03375ad3bd89dfcc17cbe7f2ea41de36ea6a1ebb1ab8"
+ },
+ {
+  "step": "treasury -> deployer 0x42A0 (4.80 USDC; refused as a funding wallet: wallet_is_internal)",
+  "tx": "0xbd0cc31014d7798b709a62a0e4c95d2ab1e0d1246b519d4dd3454bab07ed3800"
+ },
+ {
+  "step": "deployer 0x42A0 -> treasury (4.80 USDC returned)",
+  "tx": "0x4300b70ed74f85a5c7bc5c3822fa63fce5aad6c55943b27b7d878fe7d8fc273c"
+ }
+]

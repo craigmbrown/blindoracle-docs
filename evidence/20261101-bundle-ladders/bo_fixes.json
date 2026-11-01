@@ -1,0 +1,17 @@
+[
+ {
+  "pr": "chainlink-prediction-markets-mcp-enhanced #336",
+  "defect": "person_grant.spent_today counted the prepaid top-up (treasury-prepaid-topup, booked settled_cash) as spend; a $4.80 deposit + $4.734 ladder under a $5/day cap was refused day_cap_exceeded at 18:21Z",
+  "status": "merged + live 18:23Z"
+ },
+ {
+  "pr": "chainlink-prediction-markets-mcp-enhanced #337",
+  "defect": "person_grant.spent_today matched revenue rows on requester_id only; MCP pay-first rows carry requester, so purchases on that path never counted against the cap (stamp read spent_today_usd 0 after a $4.734 purchase)",
+  "status": "merged; staged for the 19:05Z gateway flush"
+ },
+ {
+  "pr": "ETAC-System #4023",
+  "defect": "prepaid purchases carry no payer wallet and never reach the attribution ledger; the campaign evaluator now also reads settled bundle rows from the revenue ledger by external requester. claude-82eee642 and fleet wallet 0x8d15 marked internal.",
+  "status": "merged"
+ }
+]
