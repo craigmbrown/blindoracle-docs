@@ -39,7 +39,7 @@ print(h.hexdigest())
 PY
 curl -s https://mainnet.base.org -H 'content-type: application/json' \
   -d '{"jsonrpc":"2.0","id":1,"method":"eth_getTransactionByHash","params":["0xf53be042c54310ac10fed3b90b36fdd069e60fb6f508be5c91a10108774577a4"]}'
-# -> "input" is 0x + that digest, blockNumber 0x32e6c35 (53375797), from == to
+# -> "input" is 0x + that digest, blockNumber 0x32e7335 (53375797), from == to
 
 # 2. Bitcoin
 pip install opentimestamps-client && ots upgrade checkpoint.ots && ots verify checkpoint.ots
