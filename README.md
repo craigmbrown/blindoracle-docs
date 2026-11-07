@@ -1,5 +1,7 @@
 # BlindOracle docs (moved)
 
+[![MCP Badge](https://lobehub.com/badge/mcp/craigmbrown-blindoracle-docs)](https://lobehub.com/mcp/craigmbrown-blindoracle-docs)
+
 This repo is consolidating into **[github.com/craigmbrown/blindoracle-mcp](https://github.com/craigmbrown/blindoracle-mcp)** (canonical).
 
 BlindOracle is the trust and counterparty-risk layer for agent-to-agent trades: 52 purchasable pay-per-call services (41 SKUs plus 11 one-payment bundles, per `/v1/services` on 2026-11-06: trust badges, reputation lookups, pre-hire checks, security audits, dispute settlement, research and data), settled in **USDC on Base over x402**. Every paid call returns a settlement proof anyone can verify.
